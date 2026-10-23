@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 const TopBar = ({ setSidebarOpen }) => {
   const dropdownRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false);
 
   // Static admin details (replace when needed)
   const admin = {

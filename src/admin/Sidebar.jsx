@@ -1,30 +1,69 @@
+
 import {
   LayoutDashboard,
   Package,
   X,
   ShoppingBag,
   Users,
-  Images
-} from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+  Images,
+  LogOut,
+} from "lucide-react";
+
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import LogoutModal from "./modals/LogoutModal";
 
 const NAV_ITEMS = [
-  { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/admin/lead', label: 'Leads', icon: Users },
-  { path: '/admin/category', label: 'Category', icon: Package },
-  { path: '/admin/product', label: 'Product', icon: ShoppingBag },
-  { path: '/admin/jobs', label: 'Jobs', icon: ShoppingBag },
-  { path: '/admin/applicants', label: 'Applicants', icon: Users },
-  { path: '/admin/gallery', label: 'Gallery', icon: Images }
-]
+  {
+    path: "/admin/dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    path: "/admin/category",
+    label: "Category",
+    icon: Package,
+  },
+  {
+    path: "/admin/course",
+    label: "Course",
+    icon: Users,
+  },
+  {
+    path: "/admin/product",
+    label: "Product",
+    icon: ShoppingBag,
+  },
+  {
+    path: "/admin/jobs",
+    label: "Jobs",
+    icon: ShoppingBag,
+  },
+  {
+    path: "/admin/applicants",
+    label: "Applicants",
+    icon: Users,
+  },
+  {
+    path: "/admin/gallery",
+    label: "Gallery",
+    icon: Images,
+  },
+];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+
+  const handleCloseLogoutModal = () => {
+    setLogoutModalOpen(false);
+  };
+
   return (
     <>
-      {/* Mobile Overlay */}
+      {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className='fixed inset-0 bg-black/50 z-40 lg:hidden'
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -32,38 +71,36 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white flex flex-col
-          transition-transform duration-300
+          fixed inset-y-0 left-0 z-50 w-64 bg-slate-900
+          flex flex-col text-white transition-transform duration-300
           lg:relative lg:translate-x-0 lg:shrink-0
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Logo */}
-        <div className='flex items-center justify-between px-6 py-1 border-b border-white/10'>
-          <div className='flex items-center gap-2'>
-            <div className='w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden'>
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-1">
+          <div className="flex items-center gap-2">
+            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl">
               <img
-                src='/mylogo.png'
-                alt='Savera Logo'
-                className='w-full h-full object-contain'
-                onError={e => {
-                  e.currentTarget.style.display = 'none'
+                src="/mylogo.png"
+                alt="Savera Logo"
+                className="h-full w-full object-contain"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
                 }}
               />
             </div>
 
-            <div>
-              <p className='text-md font-extrabold tracking-tight leading-tight'>
-                SAVERA
-              </p>
-            </div>
+            <p className="text-md font-extrabold leading-tight tracking-tight">
+              SAVERA
+            </p>
           </div>
 
           {/* Mobile Close Button */}
           <button
-            type='button'
-            aria-label='Close sidebar'
-            className='lg:hidden p-1.5 hover:bg-white/10 rounded-lg transition'
+            type="button"
+            aria-label="Close sidebar"
+            className="rounded-lg p-1.5 transition hover:bg-white/10 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           >
             <X size={18} />
@@ -71,18 +108,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         </div>
 
         {/* Navigation */}
-        <nav className='flex-1 px-4 py-6 space-y-1'>
+        <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-6">
           {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
             <NavLink
               key={path}
               to={path}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all
+                `flex w-full items-center gap-3 rounded-xl px-4 py-2.5
+                text-sm font-medium transition-all
                 ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                    : 'text-slate-400 hover:text-white hover:bg-white/10'
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                    : "text-slate-400 hover:bg-white/10 hover:text-white"
                 }`
               }
             >
@@ -91,9 +129,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </NavLink>
           ))}
         </nav>
-      </aside>
-    </>
-  )
-}
 
-export default Sidebar
+        {/* Logout Button at Bottom */}
+        <div className="mt-auto border-t border-white/10 p-4">
+          <button
+            type="button"
+            onClick={() => setLogoutModalOpen(true)}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3
+              text-sm font-medium text-red-400 transition-all
+              hover:bg-red-500/10 hover:text-red-300"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      {/* Full-Screen Logout Modal */}
+      {logoutModalOpen && (
+        <LogoutModal onClose={handleCloseLogoutModal} />
+      )}
+    </>
+  );
+};
+
+export default Sidebar;

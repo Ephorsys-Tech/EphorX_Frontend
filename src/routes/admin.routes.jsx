@@ -6,6 +6,11 @@ import AdminDashboard from '../admin/pages/AdminDashboard'
 
 import ProtectedRoute from './protected.route'
 import AdminLayout from '../layouts/AdminLayout'
+import Category from '../admin/pages/Category'
+import Course from '../admin/pages/Courses'
+import AddCourse from '../admin/pages/AddCourse'
+import EditCourse from '../admin/pages/EditCourse'
+import ViewCourse from '../admin/pages/ViewCourse'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -17,6 +22,11 @@ const AdminRoutes = (
       <Route element={<AdminLayout />}>
         {/* Dashboard */}
         <Route path='dashboard' element={<AdminDashboard />} />
+        <Route path='category' element={<Category/>}/>
+        <Route path='course' element={<Course/>}/>
+        <Route path='add-course' element={<AddCourse/>}/>
+        <Route path='edit-course/:id' element={<EditCourse/>}/>
+        <Route path='view-course/:id' element={<ViewCourse/>}/>
       </Route>
     </Route>
   </Route>
