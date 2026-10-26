@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import WebinarsSection from "../../components/Home/WebinarsSection";
 import ReviewsSection from "../../components/Home/ReviewsSection";
+import IndustryExperts from "../../components/Home/IndustryExperts";
 const HomePage = () => {
   const courseCategories = [
     {
@@ -88,6 +89,7 @@ const HomePage = () => {
         buttonText="View All Sessions"
         buttonTo="/webinars"
       />
+      <IndustryExperts/>
       <ReviewsSection/>
     </div>
   )
