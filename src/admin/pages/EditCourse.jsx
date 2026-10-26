@@ -45,6 +45,7 @@ const getFileUrl = (value) => {
 };
 
 export default function EditCourse() {
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -66,7 +67,16 @@ export default function EditCourse() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+   useEffect(() => {
+    document.body.classList.add("no-scroll");
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+
   useEffect(() => {
+    
     let active = true;
 
     const fetchDetails = async () => {

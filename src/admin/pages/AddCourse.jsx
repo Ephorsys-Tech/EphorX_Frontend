@@ -184,8 +184,17 @@ export default function AddCourse() {
     }
   };
 
+
+   useEffect(() => {
+    document.body.classList.add("no-scroll");
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+
   return (
-    <div className="w-full bg-slate-50 px-4 pb-6 sm:px-6 lg:px-8">
+    <div className="w-full bg-slate-50 px-4 pb-6 sm:px-6 lg:px-8 ">
       <div className="mx-auto max-w-4xl">
         <button
           type="button"

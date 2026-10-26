@@ -12,6 +12,8 @@ import AddCourse from '../admin/pages/AddCourse'
 import EditCourse from '../admin/pages/EditCourse'
 import ViewCourse from '../admin/pages/ViewCourse'
 import CategoryDetails from '../admin/pages/CategoryDetails'
+import Contacts from '../admin/pages/Contacts'
+import EditContactModal from '../admin/modals/EditContactModal'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -29,6 +31,9 @@ const AdminRoutes = (
         <Route path='add-course' element={<AddCourse/>}/>
         <Route path='edit-course/:id' element={<EditCourse/>}/>
         <Route path='view-course/:id' element={<ViewCourse/>}/>
+
+        <Route path='contacts' element={<Contacts/>}/>
+        <Route path='edit-contact' element={<EditContactModal/>}/>
       </Route>
     </Route>
   </Route>
