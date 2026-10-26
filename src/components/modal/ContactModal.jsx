@@ -5,7 +5,6 @@ import {
   Mail,
   Send,
   UserRound,
-  MessageSquare,
   CheckCircle2,
   Phone,
   MessageCircle,
@@ -88,7 +87,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
   }
 
   return (
-    <section className="relative overflow-hidden bg-white p-6 sm:p-9">
+    <section className="relative overflow-hidden bg-white px-6 sm:px-9 pb-3">
       {/* Decorative background shapes */}
       <div className="pointer-events-none absolute right-5 top-5 h-16 w-16 rotate-12 rounded-2xl bg-sky-100/70" />
       <div className="pointer-events-none absolute bottom-20 right-8 h-24 w-24 rounded-full bg-blue-50" />
@@ -97,12 +96,8 @@ const ContactModal = ({ onClose, onSubmit }) => {
       <div className="relative z-10">
         {/* Form heading */}
         <div className="mb-7">
-          <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-700">
-            <MessageSquare size={13} />
-            Contact form
-          </span>
-
-          <h3 className="mt-4 text-2xl font-black text-slate-950">
+        
+          <h3 className="mt-1 text-2xl font-black text-slate-950">
             Send us a message
           </h3>
 
@@ -112,52 +107,55 @@ const ContactModal = ({ onClose, onSubmit }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Student name */}
-          <div>
-            <FieldLabel required>Student Name</FieldLabel>
+         
+{/* Student name and Email */}
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <div>
+    <FieldLabel required>Name</FieldLabel>
 
-            <div className="relative">
-              <UserRound
-                size={17}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-              />
+    <div className="relative">
+      <UserRound
+        size={17}
+        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+      />
 
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                autoComplete="name"
-                className={`${inputClass} pl-10`}
-                required
-                maxLength={100}
-              />
-            </div>
-          </div>
+      <input
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Enter your full name"
+        autoComplete="name"
+        className={`${inputClass} pl-10`}
+        required
+        maxLength={100}
+      />
+    </div>
+  </div>
 
-          {/* Email */}
-          <div>
-            <FieldLabel required>Email Address</FieldLabel>
+  <div>
+    <FieldLabel required>Email Address</FieldLabel>
 
-            <div className="relative">
-              <Mail
-                size={17}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-              />
+    <div className="relative">
+      <Mail
+        size={17}
+        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+      />
 
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                autoComplete="email"
-                className={`${inputClass} pl-10`}
-                required
-                maxLength={254}
-              />
-            </div>
-          </div>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="you@example.com"
+        autoComplete="email"
+        className={`${inputClass} pl-10`}
+        required
+        maxLength={254}
+      />
+    </div>
+  </div>
+</div>
+
 
           {/* Phone numbers */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -232,7 +230,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
             type="submit"
             whileHover={{ scale: 1.015 }}
             whileTap={{ scale: 0.98 }}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-500"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-500"
           >
             Send Message
             <Send size={16} />

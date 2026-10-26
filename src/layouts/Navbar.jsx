@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import image from "../assets/Logo.png";
 import { Phone } from "lucide-react";
 import Modal from "../ui/Modal";
@@ -18,28 +18,18 @@ const pill =
   "rounded-3xl bg-[#fdfbf7] shadow-[0_4px_20px_-8px_rgba(0,0,0,0.3)]";
 
 
-function Logo({ name = false }) {
+
+function Logo() {
   return (
     <Link
       to="/"
-      className="flex shrink-0 items-center gap-2"
+      className="relative flex h-12 w-40 shrink-0 items-center"
     >
-      {/* Logo Image */}
-      <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full">
-        <img
-          src={image}
-          alt="EphorX logo"
-          className="h-full w-full object-contain"
-        />
-      </span>
-
-      {/* Brand Name */}
-      {name && (
-        <span className="text-2xl font-extrabold tracking-tight">
-          <span className="text-black">Ephor</span>
-          <span className="text-blue-600">X</span>
-        </span>
-      )}
+      <img
+        src={image}
+        alt="EphorX logo"
+        className="absolute -left-10 top-1/2 h-auto w-59 max-w-none -translate-y-1/2 object-contain"
+      />
     </Link>
   );
 }
@@ -83,48 +73,56 @@ export default function Navbar() {
           <ul className="flex items-center gap-1">
             {LINKS.map((link) => (
               <li key={link.label}>
-                <Link
+
+                <NavLink
                   to={link.to}
-                  className="block rounded-full px-5 py-2 text-lg font-semibold text-black transition hover:bg-black/5"
+                  end
+                  className={({ isActive }) =>
+                    `block rounded-full px-5 py-2 text-lg font-semibold transition ${isActive
+                      ? "bg-sky-200/30 text-sky-500"
+                      : "text-black hover:bg-black/5"
+                    }`
+                  }
                 >
                   {link.label}
-                </Link>
+                </NavLink>
+
               </li>
             ))}
           </ul>
         </div>
 
         {/* contact */}
-      <div
-  className={`${pill} mb-2 flex items-center gap-1.5 px-4 py-3 text-md font-medium text-black transition hover:-translate-y-0.5`}
->
-  <button
-    type="button"
-    onClick={() => setContactOpen(true)}
-    className="text-lg"
-  >
-    Contact Us
-  </button>
+        <div
+          className={`${pill} mb-2 flex items-center gap-1.5 px-4 py-3 text-md font-medium text-black transition hover:-translate-y-0.5`}
+        >
+          <button
+            type="button"
+            onClick={() => setContactOpen(true)}
+            className="text-lg"
+          >
+            Contact Us
+          </button>
 
-  <button
-    type="button"
-    onClick={() => setContactOpen(true)}
-    aria-label="Open contact form"
-  >
-    <Phone
-      size={19}
-      className=" text-blue-600 transition-transform duration-200 hover:scale-110"
-    />
-  </button>
-</div>
+          <button
+            type="button"
+            onClick={() => setContactOpen(true)}
+            aria-label="Open contact form"
+          >
+            <Phone
+              size={19}
+              className=" text-blue-600 transition-transform duration-200 hover:scale-110"
+            />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile and Tablet Navbar */}
       <div className="relative mx-auto max-w-2xl lg:hidden mb-1">
         <nav
-          className={`${pill} flex items-center justify-between gap-2 p-1.5`}
+          className={`${pill} flex items-center justify-between gap-2 p-1.5 pb-3`}
         >
-          <Logo name />
+          <Logo />
 
           <div className="flex shrink-0 items-center gap-2">
             <button
@@ -167,20 +165,28 @@ export default function Navbar() {
         {/* Mobile Dropdown */}
         <div
           className={`${pill} absolute right-0 mt-2 w-56 overflow-hidden py-2 transition-all duration-200 ${open
-              ? "visible translate-y-0 opacity-100"
-              : "invisible -translate-y-2 opacity-0"
+            ? "visible translate-y-0 opacity-100"
+            : "invisible -translate-y-2 opacity-0"
             }`}
         >
           {LINKS.map((link) => (
-            <Link
+
+            <NavLink
               key={link.label}
               to={link.to}
+              end
               tabIndex={open ? 0 : -1}
               onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-center font-semibold text-black transition hover:bg-black/5"
+              className={({ isActive }) =>
+                `block px-4 py-3 text-center font-semibold transition ${isActive
+                  ? "bg-sky-100 text-sky-400"
+                  : "text-black hover:bg-black/5"
+                }`
+              }
             >
               {link.label}
-            </Link>
+            </NavLink>
+
           ))}
         </div>
       </div>

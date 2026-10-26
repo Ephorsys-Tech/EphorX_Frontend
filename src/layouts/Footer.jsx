@@ -12,7 +12,7 @@ import {
   Phone,
   Send,
   Star,
-  
+
 } from "lucide-react";
 
 import {
@@ -86,6 +86,8 @@ const socialLinks = [
 ];
 
 function FooterHeading({ children }) {
+
+
   return (
     <div className="mb-6">
       <h3 className="text-base font-bold tracking-wide text-black sm:text-lg">
@@ -209,7 +211,20 @@ function ContactItem({ icon: Icon, title, description, to }) {
 
 export default function Footer() {
   const year = new Date().getFullYear();
-
+  function Logo() {
+    return (
+      <Link
+        to="/"
+        className="relative flex h-12 w-40 shrink-0 items-center"
+      >
+        <img
+          src={image}
+          alt="EphorX logo"
+          className="absolute -left-11 top-1/2 h-auto w-59 max-w-none -translate-y-1/2 object-contain"
+        />
+      </Link>
+    );
+  }
   return (
     <footer className="relative overflow-hidden bg-white text-black">
 
@@ -221,11 +236,11 @@ export default function Footer() {
       <div className="pointer-events-none absolute -bottom-48 -left-40
         h-96 w-96 rounded-full bg-blue-600/[0.08] blur-3xl"
       />
-          <div className="absolute left-10 top-50 h-22 w-22 rotate-20 rounded-xl bg-blue-200/50" />
-          <div className="absolute right-120 bottom-50 h-22 w-22 rotate-35 rounded-xl bg-blue-200/40" />
+      <div className="absolute left-10 top-50 h-22 w-22 rotate-20 rounded-xl bg-blue-200/50" />
+      <div className="absolute right-120 bottom-50 h-22 w-22 rotate-35 rounded-xl bg-blue-200/40" />
 
-          <div className="absolute left-99 bottom-15 h-7 w-7 rounded-full bg-blue-500 sm:-right-5 sm:h-10 sm:w-10" />
-          <div className="absolute left-320 top-53 h-7 w-7 rounded-full bg-blue-300 sm:-right-5 sm:h-10 sm:w-10" />
+      <div className="absolute left-99 bottom-15 h-7 w-7 rounded-full bg-blue-500 sm:-right-5 sm:h-10 sm:w-10" />
+      <div className="absolute left-320 top-53 h-7 w-7 rounded-full bg-blue-300 sm:-right-5 sm:h-10 sm:w-10" />
 
       <div className="relative mx-auto max-w-[1465px] px-5 sm:px-8 lg:px-12">
 
@@ -304,37 +319,9 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5 }}
           >
-            <Link
-              to="/"
-              aria-label="EphorX home"
-              className="group inline-flex items-center gap-3"
-            >
-              <span className="flex h-14 w-14 shrink-0 items-center
-                justify-center overflow-hidden rounded-2xl bg-white
-                p-1.5 shadow-lg shadow-black/20 transition-transform
-                duration-300 group-hover:-rotate-3"
-              >
-                <img
-                  src={image}
-                  alt="EphorX logo"
-                  className="h-full w-full object-contain"
-                />
-              </span>
-
-              <span>
-                <span className="block text-2xl font-extrabold
-                  tracking-tight text-black"
-                >
-                  Ephor<span className="text-sky-400">X</span>
-                </span>
-
-                <span className="mt-0.5 block text-[10px] font-semibold
-                  uppercase tracking-[0.24em] text-gray-500"
-                >
-                  Learn. Build. Grow.
-                </span>
-              </span>
-            </Link>
+            <div className="flex items-center">
+              <Logo />
+            </div>
 
             <p className="mt-6 max-w-sm text-sm leading-7 text-gray-600">
               Empowering learners with practical technology education,
@@ -442,10 +429,10 @@ export default function Footer() {
             <Link
               to="/contact"
               className="group mt-7 flex w-full items-center
-                justify-between gap-3 rounded-xl border border-black/10
+                justify-between gap-3 rounded-xl border 
                 bg-sky-400 px-4 py-3.5 text-sm font-semibold
                 text-sky-100 transition-all duration-300
-                hover:border-sky-300/60 hover:bg-black"
+                 hover:bg-black"
             >
               <span className="inline-flex items-center gap-2">
                 <Send size={16} />

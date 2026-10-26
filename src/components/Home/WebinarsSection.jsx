@@ -255,7 +255,7 @@ export default function WebinarsSection({
 
             <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
               {title}{" "}
-              <span className="text-sky-500">{highlight}</span>
+              <span className="text-sky-500 animate-pulse">{highlight}</span>
             </h2>
 
             {description && (
