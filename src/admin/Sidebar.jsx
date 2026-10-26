@@ -7,7 +7,10 @@ import {
   Users,
   Images,
   LogOut,
+  Phone,
 } from "lucide-react";
+
+import logo from '../assets/Logolight.png'
 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -30,9 +33,9 @@ const NAV_ITEMS = [
     icon: Users,
   },
   {
-    path: "/admin/product",
-    label: "Product",
-    icon: ShoppingBag,
+    path: "/admin/contacts",
+    label: "Contacts",
+    icon: Phone,
   },
   {
     path: "/admin/jobs",
@@ -79,22 +82,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       >
         {/* Logo */}
         <div className="flex items-center justify-between border-b border-white/10 px-6 py-1">
-          <div className="flex items-center gap-2">
-            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl">
+            <div className="flex items-center justify-center overflow-hidden rounded-xl">
               <img
-                src="/mylogo.png"
-                alt="Savera Logo"
-                className="h-full w-full object-contain"
+                src={logo}
+                alt="EPhorX Logo"
+                className="h-15"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";
                 }}
               />
             </div>
-
-            <p className="text-md font-extrabold leading-tight tracking-tight">
-              SAVERA
-            </p>
-          </div>
 
           {/* Mobile Close Button */}
           <button

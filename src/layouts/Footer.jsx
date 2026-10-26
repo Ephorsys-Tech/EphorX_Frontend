@@ -24,6 +24,9 @@ import {
 } from "react-icons/fa6";
 
 import image from "../assets/Logo.png";
+import Modal from "../ui/Modal";
+import CompanyMapModal from "../components/modal/CompanyMapModal";
+import { useState } from "react";
 
 const quickLinks = [
   { label: "Home", to: "/" },
@@ -176,10 +179,12 @@ function CourseLink({ title, subtitle, icon: Icon }) {
   );
 }
 
-function ContactItem({ icon: Icon, title, description, to }) {
+
+function ContactItem({ icon: Icon, title, description, to, onClick }) {
   const content = (
     <>
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center
+      <span
+        className="flex h-11 w-11 shrink-0 items-center justify-center
         rounded-xl border border-sky-500 bg-black text-sky-300 hover:text-white
         transition-colors duration-300 group-hover:bg-sky-400"
       >
@@ -198,6 +203,18 @@ function ContactItem({ icon: Icon, title, description, to }) {
     </>
   );
 
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className="group flex w-full cursor-pointer items-start gap-3 text-left"
+      >
+        {content}
+      </button>
+    );
+  }
+
   if (to) {
     return (
       <Link to={to} className="group flex items-start gap-3">
@@ -206,8 +223,9 @@ function ContactItem({ icon: Icon, title, description, to }) {
     );
   }
 
-  return <div className="flex items-start gap-3">{content}</div>;
+  return <div className="group flex items-start gap-3">{content}</div>;
 }
+
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -225,8 +243,9 @@ export default function Footer() {
       </Link>
     );
   }
+  const [mapOpen, setMapOpen] = useState(false);
   return (
-    <footer className="relative overflow-hidden bg-white text-black">
+    <footer className="relative overflow-hidden bg-white text-black" >
 
       {/* Background decoration */}
       <div className="pointer-events-none absolute -right-40 -top-40
@@ -244,14 +263,15 @@ export default function Footer() {
 
       <div className="relative mx-auto max-w-[1465px] px-5 sm:px-8 lg:px-12">
 
-        {/* Top CTA */}
+      <div className="lg:px-22">
+          {/* Top CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="relative mt-4 overflow-hidden rounded-b-[28px]
-            border-x border-b border-sky-600
+            border-x border-b border-sky-200
             bg-gradient-to-br from-sky-400 via-black
             to-sky-300 px-6 py-8 sm:px-9 sm:py-10"
         >
@@ -270,7 +290,7 @@ export default function Footer() {
               <span className="mb-3 inline-flex items-center gap-2
                 text-xs font-bold uppercase tracking-[0.2em] text-sky-300"
               >
-                <Star size={15} />
+                
                 Your next chapter starts here
               </span>
 
@@ -309,7 +329,7 @@ export default function Footer() {
         {/* Main footer content */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-11 py-12
           sm:grid-cols-2 sm:py-14 lg:grid-cols-[1.25fr_0.8fr_1.2fr_1fr]
-          lg:gap-x-10 lg:py-16"
+          lg:gap-x-10 lg:py-7"
         >
 
           {/* Brand column */}
@@ -371,7 +391,7 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.16 }}
           >
-            <FooterHeading>Learning Paths</FooterHeading>
+            <FooterHeading>Our Top Courses</FooterHeading>
 
             <div className="-mx-2 flex flex-col gap-1">
               {courses.map((course) => (
@@ -420,9 +440,9 @@ export default function Footer() {
 
               <ContactItem
                 icon={MapPin}
-                title="Our institute"
+                title="Our Company"
                 description="Get in touch for location and visit details"
-                to="/contact"
+                onClick={() => setMapOpen(true)}
               />
             </div>
 
@@ -448,7 +468,16 @@ export default function Footer() {
           </motion.div>
         </div>
       </div>
-
+      </div>
+       <Modal
+  isOpen={mapOpen}
+  onClose={() => setMapOpen(false)}
+  title="Our Location"
+  size="lg"
+  theme="white"
+>
+  <CompanyMapModal />
+</Modal>
       {/* Bottom bar */}
       <div className="relative border-t border-white/[0.08] bg-[#080e19]">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-4

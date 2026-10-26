@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { UsersRound, BookOpen, Star, Download } from "lucide-react";
+import { UsersRound, BookOpen, Star, GraduationCap } from "lucide-react";
 
 const stats = [
   {
@@ -10,7 +10,7 @@ const stats = [
     icon: UsersRound,
   },
   {
-    value: 120,
+    value: 20,
     suffix: "+",
     label: "Courses Available",
     icon: BookOpen,
@@ -23,11 +23,11 @@ const stats = [
     decimal: true,
   },
   {
-    value: 50000,
-    suffix: "+",
-    label: "App Downloads",
-    icon: Download,
-  },
+  value: 25,
+  suffix: "+",
+  label: "Expert Mentors",
+  icon: GraduationCap,
+},
 ];
 
 function StatItem({ stat, index }) {
