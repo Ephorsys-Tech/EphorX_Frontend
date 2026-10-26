@@ -47,7 +47,7 @@ const ContactInfo = () => {
   return (
     <section
       id="contact-info"
-      className="relative overflow-hidden bg-gray-50 px-5 py-10 sm:px-8 md:px-10 lg:px-41 lg:py-16"
+      className="relative overflow-hidden bg-gray-50 px-5 py-10 sm:px-8 md:px-10 lg:px-41 lg:py-14"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
@@ -62,12 +62,7 @@ const ContactInfo = () => {
         className="relative mb-8 flex flex-col justify-between gap-5 sm:mb-10 md:flex-row md:items-end lg:mb-14"
       >
         <div className="min-w-0">
-          <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 shadow-sm">
-            <Star size={15} className="text-sky-500" />
-            <span className="text-xs font-bold uppercase tracking-[0.18em] text-gray-700">
-              Get in Touch
-            </span>
-          </div>
+          
 
           <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
             Let's Make Something
