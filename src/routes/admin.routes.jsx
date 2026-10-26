@@ -11,6 +11,7 @@ import Course from '../admin/pages/Courses'
 import AddCourse from '../admin/pages/AddCourse'
 import EditCourse from '../admin/pages/EditCourse'
 import ViewCourse from '../admin/pages/ViewCourse'
+import CategoryDetails from '../admin/pages/CategoryDetails'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -23,6 +24,7 @@ const AdminRoutes = (
         {/* Dashboard */}
         <Route path='dashboard' element={<AdminDashboard />} />
         <Route path='category' element={<Category/>}/>
+        <Route path="category-details/:id" element={<CategoryDetails/>}/>
         <Route path='course' element={<Course/>}/>
         <Route path='add-course' element={<AddCourse/>}/>
         <Route path='edit-course/:id' element={<EditCourse/>}/>

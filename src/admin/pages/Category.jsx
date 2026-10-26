@@ -79,41 +79,41 @@ export default function Category() {
         setShowForm(true);
     };
 
-    
-const openEditForm = async (category) => {
-    try {
-        setError("");
 
-        // Fetch category details using the getById API
-        const id = category.id ?? category._id;
+    const openEditForm = async (category) => {
+        try {
+            setError("");
 
-        if (!id) {
-            throw new Error("Category ID is missing.");
+            // Fetch category details using the getById API
+            const id = category.id ?? category._id;
+
+            if (!id) {
+                throw new Error("Category ID is missing.");
+            }
+
+            const result = await categoryApi.getById(id);
+
+            // Extract category from the API response
+            const item =
+                result?.category ??
+                result?.data?.category ??
+                result?.data ??
+                result;
+
+            if (!item || typeof item !== "object") {
+                throw new Error("Category details were not returned by the server.");
+            }
+
+            // Populate the edit form
+            setEditingId(item.id ?? item._id ?? id);
+            setName(item.name ?? category.name ?? "");
+            setDescription(item.description ?? category.description ?? "");
+            setShowForm(true);
+
+        } catch (err) {
+            setError(err.message || "Failed to load category details.");
         }
-
-        const result = await categoryApi.getById(id);
-
-        // Extract category from the API response
-        const item =
-            result?.category ??
-            result?.data?.category ??
-            result?.data ??
-            result;
-
-        if (!item || typeof item !== "object") {
-            throw new Error("Category details were not returned by the server.");
-        }
-
-        // Populate the edit form
-        setEditingId(item.id ?? item._id ?? id);
-        setName(item.name ?? category.name ?? "");
-        setDescription(item.description ?? category.description ?? "");
-        setShowForm(true);
-
-    } catch (err) {
-        setError(err.message || "Failed to load category details.");
-    }
-};
+    };
 
 
     const closeForm = () => {
@@ -166,36 +166,45 @@ const openEditForm = async (category) => {
         }
     };
 
-    
-const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-        "Are you sure you want to delete this category?"
-    );
 
-    if (!confirmed) return;
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this category?"
+        );
 
-    setDeletingId(id);
-    setError("");
+        if (!confirmed) return;
 
-    try {
-        // Call DELETE API from categoryApi.js
-        await categoryApi.remove(id);
+        setDeletingId(id);
+        setError("");
 
-        // Refresh categories after successful deletion
-        await loadCategories();
-    } catch (err) {
-        setError(err.message || "Failed to delete category.");
-    } finally {
-        setDeletingId(null);
-    }
-};
+        try {
+            // Call DELETE API from categoryApi.js
+            await categoryApi.remove(id);
+
+            // Refresh categories after successful deletion
+            await loadCategories();
+        } catch (err) {
+            setError(err.message || "Failed to delete category.");
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
 
 
     const handleViewCourses = (category) => {
+        const categoryId = category.id ?? category._id;
+
+        if (!categoryId) {
+            setError("Category ID is missing.");
+            return;
+        }
+
         navigate(
-            `/admin/courses?categoryId=${encodeURIComponent(category.id)}`
+            `/admin/category-details/${encodeURIComponent(categoryId)}`
         );
     };
+
 
     return (
         <div className="bg-slate-50 px-4 sm:px-6 lg:px-8">
@@ -300,15 +309,14 @@ const handleDelete = async (id) => {
                                 </p>
 
                                 {/* Category actions */}
-                                {/* Category actions */}
-                                <div className="mt-6 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4">
+                                <div className="mt-6 grid grid-cols-3 gap-1 border-t border-slate-100 pt-4">
                                     {/* View Courses */}
+
                                     <button
                                         type="button"
                                         onClick={() => handleViewCourses(category)}
-                                        title="View Courses"
-                                        aria-label={`View courses for ${category.name}`}
-                                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-200 p-2.5 text-emerald-700 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                                        title="View Category Details and Courses"
+                                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-200 p-2.5 text-emerald-700 transition hover:bg-emerald-50"
                                     >
                                         <Eye size={18} />
                                         View
@@ -333,7 +341,7 @@ const handleDelete = async (id) => {
                                         disabled={deletingId !== null}
                                         title="Delete Category"
                                         aria-label={`Delete ${category.name}`}
-                                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-1 rounded-lg border border-red-200  py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <Trash2 size={15} />
                                         Delete
