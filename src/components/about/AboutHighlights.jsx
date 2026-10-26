@@ -119,7 +119,7 @@ const AboutHighlights = () => {
                 className={`relative flex min-h-[310px] flex-col overflow-hidden rounded-3xl border p-7 sm:min-h-[340px] sm:p-9 ${
                   active.dark
                     ? "border-gray-100 bg-gradient-to-br from-sky-600 via-black to-sky-700 text-white"
-                    : "border-gray-200 bg-gray-200 text-gray-950 shadow-sm"
+                    : "border-gray-200 bg-gray-200/50 text-gray-950 shadow-sm"
                 }`}
               >
                 {/* Decorative glow */}

@@ -13,7 +13,6 @@ const About = () => {
       <AboutIntro />
       <MissionVision />
       <WhyEphorX />
-      <LearningJourney />
       <AboutHighlights />
       
     </main>

@@ -3,7 +3,7 @@ import { ArrowDownRight, GraduationCap, Star } from "lucide-react";
 
 const FaqHero = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-white px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-41 lg:py-39.5">
+    <section className="relative isolate overflow-hidden bg-white px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-41 lg:pt-31 lg:pb-27">
       {/* Background decorations */}
       <div className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
       <div className="pointer-events-none absolute -left-20 bottom-0 -z-10 h-56 w-56 rounded-full bg-sky-50 blur-3xl" />
@@ -16,13 +16,19 @@ const FaqHero = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="max-w-2xl"
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2">
-            <Star className="h-4 w-4 text-sky-500" />
-            <span className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+
+           <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3.5 py-2 mb-1">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute h-full w-full animate-ping rounded-full bg-sky-400 opacity-50" />
+              <span className="relative h-2 w-2 rounded-full bg-sky-500" />
+            </span>
+
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-700">
               EphorX faq Center
             </span>
-          </div>
 
+          </div>
+        
           <h1 className="text-4xl font-black leading-[1.12] tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
             Everything You Need
             <br className="hidden sm:block" /> to Know About{" "}
