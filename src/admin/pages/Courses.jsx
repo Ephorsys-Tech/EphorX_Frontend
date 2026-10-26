@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -17,13 +16,13 @@ import {
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
 
-
-
 const getId = (value) => {
   if (!value) return "";
+
   if (typeof value === "object") {
     return String(value._id || value.id || "");
   }
+
   return String(value);
 };
 
@@ -32,7 +31,9 @@ const getResponseArray = (response, keys = []) => {
 
   for (const key of keys) {
     if (Array.isArray(response?.[key])) return response[key];
-    if (Array.isArray(response?.data?.[key])) return response.data[key];
+    if (Array.isArray(response?.data?.[key])) {
+      return response.data[key];
+    }
   }
 
   if (Array.isArray(response?.data)) return response.data;
@@ -41,26 +42,13 @@ const getResponseArray = (response, keys = []) => {
   return [];
 };
 
+// Match the backend Course model
 const getCourseImage = (course) => {
-  const image = course?.image || course?.courseImage;
-
-  if (typeof image === "string") return image;
-  if (image && typeof image === "object") {
-    return image.url || image.secure_url || "";
-  }
-
-  return "";
+  return course?.imageUrl || "";
 };
 
 const getSyllabusUrl = (course) => {
-  const syllabus = course?.syllabus || course?.syllabusPdf;
-
-  if (typeof syllabus === "string") return syllabus;
-  if (syllabus && typeof syllabus === "object") {
-    return syllabus.url || syllabus.secure_url || "";
-  }
-
-  return "";
+  return course?.syllabusUrl || "";
 };
 
 export default function Course() {
@@ -102,6 +90,7 @@ export default function Course() {
       setCategories(categoryList);
     } catch (err) {
       console.error("Failed to load courses:", err);
+
       setError(
         err?.response?.data?.message ||
           err?.message ||
@@ -124,7 +113,9 @@ export default function Course() {
         return (
           category.name ||
           category.title ||
-          categories.find((item) => getId(item) === getId(category))?.name ||
+          categories.find(
+            (item) => getId(item) === getId(category)
+          )?.name ||
           "Uncategorized"
         );
       }
@@ -148,7 +139,9 @@ export default function Course() {
 
     return courses.filter((course) => {
       const title = String(course?.title || "").toLowerCase();
-      const description = String(course?.description || "").toLowerCase();
+      const description = String(
+        course?.description || ""
+      ).toLowerCase();
       const categoryName = getCategoryName(course).toLowerCase();
 
       const matchesSearch =
@@ -187,6 +180,7 @@ export default function Course() {
       setDeletingCourse(null);
     } catch (err) {
       console.error("Failed to delete course:", err);
+
       setError(
         err?.response?.data?.message ||
           err?.message ||
@@ -206,7 +200,7 @@ export default function Course() {
   };
 
   return (
-    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Page header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -214,6 +208,7 @@ export default function Course() {
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
               Courses
             </h1>
+
             <p className="mt-2 text-sm text-gray-500">
               Manage your courses, categories, images, and syllabus files.
             </p>
@@ -233,6 +228,7 @@ export default function Course() {
         {error && (
           <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
             <AlertCircle size={20} className="mt-0.5 shrink-0" />
+
             <div className="flex-1 text-sm">{error}</div>
 
             <button
@@ -279,7 +275,9 @@ export default function Course() {
                     key={getId(category)}
                     value={getId(category)}
                   >
-                    {category.name || category.title || "Unnamed Category"}
+                    {category.name ||
+                      category.title ||
+                      "Unnamed Category"}
                   </option>
                 ))}
               </select>
@@ -317,19 +315,19 @@ export default function Course() {
           </div>
         )}
 
-        {/* Loading */}
+        {/* Loading, empty state, or course cards */}
         {loading ? (
           <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white">
             <RefreshCw
               size={30}
               className="animate-spin text-blue-600"
             />
+
             <p className="mt-4 text-sm text-gray-500">
               Loading courses...
             </p>
           </div>
         ) : filteredCourses.length === 0 ? (
-          /* Empty state */
           <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-6 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50">
               <BookOpen size={26} className="text-blue-600" />
@@ -370,7 +368,6 @@ export default function Course() {
             )}
           </div>
         ) : (
-          /* Course cards */
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {filteredCourses.map((course) => {
               const categoryName = getCategoryName(course);
@@ -396,6 +393,7 @@ export default function Course() {
                     ) : (
                       <div className="flex flex-col items-center text-gray-400">
                         <ImageIcon size={38} strokeWidth={1.5} />
+
                         <span className="mt-2 text-xs">
                           No course image
                         </span>
@@ -414,9 +412,35 @@ export default function Course() {
                     </h2>
 
                     <p className="mt-2 min-h-10 line-clamp-2 text-sm leading-5 text-gray-500">
-                      {course.description || "No description provided."}
+                      {course.description ||
+                        "No description provided."}
                     </p>
 
+                    {/* Prices */}
+                    <div className="mt-4">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="text-xl font-bold text-blue-700">
+                          ₹{course.discountPrice || "0"}
+                        </span>
+
+                        {course.Originalprice && (
+                          <span className="text-sm text-gray-400 line-through">
+                            ₹{course.Originalprice}
+                          </span>
+                        )}
+                      </div>
+
+                      {course.duration && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          <span className="font-medium">
+                            Duration:
+                          </span>{" "}
+                          {course.duration}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Course type and syllabus */}
                     <div className="mt-4 flex flex-wrap items-center gap-2">
                       {course.type && (
                         <span className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700">
@@ -429,7 +453,9 @@ export default function Course() {
                           href={syllabusUrl}
                           target="_blank"
                           rel="noreferrer"
-                          onClick={(event) => event.stopPropagation()}
+                          onClick={(event) =>
+                            event.stopPropagation()
+                          }
                           className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200"
                         >
                           <FileText size={13} />
@@ -466,7 +492,9 @@ export default function Course() {
                       <button
                         type="button"
                         onClick={() => setDeletingCourse(course)}
-                        aria-label={`Delete ${course.title || "course"}`}
+                        aria-label={`Delete ${
+                          course.title || "course"
+                        }`}
                         className="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
                       >
                         <Trash2 size={16} />
@@ -547,8 +575,12 @@ export default function Course() {
                 className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {deleting && (
-                  <RefreshCw size={15} className="animate-spin" />
+                  <RefreshCw
+                    size={15}
+                    className="animate-spin"
+                  />
                 )}
+
                 {deleting ? "Deleting..." : "Delete Course"}
               </button>
             </div>
