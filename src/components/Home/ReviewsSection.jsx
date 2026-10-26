@@ -191,7 +191,7 @@ export default function ReviewsSection() {
   const [paused, setPaused] = useState(false);
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#f8fbff] py-12 sm:py-16">
+    <section className="relative isolate overflow-hidden bg-[#f8fbff] py-12 sm:py-10">
       {/* Animated background */}
       <motion.div
         className="pointer-events-none absolute -left-32 top-20 -z-10 h-80 w-80 rounded-full bg-sky-200/50 blur-[100px]"

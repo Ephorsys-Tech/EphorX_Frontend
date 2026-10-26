@@ -1,19 +1,20 @@
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BriefcaseBusiness,
   GraduationCap,
-  X,
 } from "lucide-react";
+
+import Modal from "../../ui/Modal";
+import ExpertDetailsModal from "../modal/ExpertDetailsModal";
 
 const experts = [
   {
     id: 1,
     name: "Rahul Sharma",
-    role: "Full Stack Development",
+    role: "FullStack Development",
     field: "Web Technologies",
     experience: "8+ Years",
     description:
@@ -58,7 +59,6 @@ const experts = [
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=900&q=85",
     number: "04",
   },
-  
 ];
 
 function ExpertCard({ expert, index, onViewDetails }) {
@@ -82,22 +82,20 @@ function ExpertCard({ expert, index, onViewDetails }) {
         {/* Photo gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-black/10 transition-opacity duration-500 group-hover:opacity-0" />
 
-       
-
         {/* Expertise tag */}
         <span className="absolute right-4 top-4 max-w-[65%] rounded-full border border-white/30 bg-white/15 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md transition-all duration-300 group-hover:-translate-y-2 group-hover:opacity-0">
           {expert.field}
         </span>
 
-        {/* Always-visible name */}
+        {/* Visible identity */}
         <div className="absolute inset-x-0 bottom-0 p-5 transition-all duration-500 group-hover:translate-y-3 group-hover:opacity-0">
-         
-
           <h3 className="text-2xl font-extrabold tracking-tight text-white">
             {expert.name}
           </h3>
 
-          <p className="mt-1 text-sm text-white/75">{expert.role}</p>
+          <p className="mt-1 text-sm text-white/75">
+            {expert.role}
+          </p>
 
           <div className="mt-4 flex items-center justify-between border-t border-white/25 pt-3">
             <span className="text-xs font-medium text-white/80">
@@ -110,17 +108,15 @@ function ExpertCard({ expert, index, onViewDetails }) {
 
         {/* Hover cover */}
         <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-br from-[#050b14]/95 via-[#071521]/90 to-sky-950/95 p-5 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-6">
-          <div className="flex items-center justify-between">
-            <span className="rounded-full border border-sky-400/40 bg-sky-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-300">
+          <div className="">
+            <span className="relative left-30 rounded-full border border-sky-400/40 bg-sky-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-300">
               Meet the expert
             </span>
 
-           
+            
           </div>
 
           <div className="translate-y-5 transition-transform duration-500 group-hover:translate-y-0">
-           
-
             <p className="text-xs font-semibold uppercase tracking-widest text-sky-300">
               Specializes in
             </p>
@@ -174,108 +170,24 @@ function ExpertCard({ expert, index, onViewDetails }) {
   );
 }
 
-function ExpertDetailsModal({ expert, onClose }) {
-  return (
-    <AnimatePresence>
-      {expert && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.25 }}
-            onClick={(event) => event.stopPropagation()}
-            className="relative my-auto w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl"
-          >
-            <div className="relative h-56 bg-slate-100">
-              <img
-                src={expert.image}
-                alt={expert.name}
-                className="h-full w-full object-cover object-top"
-              />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close expert details"
-                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md transition hover:bg-sky-400 hover:text-black"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="absolute bottom-5 left-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-sky-300">
-                  Industry Expert
-                </p>
-
-                <h3 className="mt-1 text-2xl font-extrabold text-white">
-                  {expert.name}
-                </h3>
-              </div>
-            </div>
-
-            <div className="p-6 sm:p-8">
-              <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-2 text-xs font-bold text-sky-700">
-                <BriefcaseBusiness size={15} />
-                {expert.field}
-              </span>
-
-              <h4 className="mt-4 text-lg font-bold text-slate-950">
-                {expert.role}
-              </h4>
-
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                {expert.description}
-              </p>
-
-              <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <span className="text-sm font-medium text-slate-600">
-                  Professional experience
-                </span>
-
-                <span className="font-extrabold text-slate-950">
-                  {expert.experience}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={onClose}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-400 hover:text-slate-950"
-              >
-                Close Details
-                <X size={16} />
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
 export default function IndustryExperts() {
   const [selectedExpert, setSelectedExpert] = useState(null);
+
+  const closeExpertModal = () => {
+    setSelectedExpert(null);
+  };
 
   return (
     <section
       id="industry-experts"
-      className="relative overflow-hidden bg-white py-1 sm:py-4 lg:py-7"
+      className="relative overflow-hidden bg-white py-1 lg:px-28 lg:py-7"
     >
-      {/* Subtle background decoration */}
+      {/* Background decoration */}
       <div className="pointer-events-none absolute -left-32 top-32 h-72 w-72 rounded-full bg-sky-100/60 blur-3xl" />
 
       <div className="pointer-events-none absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
 
-      <div className="relative mx-auto max-w-[1465px] px-5 sm:px-8 lg:px-12">
+      <div className="relative mx-auto px-5 sm:px-8 lg:px-12">
         {/* Section heading */}
         <motion.div
           initial={{ opacity: 0, y: 22 }}
@@ -305,7 +217,10 @@ export default function IndustryExperts() {
             </span>
 
             <div>
-              <p className="text-xl font-black text-slate-950">Expert-led</p>
+              <p className="text-xl font-black text-slate-950">
+                Expert-led
+              </p>
+
               <p className="text-xs font-medium text-slate-500">
                 Practical learning
               </p>
@@ -348,23 +263,35 @@ export default function IndustryExperts() {
             onClick={() =>
               document
                 .getElementById("industry-experts")
-                ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
             }
             className="group inline-flex shrink-0 items-center gap-2 self-start rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-sky-400 hover:text-slate-950 sm:self-auto"
           >
             Meet our experts
-            <ArrowDownRight
-              size={17}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5"
+
+            <ArrowUpRight size={19}
+              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5 -rotate-45"
             />
           </button>
         </motion.div>
       </div>
 
-      <ExpertDetailsModal
-        expert={selectedExpert}
-        onClose={() => setSelectedExpert(null)}
-      />
+      {/* Reusable modal */}
+      <Modal
+        isOpen={Boolean(selectedExpert)}
+        onClose={closeExpertModal}
+        title="Expert Details"
+        size="lg"
+        theme="white"
+      >
+        <ExpertDetailsModal
+          expert={selectedExpert}
+          onClose={closeExpertModal}
+        />
+      </Modal>
     </section>
   );
 }
