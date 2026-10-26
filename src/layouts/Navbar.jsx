@@ -28,7 +28,7 @@ function Logo() {
       <img
         src={image}
         alt="EphorX logo"
-        className="absolute -left-10 top-1/2 h-auto w-59 max-w-none -translate-y-1/2 object-contain"
+        className="absolute -left-10 top-1/2 h-auto w-57 max-w-none -translate-y-1/2 object-contain"
       />
     </Link>
   );
@@ -78,7 +78,7 @@ export default function Navbar() {
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `block rounded-full px-5 py-2 text-lg font-semibold transition ${isActive
+                    `block rounded-full px-5 py-2 text-md font-semibold transition ${isActive
                       ? "bg-sky-200/30 text-sky-500"
                       : "text-black hover:bg-black/5"
                     }`
@@ -99,21 +99,15 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setContactOpen(true)}
-            className="text-lg"
+            className="text-md"
           >
             Contact Us
           </button>
-
-          <button
-            type="button"
-            onClick={() => setContactOpen(true)}
-            aria-label="Open contact form"
-          >
             <Phone
               size={19}
               className=" text-blue-600 transition-transform duration-200 hover:scale-110"
             />
-          </button>
+          
         </div>
       </nav>
 

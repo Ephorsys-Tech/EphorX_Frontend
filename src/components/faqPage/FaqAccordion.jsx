@@ -12,21 +12,21 @@ const faqData = [
     category: "General",
     question: "What is EphorX?",
     answer:
-      "EphorX is an educational and IT training institute focused on helping students develop practical, industry-relevant technical skills.",
+      "EphorX is an educational and IT training company focused on helping students develop practical, industry-relevant technical skills.",
   },
   {
     id: 2,
     category: "General",
     question: "Who can join EphorX courses?",
     answer:
-      "Students, freshers, graduates, and working professionals who want to learn new technical skills can explore our courses.",
+      "College Students, freshers, graduates, and working professionals who want to learn new technical skills can explore our courses.",
   },
   {
     id: 3,
     category: "Courses",
     question: "What courses are available at EphorX?",
     answer:
-      "EphorX offers learning opportunities in Web Development, MERN Stack Development, Python Programming, Java Programming, Data Analytics, and other technology-related fields.",
+      "EphorX offers learning opportunities in Web Development, MERN Stack Development, Python Programming,, Data Analytics,Artificial Intelligence and Machine Learning,Node.js,React.js and other technology-related fields.",
   },
   {
     id: 4,

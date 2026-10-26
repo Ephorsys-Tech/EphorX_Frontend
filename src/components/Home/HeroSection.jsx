@@ -16,19 +16,22 @@ import {
 // Hero slides
 const slides = [
   {
-    title: 'Learn Smarter',
+    title: 'Learn ',
+    title1: ' Smarter',
     subtitle: 'at your home',
     description:
       'Discover a smarter way to learn. Explore new skills, study at your own pace, and make learning a part of your everyday life.',
   },
   {
-    title: 'Think Larger',
+    title: 'Think ',
+    title1: ' Larger',
     subtitle: 'every single day',
     description:
       'Explore interactive lessons and useful learning resources designed to make your learning journey simple and enjoyable.',
   },
   {
-    title: 'Dream Bigger',
+    title: 'Dream ',
+     title1: ' Bigger',
     subtitle: 'achieve more',
     description:
       'Build your skills, grow your confidence, and take the next step toward achieving your educational goals.',
@@ -181,11 +184,15 @@ const HeroSection = () => {
                   ease: 'easeInOut',
                 }}
               >
-                <h1 className="break-words text-6xl font-extrabold leading-[1.05] tracking-tight text-blue-800 sm:text-7xl lg:text-8xl">
+                <h1 className=" text-6xl font-extrabold  tracking-tight text-blue-800 lg:text-[85px]">
                   {currentSlide.title}
                 </h1>
+                <br />
+                 <h1 className=" text-6xl font-extrabold   text-blue-800 relative bottom-5.5 lg:text-[85px]">
+                  {currentSlide.title1}
+                </h1>
 
-                <h2 className="mt-3 text-4xl font-bold leading-tight tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
+                <h2 className=" text-4xl font-bold leading-tight tracking-tight text-gray-950 sm:text-5xl lg:text-[45px]">
                   {currentSlide.subtitle}
                 </h2>
 
@@ -224,7 +231,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right image */}
-        <div className="relative mx-auto w-full max-w-[550px] lg:ml-30">
+        <div className="relative mx-auto w-full max-w-[550px] lg:ml-10">
           {/* Decorative shapes */}
           <div className="absolute -right-3 -top-5 h-36 w-36 rounded-[38%_62%_54%_46%] bg-blue-100 sm:h-52 sm:w-52" />
 
