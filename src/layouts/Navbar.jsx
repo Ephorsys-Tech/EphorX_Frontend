@@ -7,7 +7,7 @@ import ContactModal from "../components/modal/ContactModal";
 
 const LINKS = [
   { label: "Home", to: "/" },
-  { label: "Course", to: "/Course" },
+  { label: "Course", to: "/Courses" },
   { label: "About", to: "/about" },
   { label: "Process", to: "/process" },
   { label: "Contact", to: "/contact" },
