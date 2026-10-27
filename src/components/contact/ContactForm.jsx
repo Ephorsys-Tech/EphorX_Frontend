@@ -128,14 +128,11 @@ const handleSubmit = async (e) => {
           transition={{ duration: 0.5 }}
           className="mx-auto mb-8"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-sky-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-            <Sparkles size={14} />
-            We're listening
-          </span>
-
+         
           <h2 className="mt-5 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-4xl">
             Have a Question?
-            <span className="ml-2 text-sky-500">Ask EphorX.</span>
+            <br />
+            <span className=" text-sky-500">Ask EphorX.</span>
           </h2>
         </motion.div>
 

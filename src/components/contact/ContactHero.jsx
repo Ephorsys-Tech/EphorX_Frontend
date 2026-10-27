@@ -24,7 +24,7 @@ const steps = [
 
 const ContactHero = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-white px-5 pb-8 pt-24 sm:px-8  sm:pt-28 md:px-10 lg:px-41 lg:pb-18 lg:pt-38">
+    <section className="relative isolate overflow-hidden bg-white px-5 pb-8 pt-24 sm:px-8  sm:pt-28 md:px-10 lg:px-41 lg:pb-0 lg:pt-38">
       {/* Background atmosphere */}
       <div className="pointer-events-none absolute -left-32 top-20 -z-10 h-72 w-72 rounded-full bg-sky-100/70 blur-[100px]" />
       <div className="pointer-events-none absolute right-0 top-0 -z-10 h-64 w-64 rounded-full bg-blue-50 blur-[100px]" />
@@ -140,7 +140,6 @@ const ContactHero = () => {
             <div className="relative flex min-h-[360px] flex-col justify-between p-5 sm:min-h-[400px] sm:p-7 lg:min-h-[390px] lg:p-8">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1.5 backdrop-blur-sm">
-                  <Star size={13} className="text-sky-400" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-sky-300">
                     EphorX support
                   </span>

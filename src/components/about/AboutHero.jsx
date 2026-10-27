@@ -2,72 +2,89 @@
 import { motion } from "framer-motion";
 import {
   ArrowDown,
-  ArrowRight,
   ArrowUpRight,
+  ChartColumnIncreasing,
   Code2,
   GraduationCap,
-  Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import aboutImage from "../../assets/aboutImage.png";
 
 const AboutHero = () => {
   return (
-    <section className="relative overflow-hidden bg-white px-5 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-32 md:px-10 lg:px-41 lg:pb-24">
-      <div className="pointer-events-none absolute -right-32 top-16 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl" />
+    <section className="relative isolate overflow-hidden bg-white px-5 pb-8 pt-24 sm:px-8 sm:pt-28 md:px-10 lg:px-41 lg:pb-4 lg:pt-33">
+      {/* Background atmosphere */}
+      <div className="pointer-events-none absolute -left-32 top-20 -z-10 h-72 w-72 rounded-full bg-sky-100/70 blur-[100px]" />
+      <div className="pointer-events-none absolute right-0 top-0 -z-10 h-64 w-64 rounded-full bg-blue-50 blur-[100px]" />
 
-      <div className="relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.88fr)] lg:gap-14">
+        {/* Left content */}
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: "easeOut" }}
-          className="min-w-0"
+          className="relative z-10 min-w-0"
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-            <Sparkles size={15} />
-            Discover EphorX
-          </div>
+          {/* Eyebrow */}
+           <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3.5 py-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute h-full w-full animate-ping rounded-full bg-sky-400 opacity-50" />
+              <span className="relative h-2 w-2 rounded-full bg-sky-500" />
+            </span>
 
-          <h1 className="text-4xl font-black leading-[1.12] tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-700">
+               Discover EphorX
+            </span>
+
+            <ArrowUpRight size={13} className="text-sky-600" />
+          </div>
+         
+
+          {/* Heading */}
+          <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#081521] sm:text-5xl lg:text-[3.6rem] xl:text-6xl">
             We Turn
-            <span className="block">Curiosity Into</span>
+            <br />
+            Curiosity Into
             <span className="block text-sky-500">
-              Capability<span className="text-gray-950">.</span>
+              Capability<span className="text-[#081521]">.</span>
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-sm leading-7 text-gray-600 sm:text-base sm:leading-8">
+          <p className="mt-4 max-w-lg text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
             At EphorX, we believe learning technology should be practical,
             engaging, and connected to real-world opportunities. We help
             learners build knowledge, develop skills, and move forward with
             confidence.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          {/* Buttons */}
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               to="/Course"
-              className="group inline-flex items-center justify-center gap-3 rounded-xl bg-gray-950 px-6 py-4 text-sm font-bold text-white transition-colors duration-300 hover:bg-sky-500"
+              className="group inline-flex items-center gap-3 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-950/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#071927] hover:shadow-xl"
             >
               Explore Our Courses
-              <ArrowUpRight
-                size={18}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 transition-transform duration-300 group-hover:rotate-45">
+                <ArrowUpRight size={16} />
+              </span>
             </Link>
 
             <a
               href="#about-intro"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-6 py-4 text-sm font-bold text-gray-800 transition-colors duration-300 hover:border-sky-300 hover:bg-sky-50"
+              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
             >
               Get to Know Us
-              <ArrowDown size={17} />
+              <ArrowDown size={16} />
             </a>
           </div>
 
-          <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-gray-600">
+          {/* Trust points */}
+          <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-slate-100 pt-5 text-sm font-medium text-slate-600">
             <span className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-sky-500" />
               Practical learning
             </span>
+
             <span className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-sky-500" />
               Skill development
@@ -75,96 +92,98 @@ const AboutHero = () => {
           </div>
         </motion.div>
 
+        {/* Right image panel */}
         <motion.div
-          initial={{ opacity: 0, x: 24 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
-          className="relative min-w-0"
+          transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+          className="relative min-w-0 w-full"
         >
-          <div className="absolute -inset-3 rounded-[2rem] bg-sky-100/80 blur-xl" />
+          <div className="group/panel relative isolate min-h-[360px] overflow-hidden rounded-[1.5rem] border border-sky-400/15 bg-[#071927] shadow-[0_25px_60px_rgba(7,15,39,0.16)] sm:min-h-[400px] sm:rounded-[1.75rem] lg:min-h-[390px]">
+            {/* Background image */}
+            <img
+              src={aboutImage}
+              alt="EphorX learning and technology"
+              className="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-60 transition-transform duration-700 group-hover/panel:scale-105"
+            />
 
-          <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-[#030b12] via-[#071927] to-[#0b3450] p-5 text-white sm:p-8 lg:p-9">
-            <div className="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-sky-400/20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-12 h-52 w-52 rounded-full bg-blue-500/20 blur-3xl" />
+            {/* Navy gradient overlay */}
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#061521]/55 via-[#071927]/70 to-[#0A1C2A]/45" />
 
-            <div className="relative flex items-center justify-between gap-3 border-b border-white/10 pb-5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-400 text-gray-950">
-                  <Code2 size={23} />
+            {/* Blue glow */}
+            <div className="pointer-events-none absolute -right-16 -top-16 -z-10 h-56 w-56 rounded-full bg-sky-500/20 blur-[80px]" />
+
+            <div className="relative flex min-h-[360px] flex-col justify-between p-5 sm:min-h-[400px] sm:p-7 lg:min-h-[390px] lg:p-8">
+              {/* Panel header */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/25 bg-sky-400/10 px-3 py-1.5 backdrop-blur-sm">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-sky-300">
+                    EphorX Learning Hub
+                  </span>
                 </div>
-                <div>
-                  <p className="font-bold tracking-wide">
-                    Ephor<span className="text-sky-400">X</span>
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    Learn. Build. Grow.
-                  </p>
+
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-sky-300 backdrop-blur-sm">
+                  <Code2 size={20} />
+                </div>
+              </div>
+
+              {/* Panel content */}
+              <div className="mt-8">
+                <div className="mb-4 flex items-center gap-2 text-xs font-bold tracking-[0.16em] text-sky-300">
+                  <span className="h-px w-8 bg-sky-400" />
+                  LEARN. BUILD. GROW.
+                </div>
+
+                <h2 className="text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl">
+                  Learn with purpose.
+                  <span className="mt-1 block text-sky-400">
+                    Build with confidence.
+                  </span>
+                </h2>
+
+                <p className="mt-3 max-w-xs text-sm leading-6 text-slate-300">
+                  Transform what you learn into what you can create.
+                </p>
+
+                {/* Learning highlights */}
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="rounded-xl border border-white/10 bg-[#071927]/55 p-3 backdrop-blur-md transition-colors duration-300 hover:border-sky-400/40 hover:bg-white/10 sm:p-4">
+                    <GraduationCap size={22} className="mb-2 text-sky-400" />
+                    <p className="text-sm font-bold text-white">Learn</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-300">
+                      Build strong foundations
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-[#071927]/55 p-3 backdrop-blur-md transition-colors duration-300 hover:border-sky-400/40 hover:bg-white/10 sm:p-4">
+                    <Code2 size={22} className="mb-2 text-sky-400" />
+                    <p className="text-sm font-bold text-white">Create</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-300">
+                      Put skills into practice
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <span className="rounded-full border border-sky-300/20 bg-sky-300/10 px-3 py-1.5 text-xs font-semibold text-sky-300">
-                Learning Hub
-              </span>
-            </div>
+              {/* Bottom status */}
+              <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/15 pt-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-400/10 text-sky-300">
+                    <ChartColumnIncreasing size={18} />
+                  </div>
 
-            <div className="relative py-9 sm:py-12">
-              <div className="mb-5 flex items-center gap-2 text-sm text-sky-300">
-                <span className="h-px w-8 bg-sky-400" />
-                THE FUTURE STARTS HERE
-              </div>
-
-              <h2 className="text-3xl font-black leading-tight sm:text-4xl">
-                Learn with purpose.
-                <span className="mt-1 block text-sky-400">
-                  Build with confidence.
-                </span>
-              </h2>
-
-              <p className="mt-5 max-w-sm text-sm leading-7 text-gray-300">
-                Transform what you learn into what you can create.
-              </p>
-
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                  <GraduationCap
-                    size={23}
-                    className="mb-3 text-sky-400"
-                  />
-                  <p className="font-bold">Learn</p>
-                  <p className="mt-1 text-xs leading-5 text-gray-400">
-                    Build strong foundations
-                  </p>
+                  <div>
+                    <p className="text-xs font-bold text-white">
+                      Keep Growing
+                    </p>
+                    <p className="mt-1 text-[11px] text-slate-300">
+                      One skill at a time.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                  <Code2 size={23} className="mb-3 text-sky-400" />
-                  <p className="font-bold">Create</p>
-                  <p className="mt-1 text-xs leading-5 text-gray-400">
-                    Put skills into practice
-                  </p>
-                </div>
+                <ArrowUpRight size={20} className="shrink-0 text-sky-400" />
               </div>
-            </div>
-
-            <div className="relative flex items-center justify-between gap-3 border-t border-white/10 pt-5">
-              <p className="text-xs text-gray-400">
-                Your journey. Your potential.
-              </p>
-              <ArrowUpRight size={20} className="text-sky-400" />
-            </div>
-          </div>
-
-          <div className="absolute -bottom-4 right-4 hidden items-center gap-3 rounded-2xl border border-gray-100 bg-white p-4 shadow-xl sm:flex lg:-right-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
-              <Sparkles size={20} />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-gray-950">
-                Keep Growing
-              </p>
-              <p className="text-xs text-gray-500">
-                One skill at a time
-              </p>
             </div>
           </div>
         </motion.div>
