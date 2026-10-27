@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
-  Sparkles,
-  Star,
+  Code2,
+  Star
 } from "lucide-react";
+
+import { categoryApi } from "../../admin/api/categoryApi.js"
 
 function CategoryCard({
   title,
@@ -28,31 +31,28 @@ function CategoryCard({
     >
       <Link
         to={to}
-        className={`group relative flex h-full min-h-[230px] flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 sm:p-6 ${
-          isDark
+        className={`group relative flex h-full min-h-[230px] flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 sm:p-6 ${isDark
             ? "border-gray-800 bg-[#111318] text-white hover:border-sky-400/60"
             : "border-gray-200 bg-white text-gray-900 hover:border-sky-300 hover:bg-sky-50/40"
-        }`}
+          }`}
       >
         {/* Decorative glow */}
         <div
-          className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-400/15 blur-3xl transition-opacity duration-500 ${
-            isDark
+          className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-400/15 blur-3xl transition-opacity duration-500 ${isDark
               ? "opacity-60 group-hover:opacity-100"
               : "opacity-0 group-hover:opacity-100"
-          }`}
+            }`}
         />
 
         {/* Icon and arrow */}
         <div className="relative flex items-start justify-between gap-3">
           <div
-            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-105 ${
-              isDark
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-105 ${isDark
                 ? "border-sky-400/20 bg-sky-400/10 text-sky-300 group-hover:bg-sky-400 group-hover:text-black"
                 : "border-sky-100 bg-sky-50 text-sky-600 group-hover:bg-sky-500 group-hover:text-white"
-            }`}
+              }`}
           >
-            {Icon ? <Icon size={23} strokeWidth={1.8} /> : <Sparkles size={23} />}
+            {Icon ? <Icon size={23} strokeWidth={1.8} /> : <Code2 size={23} />}
           </div>
 
           {featured ? (
@@ -70,18 +70,16 @@ function CategoryCard({
         {/* Category information */}
         <div className="relative mt-7">
           <h3
-            className={`text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-sky-500 sm:text-xl ${
-              isDark ? "text-white" : "text-gray-900"
-            }`}
+            className={`text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-sky-500 sm:text-xl ${isDark ? "text-white" : "text-gray-900"
+              }`}
           >
             {title}
           </h3>
 
           {description && (
             <p
-              className={`mt-2 max-w-xs text-sm leading-6 ${
-                isDark ? "text-gray-400" : "text-gray-500"
-              }`}
+              className={`mt-2 max-w-xs text-sm leading-6 ${isDark ? "text-gray-400" : "text-gray-500"
+                }`}
             >
               {description}
             </p>
@@ -90,19 +88,16 @@ function CategoryCard({
 
         {/* Footer */}
         <div
-          className={`relative mt-auto flex items-center justify-between gap-2 border-t pt-4 ${
-            isDark ? "border-white/10" : "border-gray-100"
-          }`}
+          className={`relative mt-auto flex items-center justify-between gap-2 border-t pt-4 ${isDark ? "border-white/10" : "border-gray-100"
+            }`}
         >
           <span
-            className={`text-xs font-medium ${
-              isDark ? "text-gray-400" : "text-gray-500"
-            }`}
+            className={`text-xs font-medium ${isDark ? "text-gray-400" : "text-gray-500"
+              }`}
           >
             <span
-              className={`mr-1 font-bold ${
-                isDark ? "text-sky-300" : "text-gray-900"
-              }`}
+              className={`mr-1 font-bold ${isDark ? "text-sky-300" : "text-gray-900"
+                }`}
             >
               {courses ?? 0}+
             </span>
@@ -110,9 +105,8 @@ function CategoryCard({
           </span>
 
           <span
-            className={`flex shrink-0 items-center gap-1 text-xs font-semibold transition-all duration-300 group-hover:gap-2 ${
-              isDark ? "text-sky-300" : "text-sky-600"
-            }`}
+            className={`flex shrink-0 items-center gap-1 text-xs font-semibold transition-all duration-300 group-hover:gap-2 ${isDark ? "text-sky-300" : "text-sky-600"
+              }`}
           >
             Explore
             <ArrowRight size={14} />
@@ -128,7 +122,6 @@ export default function CoursesByCategory({
   title = "Courses by",
   highlight = "Category.",
   description = "Discover your next skill. Explore expert-led courses designed to help you learn, grow, and move forward with confidence.",
-  categories = [],
   buttonText = "Explore All Courses",
   buttonTo = "/Course",
   showButton = true,
@@ -137,6 +130,54 @@ export default function CoursesByCategory({
   columns = 3,
   fullWidth = false,
 }) {
+
+  const [fetchedCategories, setFetchedCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCategories = async () => {
+      try {
+        const response = await categoryApi.getAll();
+
+        console.log("Backend categories:", response);
+
+        // Use this if the API returns an array directly.
+        const data = Array.isArray(response)
+          ? response
+          : Array.isArray(response?.categories)
+            ? response.categories
+            : Array.isArray(response?.data)
+              ? response.data
+              : Array.isArray(response?.data?.categories)
+                ? response.data.categories
+                : [];
+
+        if (isMounted) {
+          setFetchedCategories(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+
+        if (isMounted) {
+          setError(err.message || "Failed to load categories");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const columnClasses = {
     2: "sm:grid-cols-2",
     3: "sm:grid-cols-2 lg:grid-cols-3",
@@ -145,17 +186,15 @@ export default function CoursesByCategory({
 
   return (
     <section
-      className={`relative overflow-hidden bg-white px-4 py-3 sm:px-1 sm:py-20 lg:px-40 lg:py-5 ${
-        fullWidth ? "w-full" : ""
-      }`}
+      className={`relative overflow-hidden bg-white px-4 py-3 sm:px-1 sm:py-20 lg:px-40 lg:py-5 ${fullWidth ? "w-full" : ""
+        }`}
     >
       {/* Background accent */}
       <div className="pointer-events-none absolute -left-40 top-40 h-80 w-80 rounded-full bg-sky-100/50 blur-3xl" />
 
       <div
-        className={`relative mx-auto w-full ${
-          fullWidth ? "max-w-none" : "max-w-none"
-        }`}
+        className={`relative mx-auto w-full ${fullWidth ? "max-w-none" : "max-w-none"
+          }`}
       >
         {/* Section heading */}
         <motion.div
@@ -198,30 +237,61 @@ export default function CoursesByCategory({
             </Link>
           )}
         </motion.div>
-
-        {/* Reusable category cards */}
-        <div
-          className={`grid grid-cols-1 gap-4 sm:gap-5 ${
-            columnClasses[columns] || columnClasses[3]
-          }`}
-        >
-          {categories.map((category, index) => (
-            <CategoryCard
-              key={category.id ?? category.title}
-              {...category}
-              index={index}
-            />
-          ))}
+        {/* Category cards */}
+        {loading ? (
+  <p className="py-4 text-sm text-gray-500">
+    Loading categories...
+  </p>
+) : error ? (
+  <p className="py-4 text-sm text-red-600">
+    {error}
+  </p>
+) : fetchedCategories.length === 0 ? (
+  <p className="py-4 text-sm text-gray-500">
+    No categories found.
+  </p>
+) : (
+  <div
+    className={`grid grid-cols-1 gap-4 sm:gap-5 ${
+      columnClasses[columns] || columnClasses[3]
+    }`}
+  >
+    {fetchedCategories.map((category, index) => (
+      <CategoryCard
+        key={category._id ?? category.id ?? index}
+        title={
+          category.title ??
+          category.name ??
+          category.categoryName ??
+          category.category_name ??
+          "Untitled Category"
+        }
+        description={category.description ?? category.details ?? ""}
+        courses={
+          Array.isArray(category.courses)
+            ? category.courses.length
+            : category.courseCount ??
+              category.coursesCount ??
+              category.totalCourses ??
+              (typeof category.courses === "number"
+                ? category.courses
+                : 0)
+        }
+        featured={category.featured ?? false}
+        to="/Course"
+        index={index}
+      />
+    ))}
+  </div>
+)}
+      {/* Optional bottom note */}
+      {showBottomNote && bottomNote && (
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-xs text-gray-400 sm:mt-10 sm:text-sm">
+          <Star size={15} className="text-sky-500" />
+          {bottomNote}
         </div>
-
-        {/* Optional bottom note */}
-        {showBottomNote && bottomNote && (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-xs text-gray-400 sm:mt-10 sm:text-sm">
-            <Star size={15} className="text-sky-500" />
-            {bottomNote}
-          </div>
-        )}
-      </div>
-    </section>
+      )}
+    </div>
+    </section >
   );
 }
