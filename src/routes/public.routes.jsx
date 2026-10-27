@@ -6,6 +6,7 @@ import FAQ from '../web/pages/Faq'
 import Contact from '../web/pages/Contact'
 import About from '../web/pages/About'
 import Courses from '../web/pages/Courses'
+import CourseDetails from '../components/course/CourseDetails'
 
 const PublicRoutes = (
   <Route path='/' element={<MainLayout />}>
@@ -14,6 +15,7 @@ const PublicRoutes = (
     <Route path='/Courses' element={<Courses />} />
     <Route path='/contact' element={<Contact />} />
     <Route path='/about' element={<About />} />
+    <Route path="/Course" element={<CourseDetails />} />
     <Route path='*' element={<NotFound />} />
   </Route>
 )
