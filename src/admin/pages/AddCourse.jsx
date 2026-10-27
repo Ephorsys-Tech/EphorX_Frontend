@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,20 +10,22 @@ import {
 import { categoryApi } from "../api/categoryApi";
 import courseApi from "../api/courseApi";
 
-
-
 export default function AddCourse() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const initialForm = {
     title: "",
     description: "",
     categoryId: "",
     type: "",
+    Originalprice: "",
+    discountPrice: "",
+    duration: "",
     courseImage: null,
     syllabusPdf: null,
-  });
+  };
 
+  const [form, setForm] = useState(initialForm);
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -35,19 +38,26 @@ export default function AddCourse() {
     async function loadCategories() {
       try {
         setLoadingCategories(true);
+
         const result = await categoryApi.getAll();
 
-        // Adjust this extraction if your API uses a different response shape.
         const list = Array.isArray(result)
           ? result
-          : result?.categories ?? result?.data ?? [];
+          : result?.categories ??
+            result?.data?.categories ??
+            result?.data ??
+            [];
 
         if (active) {
-          setCategories(list);
+          setCategories(Array.isArray(list) ? list : []);
         }
       } catch (err) {
         if (active) {
-          setError(err.message || "Failed to load categories.");
+          setError(
+            err?.response?.data?.message ||
+              err.message ||
+              "Failed to load categories."
+          );
         }
       } finally {
         if (active) {
@@ -60,6 +70,14 @@ export default function AddCourse() {
 
     return () => {
       active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+
+    return () => {
+      document.body.classList.remove("no-scroll");
     };
   }, []);
 
@@ -91,6 +109,7 @@ export default function AddCourse() {
     }));
 
     setError("");
+    setSuccess("");
   };
 
   const handleSyllabusChange = (event) => {
@@ -112,6 +131,7 @@ export default function AddCourse() {
     }));
 
     setError("");
+    setSuccess("");
   };
 
   const handleSubmit = async (event) => {
@@ -139,12 +159,34 @@ export default function AddCourse() {
       return;
     }
 
+    if (
+      !form.Originalprice.trim() ||
+      !form.discountPrice.trim() ||
+      !form.duration.trim()
+    ) {
+      setError(
+        "Original price, discount price, and duration are required."
+      );
+      return;
+    }
+
+    if (
+      Number(form.Originalprice) < 0 ||
+      Number(form.discountPrice) < 0
+    ) {
+      setError("Prices cannot be negative.");
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append("title", form.title.trim());
     formData.append("description", form.description.trim());
     formData.append("categoryId", form.categoryId);
     formData.append("type", form.type);
+    formData.append("Originalprice", form.Originalprice.trim());
+    formData.append("discountPrice", form.discountPrice.trim());
+    formData.append("duration", form.duration.trim());
 
     if (form.courseImage) {
       formData.append("image", form.courseImage);
@@ -160,41 +202,26 @@ export default function AddCourse() {
       await courseApi.create(formData);
 
       setSuccess("Course created successfully.");
+      setForm({ ...initialForm });
 
-      setForm({
-        title: "",
-        description: "",
-        categoryId: "",
-        type: "",
-        courseImage: null,
-        syllabusPdf: null,
-      });
-
-      // Reset the native file inputs as well.
       event.target.reset();
 
-      // Navigate after a brief success message.
       setTimeout(() => {
-        navigate("/admin/courses");
+        navigate("/admin/course");
       }, 800);
     } catch (err) {
-      setError(err.message || "Failed to create course.");
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "Failed to create course."
+      );
     } finally {
       setSubmitting(false);
     }
   };
 
-
-   useEffect(() => {
-    document.body.classList.add("no-scroll");
-
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, []);
-
   return (
-    <div className="w-full bg-slate-50 px-4 pb-6 sm:px-6 lg:px-8 ">
+    <div className="w-full bg-slate-50 px-4 pb-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <button
           type="button"
@@ -211,7 +238,7 @@ export default function AddCourse() {
           </h1>
 
           <p className="mt-2 text-sm text-slate-500">
-            Enter the course details and upload its learning materials.
+            Enter the course details, pricing, duration, and learning materials.
           </p>
         </div>
 
@@ -237,6 +264,7 @@ export default function AddCourse() {
             </div>
           )}
 
+          {/* Course title */}
           <div>
             <label
               htmlFor="title"
@@ -257,6 +285,7 @@ export default function AddCourse() {
             />
           </div>
 
+          {/* Description */}
           <div>
             <label
               htmlFor="description"
@@ -277,6 +306,7 @@ export default function AddCourse() {
             />
           </div>
 
+          {/* Category */}
           <div>
             <label
               htmlFor="categoryId"
@@ -305,7 +335,7 @@ export default function AddCourse() {
                   key={category._id}
                   value={category._id}
                 >
-                  {category.name}
+                  {category.name || category.title || "Unnamed Category"}
                 </option>
               ))}
             </select>
@@ -317,6 +347,7 @@ export default function AddCourse() {
             )}
           </div>
 
+          {/* Course type */}
           <div>
             <label
               htmlFor="type"
@@ -338,12 +369,76 @@ export default function AddCourse() {
               <option value="offline">Offline</option>
               <option value="hybrid">Hybrid</option>
             </select>
-
-            <p className="mt-1 text-xs text-slate-400">
-              Ensure these values match your backend validator.
-            </p>
           </div>
 
+          {/* Pricing and duration */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label
+                htmlFor="Originalprice"
+                className="mb-2 block text-sm font-semibold text-slate-700"
+              >
+                Original Price (₹) *
+              </label>
+
+              <input
+                id="Originalprice"
+                name="Originalprice"
+                type="number"
+                min="0"
+                step="0.01"
+                value={form.Originalprice}
+                onChange={handleChange}
+                placeholder="e.g. 5000"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="discountPrice"
+                className="mb-2 block text-sm font-semibold text-slate-700"
+              >
+                Discount Price (₹) *
+              </label>
+
+              <input
+                id="discountPrice"
+                name="discountPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                value={form.discountPrice}
+                onChange={handleChange}
+                placeholder="e.g. 3500"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                required
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="duration"
+                className="mb-2 block text-sm font-semibold text-slate-700"
+              >
+                Course Duration *
+              </label>
+
+              <input
+                id="duration"
+                name="duration"
+                type="text"
+                value={form.duration}
+                onChange={handleChange}
+                placeholder="e.g. 8 weeks or 40 hours"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Image and syllabus uploads */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label
@@ -371,7 +466,7 @@ export default function AddCourse() {
                       Upload course image
                     </span>
                     <span className="mt-1 text-xs text-slate-400">
-                      Select an image file
+                      Image files only
                     </span>
                   </>
                 )}
@@ -421,10 +516,11 @@ export default function AddCourse() {
             </div>
           </div>
 
+          {/* Form actions */}
           <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
             <button
               type="button"
-              onClick={() => navigate("/admin/courses")}
+              onClick={() => navigate("/admin/course")}
               disabled={submitting}
               className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
             >

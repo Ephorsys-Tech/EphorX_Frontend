@@ -7,29 +7,33 @@ import {
   Image as ImageIcon,
   FileText,
   X,
-  BookOpen,
+  Clock,
+  IndianRupee,
 } from "lucide-react";
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
 
-
-
 const getCourseFromResponse = (response) => {
-  // Accommodate common API response shapes.
-  const result = response?.data ?? response;
+  let result = response?.data ?? response;
 
   if (result?.course) return result.course;
   if (result?.data?.course) return result.data.course;
+
+  if (result?.data && !Array.isArray(result.data)) {
+    result = result.data;
+  }
 
   return result;
 };
 
 const getCategoriesFromResponse = (response) => {
-  if (Array.isArray(response)) return response;
-  if (Array.isArray(response?.categories)) return response.categories;
-  if (Array.isArray(response?.data)) return response.data;
-  if (Array.isArray(response?.data?.categories)) {
-    return response.data.categories;
+  const result = response?.data ?? response;
+
+  if (Array.isArray(result)) return result;
+  if (Array.isArray(result?.categories)) return result.categories;
+  if (Array.isArray(result?.data)) return result.data;
+  if (Array.isArray(result?.data?.categories)) {
+    return result.data.categories;
   }
 
   return [];
@@ -37,15 +41,24 @@ const getCategoriesFromResponse = (response) => {
 
 const getFileUrl = (value) => {
   if (!value) return "";
+
   if (typeof value === "string") return value;
+
   if (typeof value === "object") {
-    return value.url || value.path || value.secure_url || "";
+    return (
+      value.url ||
+      value.secure_url ||
+      value.path ||
+      value.location ||
+      value.fileUrl ||
+      ""
+    );
   }
+
   return "";
 };
 
 export default function EditCourse() {
-
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -54,6 +67,9 @@ export default function EditCourse() {
     description: "",
     categoryId: "",
     type: "online",
+    Originalprice: "",
+    discountPrice: "",
+    duration: "",
     courseImage: null,
     syllabusPdf: null,
   });
@@ -67,7 +83,7 @@ export default function EditCourse() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-   useEffect(() => {
+  useEffect(() => {
     document.body.classList.add("no-scroll");
 
     return () => {
@@ -76,7 +92,6 @@ export default function EditCourse() {
   }, []);
 
   useEffect(() => {
-    
     let active = true;
 
     const fetchDetails = async () => {
@@ -90,17 +105,23 @@ export default function EditCourse() {
       setError("");
 
       try {
-        const [courseResponse, categoryResponse] = await Promise.all([
-          courseApi.getById(id),
-          categoryApi.getAll(),
-        ]);
+        const [courseResponse, categoryResponse] =
+          await Promise.all([
+            courseApi.getById(id),
+            categoryApi.getAll(),
+          ]);
 
         if (!active) return;
 
         const course = getCourseFromResponse(courseResponse);
-        const categoryList = getCategoriesFromResponse(categoryResponse);
+        const categoryList =
+          getCategoriesFromResponse(categoryResponse);
 
-        if (!course || typeof course !== "object" || course.success === false) {
+        if (
+          !course ||
+          typeof course !== "object" ||
+          course.success === false
+        ) {
           throw new Error(
             course?.message || "Course details were not found."
           );
@@ -120,30 +141,37 @@ export default function EditCourse() {
           description: course.description || "",
           categoryId: String(categoryValue),
           type: course.type || "online",
+          Originalprice: course.Originalprice ?? "",
+          discountPrice: course.discountPrice ?? "",
+          duration: course.duration ?? "",
           courseImage: null,
           syllabusPdf: null,
         });
 
         setExistingImage(
           getFileUrl(
-            course.courseImage ||
+            course.imageUrl ||
+              course.courseImage ||
               course.image ||
-              course.imageUrl ||
               course.imageURL
           )
         );
 
         setExistingSyllabus(
           getFileUrl(
-            course.syllabusPdf ||
+            course.syllabusUrl ||
+              course.syllabusPdf ||
               course.syllabus ||
-              course.syllabusUrl ||
               course.syllabusURL
           )
         );
       } catch (err) {
         if (active) {
-          setError(err.message || "Failed to load course details.");
+          setError(
+            err?.response?.data?.message ||
+              err.message ||
+              "Failed to load course details."
+          );
         }
       } finally {
         if (active) setLoading(false);
@@ -235,16 +263,57 @@ export default function EditCourse() {
       return;
     }
 
+    if (!form.Originalprice.toString().trim()) {
+      setError("Original price is required.");
+      return;
+    }
+
+    if (
+      !Number.isFinite(Number(form.Originalprice)) ||
+      Number(form.Originalprice) < 0
+    ) {
+      setError("Please enter a valid original price.");
+      return;
+    }
+
+    if (!form.discountPrice.toString().trim()) {
+      setError("Discount price is required.");
+      return;
+    }
+
+    if (
+      !Number.isFinite(Number(form.discountPrice)) ||
+      Number(form.discountPrice) < 0
+    ) {
+      setError("Please enter a valid discount price.");
+      return;
+    }
+
+    if (!form.duration.trim()) {
+      setError("Course duration is required.");
+      return;
+    }
+
     try {
       setSaving(true);
 
       const formData = new FormData();
+
       formData.append("title", form.title.trim());
       formData.append("description", form.description.trim());
       formData.append("categoryId", form.categoryId);
       formData.append("type", form.type);
+      formData.append(
+        "Originalprice",
+        form.Originalprice.toString().trim()
+      );
+      formData.append(
+        "discountPrice",
+        form.discountPrice.toString().trim()
+      );
+      formData.append("duration", form.duration.trim());
 
-      // Match these upload field names to your backend Multer config.
+      // Match these file field names to the backend Multer config.
       if (form.courseImage) {
         formData.append("image", form.courseImage);
       }
@@ -257,12 +326,15 @@ export default function EditCourse() {
 
       setSuccess("Course updated successfully.");
 
-      // Return to the course list after successful update.
       setTimeout(() => {
         navigate("/admin/course");
       }, 800);
     } catch (err) {
-      setError(err.message || "Failed to update course. Please try again.");
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "Failed to update course. Please try again."
+      );
     } finally {
       setSaving(false);
     }
@@ -296,7 +368,7 @@ export default function EditCourse() {
           </h1>
 
           <p className="mt-2 text-sm text-slate-500">
-            Update course details, image, and syllabus materials.
+            Update course details, pricing, duration, image, and syllabus.
           </p>
 
           <p className="mt-1 text-xs text-slate-400">
@@ -326,6 +398,7 @@ export default function EditCourse() {
             </div>
           )}
 
+          {/* Course title */}
           <div>
             <label
               htmlFor="title"
@@ -346,6 +419,7 @@ export default function EditCourse() {
             />
           </div>
 
+          {/* Description */}
           <div>
             <label
               htmlFor="description"
@@ -366,6 +440,7 @@ export default function EditCourse() {
             />
           </div>
 
+          {/* Category */}
           <div>
             <label
               htmlFor="categoryId"
@@ -386,8 +461,8 @@ export default function EditCourse() {
 
               {categories.map((category) => (
                 <option
-                  key={category._id}
-                  value={category._id}
+                  key={category._id || category.id}
+                  value={category._id || category.id}
                 >
                   {category.name}
                 </option>
@@ -395,6 +470,7 @@ export default function EditCourse() {
             </select>
           </div>
 
+          {/* Course type */}
           <div>
             <label
               htmlFor="type"
@@ -417,6 +493,83 @@ export default function EditCourse() {
             </select>
           </div>
 
+          {/* Pricing */}
+          <div className="rounded-xl border border-slate-200 p-5">
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900">
+              <IndianRupee size={19} />
+              Course Pricing
+            </h2>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="Originalprice"
+                  className="mb-2 block text-sm font-semibold text-slate-700"
+                >
+                  Original Price (₹) *
+                </label>
+
+                <input
+                  id="Originalprice"
+                  name="Originalprice"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.Originalprice}
+                  onChange={handleChange}
+                  placeholder="Enter original price"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="discountPrice"
+                  className="mb-2 block text-sm font-semibold text-slate-700"
+                >
+                  Discount Price (₹) *
+                </label>
+
+                <input
+                  id="discountPrice"
+                  name="discountPrice"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.discountPrice}
+                  onChange={handleChange}
+                  placeholder="Enter discount price"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Duration */}
+          <div>
+            <label
+              htmlFor="duration"
+              className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700"
+            >
+              <Clock size={17} />
+              Course Duration *
+            </label>
+
+            <input
+              id="duration"
+              name="duration"
+              type="text"
+              value={form.duration}
+              onChange={handleChange}
+              placeholder="e.g. 8 weeks, 3 months, 40 hours"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              required
+            />
+          </div>
+
+          {/* File uploads */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label
@@ -452,7 +605,7 @@ export default function EditCourse() {
                   <>
                     <Upload size={25} className="text-slate-400" />
                     <span className="mt-2 text-sm font-medium text-slate-600">
-                      Upload a new course image
+                      Upload a course image
                     </span>
                     <span className="mt-1 text-xs text-slate-400">
                       Leave unchanged to keep the current image
@@ -543,6 +696,7 @@ export default function EditCourse() {
             </div>
           </div>
 
+          {/* Actions */}
           <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
             <button
               type="button"

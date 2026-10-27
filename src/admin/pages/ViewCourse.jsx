@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  BookOpen,
   Pencil,
   FileText,
   Image as ImageIcon,
@@ -11,23 +10,19 @@ import {
   CalendarDays,
   LoaderCircle,
   ExternalLink,
+  Clock,
+  IndianRupee,
+  BookOpen,
 } from "lucide-react";
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
-
-
 
 // Extract the course from common API response formats.
 const getCourseFromResponse = (response) => {
   let result = response?.data ?? response;
 
-  if (result?.course) {
-    return result.course;
-  }
-
-  if (result?.data?.course) {
-    return result.data.course;
-  }
+  if (result?.course) return result.course;
+  if (result?.data?.course) return result.data.course;
 
   if (result?.data && !Array.isArray(result.data)) {
     result = result.data;
@@ -50,7 +45,7 @@ const getCategoriesFromResponse = (response) => {
   return [];
 };
 
-// Convert a file field into a usable URL.
+// Get a usable URL from a file field.
 const getFileUrl = (value) => {
   if (!value) return "";
 
@@ -84,6 +79,24 @@ const getCategoryId = (course) => {
     category?.categoryId ||
     ""
   );
+};
+
+const formatPrice = (price) => {
+  if (price === null || price === undefined || price === "") {
+    return "Not specified";
+  }
+
+  const numericPrice = Number(price);
+
+  if (!Number.isFinite(numericPrice)) {
+    return String(price);
+  }
+
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(numericPrice);
 };
 
 export default function ViewCourse() {
@@ -145,16 +158,19 @@ export default function ViewCourse() {
         setCourse({
           ...fetchedCourse,
           _id: fetchedCourse._id || fetchedCourse.id || id,
-          courseImage: getFileUrl(
-            fetchedCourse.courseImage ||
+
+          // Match the backend Course schema.
+          imageUrl: getFileUrl(
+            fetchedCourse.imageUrl ||
+              fetchedCourse.courseImage ||
               fetchedCourse.image ||
-              fetchedCourse.imageUrl ||
               fetchedCourse.imageURL
           ),
-          syllabusPdf: getFileUrl(
-            fetchedCourse.syllabusPdf ||
+
+          syllabusUrl: getFileUrl(
+            fetchedCourse.syllabusUrl ||
+              fetchedCourse.syllabusPdf ||
               fetchedCourse.syllabus ||
-              fetchedCourse.syllabusUrl ||
               fetchedCourse.syllabusURL
           ),
         });
@@ -164,14 +180,15 @@ export default function ViewCourse() {
             getCategoriesFromResponse(categoryResult.value)
           );
         } else {
-          // Course details can still be displayed if categories fail.
           setCategories([]);
         }
       } catch (err) {
         if (!cancelled) {
           setCourse(null);
           setError(
-            err?.message || "Failed to load course details."
+            err?.response?.data?.message ||
+              err?.message ||
+              "Failed to load course details."
           );
         }
       } finally {
@@ -205,13 +222,15 @@ export default function ViewCourse() {
     course?.categoryName ||
     "Uncategorized";
 
-  const courseImage = course?.courseImage || "";
-  const syllabusPdf = course?.syllabusPdf || "";
+  const courseImage = course?.imageUrl || "";
+  const syllabusPdf = course?.syllabusUrl || "";
 
   const backToCourses = () => navigate("/admin/course");
 
   const editCourse = () => {
-    navigate(`/admin/edit-course/${course._id}`);
+    if (course?._id) {
+      navigate(`/admin/edit-course/${course._id}`);
+    }
   };
 
   if (loading) {
@@ -250,7 +269,7 @@ export default function ViewCourse() {
   }
 
   return (
-    <div className="w-full bg-slate-50 px-4 sm:px-6 lg:px-8">
+    <div className="w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         {/* Navigation */}
         <button
@@ -328,6 +347,16 @@ export default function ViewCourse() {
                 </p>
               )}
 
+              {course.duration && (
+                <p className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                  <Clock size={16} />
+                  Duration:{" "}
+                  <span className="font-medium text-slate-700">
+                    {course.duration}
+                  </span>
+                </p>
+              )}
+
               {course.createdAt && (
                 <p className="mt-3 flex items-center gap-2 text-sm text-slate-500">
                   <CalendarDays size={16} />
@@ -343,9 +372,40 @@ export default function ViewCourse() {
               )}
             </div>
 
+            {/* Pricing */}
+            <section className="border-b border-slate-100 py-6">
+              <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                <IndianRupee size={20} />
+                Course Pricing
+              </h3>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                  <p className="text-sm font-medium text-slate-500">
+                    Original Price
+                  </p>
+
+                  <p className="mt-2 text-xl font-semibold text-slate-500 line-through">
+                    {formatPrice(course.Originalprice)}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-5">
+                  <p className="text-sm font-medium text-emerald-700">
+                    Discount Price
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-emerald-700">
+                    {formatPrice(course.discountPrice)}
+                  </p>
+                </div>
+              </div>
+            </section>
+
             {/* Description */}
             <section className="py-6">
-              <h3 className="mb-3 text-lg font-semibold text-slate-900">
+              <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                <BookOpen size={20} />
                 Course Description
               </h3>
 
