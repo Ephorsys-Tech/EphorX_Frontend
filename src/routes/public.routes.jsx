@@ -15,7 +15,7 @@ const PublicRoutes = (
     <Route path='/Courses' element={<Courses />} />
     <Route path='/contact' element={<Contact />} />
     <Route path='/about' element={<About />} />
-    <Route path="/Course" element={<CourseDetails />} />
+    <Route path="/CourseDetails" element={<CourseDetails />} />
     <Route path='*' element={<NotFound />} />
   </Route>
 )

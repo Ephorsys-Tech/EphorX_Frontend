@@ -159,7 +159,7 @@ const HeroSection = () => {
 
       <div className="pointer-events-none absolute bottom-0 left-[32%] h-40 w-40 rounded-full bg-sky-100/80 blur-3xl" />
 
-      <div className="relative mx-auto grid min-h-[calc(100vh-80px)] items-center gap-22 px-6 py-14 sm:px-10 lg:grid-cols-2 lg:gap-10 lg:px-41 lg:py-16">
+      <div className="relative mx-auto grid min-h-[calc(100vh-80px)] items-center gap-22 px-6 py-14 sm:px-10 lg:grid-cols-2 lg:gap-10 lg:px-40 lg:py-16">
         {/* Left content */}
         <div className="relative z-10 mt-10 flex flex-col items-start">
           <motion.p

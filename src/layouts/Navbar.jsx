@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import image from "../assets/Logo.png";
@@ -17,8 +18,6 @@ const LINKS = [
 const pill =
   "rounded-3xl bg-[#fdfbf7] shadow-[0_4px_20px_-8px_rgba(0,0,0,0.3)]";
 
-
-
 function Logo() {
   return (
     <Link
@@ -28,7 +27,7 @@ function Logo() {
       <img
         src={image}
         alt="EphorX logo"
-        className="absolute -left-10 top-1/2 h-auto w-57 max-w-none -translate-y-1/2 object-contain"
+        className="absolute -left-10 top-[37%] h-auto w-57 max-w-none -translate-y-1/2 object-contain"
       />
     </Link>
   );
@@ -37,6 +36,7 @@ function Logo() {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,76 +45,76 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [contactOpen, setContactOpen] = useState(false)
   const handleContactSubmit = async (formData) => {
-    console.log('Contact enquiry:', formData)
-  }
+    console.log("Contact enquiry:", formData);
+  };
 
   return (
     <header
       id="top"
-      className={`fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-15 sm:pt-5 lg:px-20 transition-all duration-300 ${scrolled ? "bg-gray-600/30 backdrop-blur-md shadow-sm" : "bg-transparent"
-        }`}
+      className={`fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5 md:px-8 lg:px-10 xl:px-20 transition-all duration-300 ${
+        scrolled
+          ? "bg-gray-600/30 backdrop-blur-md shadow-sm"
+          : "bg-transparent"
+      }`}
     >
       {/* Desktop Navbar */}
-      <nav className="hidden items-center justify-between gap-4 lg:flex mb-2 px-19">
-        {/* Availability */}
-        <div className="hidden xl:flex">
-          <span className={` flex items-center gap-2 text-sm mb-1`}>
-            <Logo name />
-          </span>
+      <nav className="mb-2 hidden items-center justify-between gap-3 lg:flex xl:gap-4 2xl:px-19">
+        {/* Logo */}
+        <div className="flex min-w-0 shrink-0 items-center">
+          <Logo />
         </div>
 
         {/* Navigation Links */}
-        <div className={`${pill} flex items-center gap-3 p-2 mb-1`}>
-          <ul className="flex items-center gap-1">
+        <div className={`${pill} mb-1 flex min-w-0 items-center gap-1 p-1.5 xl:gap-3 xl:p-2`}>
+          <ul className="flex min-w-0 items-center gap-0.5 xl:gap-1">
             {LINKS.map((link) => (
-              <li key={link.label}>
-
+              <li key={link.label} className="shrink-0">
                 <NavLink
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `block rounded-full px-5 py-2 text-md font-semibold transition ${isActive
-                      ? "bg-sky-200/30 text-sky-500"
-                      : "text-black hover:bg-black/5"
+                    `block rounded-full px-3 py-2 text-sm font-semibold transition xl:px-5 xl:text-md ${
+                      isActive
+                        ? "bg-sky-200/30 text-sky-500"
+                        : "text-black hover:bg-black/5"
                     }`
                   }
                 >
                   {link.label}
                 </NavLink>
-
               </li>
             ))}
           </ul>
         </div>
 
-        {/* contact */}
+        {/* Contact */}
         <div
-          className={`${pill} mb-2 flex items-center gap-1.5 px-4 py-3 text-md font-medium text-black transition hover:-translate-y-0.5`}
+          className={`${pill} mb-2 flex shrink-0 items-center gap-1.5 px-3 py-3 text-sm font-medium text-black transition hover:-translate-y-0.5 xl:px-4 xl:text-md`}
         >
           <button
             type="button"
             onClick={() => setContactOpen(true)}
-            className="text-md"
+            className="whitespace-nowrap text-sm xl:text-md"
           >
             Contact Us
           </button>
-            <Phone
-              size={19}
-              className=" text-blue-600 transition-transform duration-200 hover:scale-110"
-            />
-          
+
+          <Phone
+            size={19}
+            className="shrink-0 text-blue-600 transition-transform duration-200 hover:scale-110"
+          />
         </div>
       </nav>
 
       {/* Mobile and Tablet Navbar */}
-      <div className="relative mx-auto max-w-2xl lg:hidden mb-1">
+      <div className="relative mb-1 lg:hidden">
         <nav
-          className={`${pill} flex items-center justify-between gap-2 p-1.5 pb-3`}
+          className={`${pill} flex w-full items-center justify-between gap-2 p-1.5 pb-3`}
         >
           <Logo />
 
@@ -143,7 +143,7 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* contact modal */}
+        {/* Contact Modal */}
         <Modal
           isOpen={contactOpen}
           onClose={() => setContactOpen(false)}
@@ -156,15 +156,16 @@ export default function Navbar() {
             onSubmit={handleContactSubmit}
           />
         </Modal>
+
         {/* Mobile Dropdown */}
         <div
-          className={`${pill} absolute right-0 mt-2 w-56 overflow-hidden py-2 transition-all duration-200 ${open
-            ? "visible translate-y-0 opacity-100"
-            : "invisible -translate-y-2 opacity-0"
-            }`}
+          className={`${pill} absolute right-0 mt-2 w-56 max-w-full overflow-hidden py-2 transition-all duration-200 ${
+            open
+              ? "visible translate-y-0 opacity-100"
+              : "invisible -translate-y-2 opacity-0"
+          }`}
         >
           {LINKS.map((link) => (
-
             <NavLink
               key={link.label}
               to={link.to}
@@ -172,17 +173,33 @@ export default function Navbar() {
               tabIndex={open ? 0 : -1}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `block px-4 py-3 text-center font-semibold transition ${isActive
-                  ? "bg-sky-100 text-sky-400"
-                  : "text-black hover:bg-black/5"
+                `block px-4 py-3 text-center font-semibold transition ${
+                  isActive
+                    ? "bg-sky-100 text-sky-400"
+                    : "text-black hover:bg-black/5"
                 }`
               }
             >
               {link.label}
             </NavLink>
-
           ))}
         </div>
+      </div>
+
+      {/* Contact Modal for desktop */}
+      <div className="hidden lg:block">
+        <Modal
+          isOpen={contactOpen}
+          onClose={() => setContactOpen(false)}
+          title="Contact Us"
+          size="lg"
+          theme="white"
+        >
+          <ContactModal
+            onClose={() => setContactOpen(false)}
+            onSubmit={handleContactSubmit}
+          />
+        </Modal>
       </div>
     </header>
   );
