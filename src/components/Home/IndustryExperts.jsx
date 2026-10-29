@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowDownRight,
   ArrowUpRight,
   GraduationCap,
 } from "lucide-react";
