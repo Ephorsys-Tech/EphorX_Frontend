@@ -219,7 +219,7 @@ export default function CoursesByCategory({
 
   return (
     <section
-      className={`relative overflow-hidden bg-white px-4 py-3 sm:px-1 sm:py-20 lg:px-40 lg:py-5 ${
+      className={`relative overflow-hidden bg-white px-4 py-3 sm:px-10 sm:py-20 lg:px-40 lg:py-5 ${
         fullWidth ? "w-full" : ""
       }`}
     >

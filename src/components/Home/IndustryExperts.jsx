@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowDownRight,
@@ -10,56 +10,7 @@ import {
 import Modal from "../../ui/Modal";
 import ExpertDetailsModal from "../modal/ExpertDetailsModal";
 
-const experts = [
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    role: "FullStack Development",
-    field: "Web Technologies",
-    experience: "8+ Years",
-    description:
-      "Helps learners master modern web development through practical projects, real-world applications, and industry-focused guidance.",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=85",
-    number: "01",
-  },
-  {
-    id: 2,
-    name: "Priya Mishra",
-    role: "Data Science & AI",
-    field: "Artificial Intelligence",
-    experience: "7+ Years",
-    description:
-      "Makes complex data concepts easier to understand through hands-on learning, analytical thinking, and practical case studies.",
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=85",
-    number: "02",
-  },
-  {
-    id: 3,
-    name: "Arjun Patel",
-    role: "Cloud & DevOps",
-    field: "Cloud Computing",
-    experience: "9+ Years",
-    description:
-      "Guides aspiring professionals through cloud infrastructure, deployment workflows, automation, and modern development practices.",
-    image:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=85",
-    number: "03",
-  },
-  {
-    id: 4,
-    name: "Sneha Das",
-    role: "UI/UX Design",
-    field: "Product Design",
-    experience: "6+ Years",
-    description:
-      "Helps students develop a strong design foundation through user research, interface design, prototyping, and portfolio projects.",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=900&q=85",
-    number: "04",
-  },
-];
+import { getAllTrainers } from "../../admin/api/trainerApi.js"
 
 function ExpertCard({ expert, index, onViewDetails }) {
   return (
@@ -71,7 +22,7 @@ function ExpertCard({ expert, index, onViewDetails }) {
       className="group relative isolate min-w-0 overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_8px_30px_-18px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_24px_55px_-24px_rgba(2,132,199,0.4)]"
     >
       {/* Expert photo */}
-      <div className="relative h-[340px] overflow-hidden bg-slate-100 sm:h-[370px]">
+      <div className="relative h-85 overflow-hidden bg-slate-100 sm:h-92.5">
         <img
           src={expert.image}
           alt={expert.name}
@@ -80,7 +31,7 @@ function ExpertCard({ expert, index, onViewDetails }) {
         />
 
         {/* Photo gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-black/10 transition-opacity duration-500 group-hover:opacity-0" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/10 to-black/10 transition-opacity duration-500 group-hover:opacity-0" />
 
         {/* Expertise tag */}
         <span className="absolute right-4 top-4 max-w-[65%] rounded-full border border-white/30 bg-white/15 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md transition-all duration-300 group-hover:-translate-y-2 group-hover:opacity-0">
@@ -107,13 +58,13 @@ function ExpertCard({ expert, index, onViewDetails }) {
         </div>
 
         {/* Hover cover */}
-        <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-br from-[#050b14]/95 via-[#071521]/90 to-sky-950/95 p-5 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-6">
+        <div className="absolute inset-0 flex flex-col justify-between bg-linear-to-br from-[#050b14]/95 via-[#071521]/90 to-sky-950/95 p-5 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-6">
           <div className="">
             <span className="relative left-30 rounded-full border border-sky-400/40 bg-sky-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-300">
               Meet the expert
             </span>
 
-            
+
           </div>
 
           <div className="translate-y-5 transition-transform duration-500 group-hover:translate-y-0">
@@ -170,8 +121,90 @@ function ExpertCard({ expert, index, onViewDetails }) {
   );
 }
 
+
 export default function IndustryExperts() {
   const [selectedExpert, setSelectedExpert] = useState(null);
+  const [experts, setExperts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getAllTrainers();
+
+        const trainerList = Array.isArray(data) ? data : [];
+
+        const formattedTrainers = trainerList.map((trainer, index) => {
+          const details =
+            trainer.trainer && typeof trainer.trainer === "object"
+              ? trainer.trainer
+              : trainer;
+
+          const avatar =
+            typeof details.avatar === "string"
+              ? details.avatar
+              : typeof details.image === "string"
+                ? details.image
+                : typeof details.photo === "string"
+                  ? details.photo
+                  : "";
+
+          const experience =
+            details.experience ??
+            details.experienceYears ??
+            details.yearsOfExperience;
+
+          return {
+            ...details,
+            id: details._id ?? details.id ?? index,
+            name:
+              (typeof details.name === "string" && details.name) ||
+              (typeof details.fullName === "string" && details.fullName) ||
+              "Expert Trainer",
+            role:
+              (typeof details.designation === "string" &&
+                details.designation) ||
+              (typeof details.role === "string" && details.role) ||
+              "Instructor",
+            field:
+              (typeof details.field === "string" && details.field) ||
+              (typeof details.specialization === "string" &&
+                details.specialization) ||
+              (typeof details.expertise === "string" &&
+                details.expertise) ||
+              "Professional Training",
+            experience:
+              experience != null && experience !== ""
+                ? typeof experience === "number"
+                  ? `${experience}+ Years`
+                  : String(experience)
+                : "Experienced Professional",
+            description:
+              (typeof details.description === "string" &&
+                details.description) ||
+              (typeof details.bio === "string" && details.bio) ||
+              "Learn from an experienced industry professional.",
+            image:
+              avatar ||
+              "https://placehold.co/600x800?text=Trainer",
+            number: String(index + 1).padStart(2, "0"),
+          };
+        });
+
+        setExperts(formattedTrainers);
+      } catch (err) {
+        setError(err.message || "Failed to load trainers.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrainers();
+  }, []);
 
   const closeExpertModal = () => {
     setSelectedExpert(null);
@@ -229,16 +262,32 @@ export default function IndustryExperts() {
         </motion.div>
 
         {/* Expert cards */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
-          {experts.map((expert, index) => (
-            <ExpertCard
-              key={expert.id}
-              expert={expert}
-              index={index}
-              onViewDetails={setSelectedExpert}
-            />
-          ))}
-        </div>
+
+        {loading ? (
+          <div className="col-span-full py-12 text-center text-slate-500">
+            Loading trainers...
+          </div>
+        ) : error ? (
+          <div className="col-span-full py-12 text-center text-red-600">
+            {error}
+          </div>
+        ) : experts.length === 0 ? (
+          <div className="col-span-full py-12 text-center text-slate-500">
+            No trainers available yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+            {experts.map((expert, index) => (
+              <ExpertCard
+                key={expert.id}
+                expert={expert}
+                index={index}
+                onViewDetails={setSelectedExpert}
+              />
+            ))}
+          </div>
+        )}
+
 
         {/* Bottom statement */}
         <motion.div

@@ -111,7 +111,7 @@ const Courses = () => {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="mb-8 sm:mb-10"
         >
-          <div className="max-w-[650px]">
+          <div className="max-w-162.5">
             <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
               Explore Our{" "}
               <span className="text-sky-500">Top Courses</span>
@@ -152,7 +152,7 @@ const Courses = () => {
               Loading courses...
             </p>
           ) : error ? (
-            <p className="col-span-full break-words py-12 text-center text-red-500">
+            <p className="col-span-full wrap-break-word py-12 text-center text-red-500">
               {error}
             </p>
           ) : filteredCourses.length === 0 ? (
@@ -184,7 +184,7 @@ const Courses = () => {
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-slate-950/10" />
+                    <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-slate-950/10 to-slate-950/10" />
 
                     <span className="absolute left-4 top-4 max-w-[calc(100%-2rem)] truncate rounded-full border border-white/40 bg-white/95 px-3 py-1.5 text-[11px] font-bold text-slate-800 shadow-sm">
                       {course.type}
@@ -208,7 +208,7 @@ const Courses = () => {
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                       <span className="inline-flex max-w-full items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 text-xs font-bold text-sky-700">
                         <CourseIcon size={15} className="shrink-0" />
-                        <span className="break-words">
+                        <span className="wrap-break-word">
                           {course.categoryName}
                         </span>
                       </span>
@@ -219,11 +219,11 @@ const Courses = () => {
                       </span>
                     </div>
 
-                    <h3 className="break-words text-lg font-extrabold leading-snug text-slate-950 transition-colors duration-200 group-hover:text-sky-600 sm:text-xl">
+                    <h3 className="wrap-break-word text-lg font-extrabold leading-snug text-slate-950 transition-colors duration-200 group-hover:text-sky-600 sm:text-xl">
                       {course.title}
                     </h3>
 
-                    <p className="mt-3 flex-1 break-words text-sm leading-6 text-slate-600">
+                    <p className="mt-3 flex-1 wrap-break-word text-sm leading-6 text-slate-600">
                       {course.description}
                     </p>
 

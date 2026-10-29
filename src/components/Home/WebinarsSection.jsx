@@ -12,83 +12,10 @@ import {
 import webinar from "../../assets/webinar.png"
 import webinar1 from "../../assets/webinar1.png"
 import webinar2 from "../../assets/webinar2.png"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../../ui/Modal";
 import WebinarEnrollModal from "../modal/WebinarEnrollModal";
-
-
-const defaultWebinars = [
-  {
-    id: 1,
-    title: "Build Real-World Apps with MERN Stack",
-    description:
-      "Learn how to build scalable full-stack applications with practical project insights.",
-    trainer: "Rahul Sharma",
-    role: "Senior Full Stack Developer",
-    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces",
-    image:webinar,
-    date: "24 Oct 2026",
-    time: "6:00 PM IST",
-    duration: "90 min",
-    attendees: "250+",
-    type: "live",
-    category: "WEB DEVELOPMENT",
-    to: "/Course",
-  },
-  {
-    id: 2,
-    title: "Getting Started with AI & Machine Learning",
-    description:
-      "Understand AI fundamentals, practical applications, and your first machine learning workflow.",
-    trainer: "Priya Sharma",
-    role: "AI & Data Science Mentor",
-    photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces",
-    image:webinar1,
-    date: "26 Oct 2026",
-    time: "5:30 PM IST",
-    duration: "60 min",
-    attendees: "180+",
-    type: "live",
-    category: "ARTIFICIAL INTELLIGENCE",
-    to: "/Course",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design: From Idea to Interface",
-    description:
-      "Explore design thinking, wireframes, and modern interface design through practical examples.",
-    trainer: "Aditi Das",
-    role: "Product Designer",
-    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop&crop=faces",
-    image:webinar2,
-    date: "Watch Anytime",
-    time: "On Demand",
-    duration: "75 min",
-    attendees: "500+",
-    type: "recorded",
-    category: "DESIGN & CREATIVITY",
-    to: "/Course",
-  },
-  {
-    id: 4,
-    title: "UI/UX Design: From Idea to Interface",
-    description:
-      "Explore design thinking, wireframes, and modern interface design through practical examples.",
-    trainer: "Aditi Das",
-    role: "Product Designer",
-    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop&crop=faces",
-     image:webinar,
-    date: "Watch Anytime",
-    time: "On Demand",
-    duration: "75 min",
-    attendees: "500+",
-    type: "recorded",
-    category: "DESIGN & CREATIVITY",
-    to: "/Course",
-  },
-];
-
-
+import { getAllWebinars } from "../../admin/api/webinarApi.js"
 function WebinarCard({ webinar, index, onEnroll }) {
   const isLive = webinar.type === "live";
 
@@ -109,7 +36,7 @@ function WebinarCard({ webinar, index, onEnroll }) {
           className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:duration-800 ease-out group-hover:scale-110"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/20" />
 
         <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 p-5">
           <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1.5 text-[10px] font-bold tracking-wider text-sky-200 backdrop-blur-sm">
@@ -117,11 +44,10 @@ function WebinarCard({ webinar, index, onEnroll }) {
           </span>
 
           <span
-            className={`flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-bold backdrop-blur-sm ${
-              isLive
-                ? "bg-red-500/80 text-white"
-                : "bg-sky-500/80 text-white"
-            }`}
+            className={`flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-bold backdrop-blur-sm ${isLive
+              ? "bg-red-500/80 text-white"
+              : "bg-sky-500/80 text-white"
+              }`}
           >
             {isLive ? (
               <Radio size={12} />
@@ -241,12 +167,32 @@ export default function WebinarsSection({
   title = "Live Webinars",
   highlight = "By Industry Experts.",
   description = "Learn directly from experienced professionals, explore new technologies, and gain insights you can put into practice.",
-  webinars = defaultWebinars,
+  // webinars = defaultWebinars,
   buttonText = "Explore All Webinars",
   buttonTo = "/Course",
   showButton = true,
 }) {
   const [selectedWebinar, setSelectedWebinar] = useState(null);
+  const [webinars, setWebinars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchWebinars = async () => {
+      try {
+        setLoading(true);
+        const data = await getAllWebinars();
+
+        setWebinars(data || []);
+      } catch (err) {
+        setError(err.message || "Failed to load webinars");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWebinars();
+  }, []);
 
   const handleEnrollment = (formData, webinarData) => {
     console.log("Webinar enrollment:", {
@@ -307,24 +253,83 @@ export default function WebinarsSection({
           </motion.div>
 
           {/* Responsive Horizontal Webinar Cards */}
-          {webinars.length > 0 && (
+
+          {loading && (
+            <div className="py-12 text-center text-gray-500">
+              Loading webinars...
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 py-8 text-center text-red-600">
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && webinars.length > 0 && (
             <div className="relative">
-              <div
-                className="flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              >
+              <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden pb-5 scrollbar-none [&::-webkit-scrollbar]:hidden">
                 {webinars.map((webinar, index) => (
                   <div
-                    key={webinar.id ?? `${webinar.title}-${index}`}
+                    key={webinar._id ?? webinar.id ?? `${webinar.title}-${index}`}
                     className="w-[85%] shrink-0 snap-start sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
                   >
                     <WebinarCard
-                      webinar={webinar}
+                      webinar={{
+                        ...webinar,
+                        id: webinar._id ?? webinar.id,
+                        image: webinar.image || webinar.thumbnail,
+                        title: webinar.title || "Untitled Webinar",
+                        description: webinar.description || "",
+                        trainer: webinar.trainer?.name || webinar.instructor?.name || "Expert Trainer",
+                        role: webinar.trainer?.designation ||
+                          webinar.instructor?.designation ||
+                          webinar.designation ||
+                          "Instructor",
+                        photo:
+                          webinar.trainer?.avatar ||
+                          webinar.instructor?.avatar ||
+                          webinar.photo ||
+                          webinar.avatar ||
+                          webinar.instructorAvatar,
+                        date: webinar.date
+                          ? new Date(webinar.date).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            timeZone: "Asia/Kolkata",
+                          })
+                          : "Date not announced",
+                        time: webinar.startTime || "To be announced",
+                        duration: webinar.duration || "Duration not specified",
+                        attendees:
+                          webinar.attendeeCount ??
+                          webinar.attendees ??
+                          webinar.attendeesCount ??
+                          webinar.registeredUsers?.length ??
+                          webinar.enrolledUsers?.length ??
+                          0,
+                        type: webinar.type || "recorded",
+                        category: webinar.category || "WEBINAR",
+                      }}
                       index={index}
                       onEnroll={setSelectedWebinar}
                     />
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {!loading && !error && webinars.length === 0 && (
+            <div className="rounded-2xl border border-dashed border-gray-300 py-12 text-center">
+              <Video className="mx-auto mb-3 text-sky-500" size={28} />
+              <p className="font-semibold text-gray-800">
+                No webinars available yet
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                Check back soon for upcoming sessions.
+              </p>
             </div>
           )}
 
@@ -343,19 +348,19 @@ export default function WebinarsSection({
       </section>
 
       {/* Separate enrollment modal */}
-     <Modal
-  isOpen={Boolean(selectedWebinar)}
-  onClose={() => setSelectedWebinar(null)}
-  title="Enroll in Webinar"
-  size="lg"
-  theme="white"
->
-  <WebinarEnrollModal
-    webinar={selectedWebinar}
-    onClose={() => setSelectedWebinar(null)}
-    onSubmit={handleEnrollment}
-  />
-</Modal>
+      <Modal
+        isOpen={Boolean(selectedWebinar)}
+        onClose={() => setSelectedWebinar(null)}
+        title="Enroll in Webinar"
+        size="lg"
+        theme="white"
+      >
+        <WebinarEnrollModal
+          webinar={selectedWebinar}
+          onClose={() => setSelectedWebinar(null)}
+          onSubmit={handleEnrollment}
+        />
+      </Modal>
     </>
   );
 }
