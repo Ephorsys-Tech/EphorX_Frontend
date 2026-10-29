@@ -44,9 +44,9 @@ export default function AddCourse() {
         const list = Array.isArray(result)
           ? result
           : result?.categories ??
-            result?.data?.categories ??
-            result?.data ??
-            [];
+          result?.data?.categories ??
+          result?.data ??
+          [];
 
         if (active) {
           setCategories(Array.isArray(list) ? list : []);
@@ -55,8 +55,8 @@ export default function AddCourse() {
         if (active) {
           setError(
             err?.response?.data?.message ||
-              err.message ||
-              "Failed to load categories."
+            err.message ||
+            "Failed to load categories."
           );
         }
       } finally {
@@ -73,13 +73,6 @@ export default function AddCourse() {
     };
   }, []);
 
-  useEffect(() => {
-    document.body.classList.add("no-scroll");
-
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -212,8 +205,8 @@ export default function AddCourse() {
     } catch (err) {
       setError(
         err?.response?.data?.message ||
-          err.message ||
-          "Failed to create course."
+        err.message ||
+        "Failed to create course."
       );
     } finally {
       setSubmitting(false);
@@ -221,7 +214,7 @@ export default function AddCourse() {
   };
 
   return (
-    <div className="w-full bg-slate-50 px-4 pb-6 sm:px-6 lg:px-8">
+    <div className="w-full min-w-0 bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <button
           type="button"
@@ -244,8 +237,9 @@ export default function AddCourse() {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
-        >
+          className="w-full min-w-0 space-y-6 rounded-2xl border
+  border-slate-200 bg-white p-4 shadow-sm
+  sm:p-8">
           {error && (
             <div
               role="alert"
@@ -439,7 +433,7 @@ export default function AddCourse() {
           </div>
 
           {/* Image and syllabus uploads */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="w-full min-w-0 grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label
                 htmlFor="courseImage"

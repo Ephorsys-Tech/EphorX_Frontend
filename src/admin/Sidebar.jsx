@@ -8,6 +8,7 @@ import {
   Images,
   LogOut,
   Phone,
+  Cast,
 } from "lucide-react";
 
 import logo from '../assets/Logolight.png'
@@ -29,7 +30,7 @@ const NAV_ITEMS = [
   },
   {
     path: "/admin/course",
-    label: "Course",
+    label: "Courses",
     icon: Users,
   },
   {
@@ -38,14 +39,14 @@ const NAV_ITEMS = [
     icon: Phone,
   },
   {
-    path: "/admin/jobs",
-    label: "Jobs",
-    icon: ShoppingBag,
+    path: "/admin/trainers",
+    label: "Trainers",
+    icon: Users,
   },
   {
-    path: "/admin/applicants",
-    label: "Applicants",
-    icon: Users,
+    path: "/admin/webinars",
+    label: "Webinars",
+    icon: Cast,
   },
   {
     path: "/admin/gallery",
@@ -73,25 +74,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
       {/* Sidebar */}
       <aside
-        className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-slate-900
-          flex flex-col text-white transition-transform duration-300
-          lg:relative lg:translate-x-0 lg:shrink-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+        className={`fixed inset-y-0 left-0 z-50
+                    flex h-dvh w-64 flex-col
+                  bg-slate-900 text-white
+                    transition-transform duration-300
+                    lg:sticky lg:top-0 lg:translate-x-0 lg:shrink-0
+                   ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* Logo */}
         <div className="flex items-center justify-between border-b border-white/10 px-6 py-1">
-            <div className="flex items-center justify-center overflow-hidden rounded-xl">
-              <img
-                src={logo}
-                alt="EPhorX Logo"
-                className="h-15"
-                onError={(event) => {
-                  event.currentTarget.style.display = "none";
-                }}
-              />
-            </div>
+          <div className="flex items-center justify-center overflow-hidden rounded-xl">
+            <img
+              src={logo}
+              alt="EPhorX Logo"
+              className="h-15"
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
 
           {/* Mobile Close Button */}
           <button
@@ -105,7 +106,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-6">
+        <nav className="min-h-0 flex-1 space-y-1 overflow-y-hidden px-4 py-6">
           {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
             <NavLink
               key={path}
@@ -114,10 +115,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               className={({ isActive }) =>
                 `flex w-full items-center gap-3 rounded-xl px-4 py-2.5
                 text-sm font-medium transition-all
-                ${
-                  isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
-                    : "text-slate-400 hover:bg-white/10 hover:text-white"
+                ${isActive
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                  : "text-slate-400 hover:bg-white/10 hover:text-white"
                 }`
               }
             >

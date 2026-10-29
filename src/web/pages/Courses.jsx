@@ -226,7 +226,6 @@ const Courses = () => {
                       {course.description}
                     </p>
 
-
                     <a
                       href={course.syllabusUrl}
                       target="_blank"
