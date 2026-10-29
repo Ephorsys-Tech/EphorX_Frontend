@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import image from "../assets/Logo.png";
@@ -22,12 +21,13 @@ function Logo() {
   return (
     <Link
       to="/"
-      className="relative flex h-12 w-40 shrink-0 items-center"
+      aria-label="EphorX Home"
+      className="relative flex h-12 w-32 shrink-0 items-center sm:w-36 md:w-40 lg:w-40"
     >
       <img
         src={image}
         alt="EphorX logo"
-        className="absolute -left-10 top-[37%] h-auto w-57 max-w-none -translate-y-1/2 object-contain"
+        className="absolute -left-5 top-[37%] h-auto w-44 max-w-none -translate-y-1/2 object-contain sm:-left-7 sm:w-48 md:-left-8 md:w-52 lg:-left-10 lg:w-57"
       />
     </Link>
   );
@@ -56,21 +56,23 @@ export default function Navbar() {
   return (
     <header
       id="top"
-      className={`fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5 md:px-8 lg:px-10 xl:px-20 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5 md:px-8 lg:px-40 xl:px-40 2xl:px-41 transition-all duration-300 ${
         scrolled
           ? "bg-gray-600/30 backdrop-blur-md shadow-sm"
           : "bg-transparent"
       }`}
     >
       {/* Desktop Navbar */}
-      <nav className="mb-2 hidden items-center justify-between gap-3 lg:flex xl:gap-4 2xl:px-19">
+      <nav className="mb-2 hidden items-center justify-between gap-3 lg:flex xl:gap-4">
         {/* Logo */}
         <div className="flex min-w-0 shrink-0 items-center">
           <Logo />
         </div>
 
         {/* Navigation Links */}
-        <div className={`${pill} mb-1 flex min-w-0 items-center gap-1 p-1.5 xl:gap-3 xl:p-2`}>
+        <div
+          className={`${pill} mb-1 flex min-w-0 items-center gap-1 p-1.5 xl:gap-3 xl:p-2`}
+        >
           <ul className="flex min-w-0 items-center gap-0.5 xl:gap-1">
             {LINKS.map((link) => (
               <li key={link.label} className="shrink-0">
@@ -143,20 +145,6 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Contact Modal */}
-        <Modal
-          isOpen={contactOpen}
-          onClose={() => setContactOpen(false)}
-          title="Contact Us"
-          size="lg"
-          theme="white"
-        >
-          <ContactModal
-            onClose={() => setContactOpen(false)}
-            onSubmit={handleContactSubmit}
-          />
-        </Modal>
-
         {/* Mobile Dropdown */}
         <div
           className={`${pill} absolute right-0 mt-2 w-56 max-w-full overflow-hidden py-2 transition-all duration-200 ${
@@ -186,21 +174,19 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Contact Modal for desktop */}
-      <div className="hidden lg:block">
-        <Modal
-          isOpen={contactOpen}
+      {/* Shared Contact Modal */}
+      <Modal
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+        title="Contact Us"
+        size="lg"
+        theme="white"
+      >
+        <ContactModal
           onClose={() => setContactOpen(false)}
-          title="Contact Us"
-          size="lg"
-          theme="white"
-        >
-          <ContactModal
-            onClose={() => setContactOpen(false)}
-            onSubmit={handleContactSubmit}
-          />
-        </Modal>
-      </div>
+          onSubmit={handleContactSubmit}
+        />
+      </Modal>
     </header>
   );
 }

@@ -45,12 +45,12 @@ const MissionVision = () => {
   };
 
   return (
-    <section className="relative bg-white px-4 py-14 sm:px-6 sm:py-16 lg:px-16 lg:py-7 ">
+    <section className="relative overflow-hidden bg-white px-4 py-14 sm:px-6 sm:py-16 md:px-8 lg:px-41 lg:py-7">
       <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-sky-100/60 blur-3xl" />
 
       <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
 
-      <div className="relative mx-auto w-full">
+      <div className="relative mx-auto w-full min-w-0">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,8 +58,6 @@ const MissionVision = () => {
           transition={{ duration: 0.5 }}
           className="mx-auto mb-8 max-w-3xl text-center sm:mb-10"
         >
-         
-
           <h2 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
             Our Mission & <span className="text-sky-500">Vision</span>
           </h2>
@@ -72,11 +70,11 @@ const MissionVision = () => {
         </motion.div>
 
         <div
-          className="mx-auto w-full max-w-6xl"
+          className="mx-auto w-full min-w-0"
           style={{ perspective: "1600px" }}
         >
           <motion.div
-            className="relative h-[410px] w-full cursor-pointer rounded-[1.5rem] sm:rounded-[1.75rem]"
+            className="relative h-[560px] w-full min-w-0 cursor-pointer rounded-[1.5rem] sm:h-[480px] sm:rounded-[1.75rem] md:h-[430px] lg:h-[410px]"
             style={{ transformStyle: "preserve-3d" }}
             animate={{ rotateY: showVision ? 180 : 0 }}
             transition={{
@@ -113,7 +111,7 @@ const CardFace = ({ data, dark, rotate }) => {
 
   return (
     <div
-      className={`absolute inset-0 flex flex-col overflow-hidden rounded-[1.5rem] border p-5 sm:rounded-[1.75rem] sm:p-7 lg:p-9 ${
+      className={`absolute inset-0 flex flex-col overflow-hidden rounded-[1.5rem] border p-4 sm:rounded-[1.75rem] sm:p-6 lg:p-9 ${
         dark
           ? "border-gray-800 bg-gradient-to-br from-[#030b12] via-[#071927] to-[#0c3049] text-white"
           : "border-sky-100 bg-gradient-to-br from-sky-50 via-white to-blue-50 text-gray-950 shadow-2xl"
