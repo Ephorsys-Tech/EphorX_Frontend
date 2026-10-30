@@ -8,8 +8,7 @@ import {
 
 import Modal from "../../ui/Modal";
 import ExpertDetailsModal from "../modal/ExpertDetailsModal";
-
-import { getAllTrainers } from "../../admin/api/trainerApi.js"
+import { getAllTrainers } from "../../admin/api/trainerApi.js";
 
 function ExpertCard({ expert, index, onViewDetails }) {
   return (
@@ -18,7 +17,7 @@ function ExpertCard({ expert, index, onViewDetails }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.55, delay: index * 0.1 }}
-      className="group relative isolate min-w-0 overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_8px_30px_-18px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_24px_55px_-24px_rgba(2,132,199,0.4)]"
+      className="group relative isolate min-w-0 shrink-0 overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_8px_30px_-18px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_24px_55px_-24px_rgba(2,132,199,0.4)] basis-full sm:basis-[calc(50%-12px)] lg:basis-[calc(33.333%-16px)] 2xl:basis-[calc(25%-18px)]"
     >
       {/* Expert photo */}
       <div className="relative h-85 overflow-hidden bg-slate-100 sm:h-92.5">
@@ -56,48 +55,60 @@ function ExpertCard({ expert, index, onViewDetails }) {
           </div>
         </div>
 
-        {/* Hover cover */}
-        <div className="absolute inset-0 flex flex-col justify-between bg-linear-to-br from-[#050b14]/95 via-[#071521]/90 to-sky-950/95 p-5 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-6">
-          <div className="">
-            <span className="relative left-30 rounded-full border border-sky-400/40 bg-sky-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-300">
-              Meet the expert
-            </span>
+      
+{/* Hover cover */}
+<div className="absolute inset-0 flex flex-col bg-linear-to-br from-[#050b14]/95 via-[#071521]/90 to-sky-950/95 p-5 opacity-0 transition-all duration-500 group-hover:opacity-100 sm:p-6">
 
+  {/* Top label */}
+  <div className="flex shrink-0 justify-end">
+    <span className="rounded-full border border-sky-400/40 bg-sky-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-sky-300">
+      Meet the expert
+    </span>
+  </div>
 
-          </div>
+  {/* Content */}
+  <div className="mt-6 flex min-h-0 flex-1 flex-col translate-y-3 transition-transform duration-500 group-hover:translate-y-0">
+<div className="absolute bottom-15">
+  
+    <p className="text-xs font-semibold uppercase tracking-widest text-sky-300">
+      Specializes in
+    </p>
 
-          <div className="translate-y-5 transition-transform duration-500 group-hover:translate-y-0">
-            <p className="text-xs font-semibold uppercase tracking-widest text-sky-300">
-              Specializes in
-            </p>
+    <h3 className="mt-2 text-2xl font-extrabold leading-tight text-white">
+      {expert.role}
+    </h3>
 
-            <h3 className="mt-2 text-2xl font-extrabold leading-tight text-white">
-              {expert.role}
-            </h3>
+    <p className="mt-2 line-clamp-3 text-sm leading-5 text-slate-300">
+      {expert.description}
+    </p>
 
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              {expert.description}
-            </p>
+    <div className="mt-3 flex shrink-0 items-center gap-2 text-xs font-semibold text-white/70">
+      <GraduationCap size={17} className="shrink-0 text-sky-300" />
+      {expert.experience} of experience
+    </div>
 
-            <div className="mt-5 flex items-center gap-2 text-xs font-semibold text-white/70">
-              <GraduationCap size={17} className="text-sky-300" />
-              {expert.experience} of experience
-            </div>
+</div>
+    {/* Button pushed towards bottom */}
+    <button
+      type="button"
+      onClick={() => onViewDetails(expert)}
+      className="mt-auto pt-4"
+    >
+      <span className="flex w-full items-center justify-between rounded-xl bg-sky-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all duration-300 hover:bg-white">
+        View Details
+        <ArrowUpRight size={19} />
+      </span>
+    </button>
 
-            <button
-              type="button"
-              onClick={() => onViewDetails(expert)}
-              className="mt-6 flex w-full items-center justify-between rounded-xl bg-sky-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all duration-300 hover:bg-white"
-            >
-              View Details
-              <ArrowUpRight size={19} />
-            </button>
-          </div>
+  </div>
 
-          <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
-            <div className="h-full w-0 rounded-full bg-sky-400 transition-all duration-700 group-hover:w-full" />
-          </div>
-        </div>
+  {/* Fixed bottom line */}
+  <div className="mt-2 h-1 w-full shrink-0 overflow-hidden rounded-full bg-white/10">
+    <div className="h-full w-0 rounded-full bg-sky-400 transition-all duration-700 group-hover:w-full" />
+  </div>
+
+</div>
+
       </div>
 
       {/* Bottom identity strip */}
@@ -119,7 +130,6 @@ function ExpertCard({ expert, index, onViewDetails }) {
     </motion.article>
   );
 }
-
 
 export default function IndustryExperts() {
   const [selectedExpert, setSelectedExpert] = useState(null);
@@ -220,6 +230,7 @@ export default function IndustryExperts() {
       <div className="pointer-events-none absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
 
       <div className="relative mx-auto px-5 sm:px-8 lg:px-12">
+
         {/* Section heading */}
         <motion.div
           initial={{ opacity: 0, y: 22 }}
@@ -261,7 +272,6 @@ export default function IndustryExperts() {
         </motion.div>
 
         {/* Expert cards */}
-
         {loading ? (
           <div className="col-span-full py-12 text-center text-slate-500">
             Loading trainers...
@@ -275,7 +285,7 @@ export default function IndustryExperts() {
             No trainers available yet.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+          <div className="flex w-full gap-5 overflow-x-auto overflow-y-hidden pb-4 sm:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {experts.map((expert, index) => (
               <ExpertCard
                 key={expert.id}
@@ -286,7 +296,6 @@ export default function IndustryExperts() {
             ))}
           </div>
         )}
-
 
         {/* Bottom statement */}
         <motion.div
@@ -320,7 +329,8 @@ export default function IndustryExperts() {
           >
             Meet our experts
 
-            <ArrowUpRight size={19}
+            <ArrowUpRight
+              size={19}
               className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5 -rotate-45"
             />
           </button>

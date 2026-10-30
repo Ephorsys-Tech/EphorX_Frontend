@@ -132,7 +132,7 @@ export default function CoursesByCategory({
   highlight = "Category.",
   description = "Discover your next skill. Explore expert-led courses designed to help you learn, grow, and move forward with confidence.",
   buttonText = "Explore All Courses",
-  buttonTo = "/Course",
+  buttonTo = "/Courses",
   showButton = true,
   showBottomNote = true,
   bottomNote = "Find the right course for your next big step.",
@@ -305,8 +305,8 @@ export default function CoursesByCategory({
                     category.description ?? category.details ?? ""
                   }
                   courses={getCourseCount(categoryId)}
-                  featured={category.featured ?? false}
-                  to="/Course"
+                  featured={index % 2 === 0}
+                  to="/Courses"
                   index={index}
                 />
               );
