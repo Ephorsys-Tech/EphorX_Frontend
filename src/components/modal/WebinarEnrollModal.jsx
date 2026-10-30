@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   ArrowRight,
@@ -9,6 +8,8 @@ import {
   Phone,
   UserRound,
 } from "lucide-react";
+
+import { createWebinarEnrollment } from "../../admin/api/webEnrollApi.js";
 
 const initialForm = {
   name: "",
@@ -30,6 +31,8 @@ export default function WebinarEnrollModal({
   onSubmit,
 }) {
   const [form, setForm] = useState(initialForm);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,12 +43,50 @@ export default function WebinarEnrollModal({
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    onSubmit?.(form, webinar);
-    setForm(initialForm);
-    onClose();
+    if (!webinar?._id && !webinar?.webinarId) {
+      setError("Webinar ID is missing. Please try again.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    const formData = {
+      webinarId: webinar.webinarId || webinar._id,
+      fullName: form.name.trim(),
+      email: form.email.trim().toLowerCase(),
+      phoneNumber: form.number.trim(),
+      whatsappNumber: form.wpNumber.trim(),
+      profession: form.profession,
+    };
+
+    try {
+      const result = await createWebinarEnrollment(formData);
+
+      if (result?.alreadyEnrolled) {
+        setError("This email is already enrolled in this webinar.");
+        return;
+      }
+
+      // Call the optional parent callback if provided
+      await onSubmit?.(result);
+
+      alert("Webinar enrollment saved successfully!");
+
+      setForm(initialForm);
+
+      onClose?.();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Unable to save enrollment. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -60,7 +101,6 @@ export default function WebinarEnrollModal({
           </div>
 
           <div className="min-w-0 flex-1">
-            
             <h3 className=" break-words text-base font-bold leading-snug text-gray-950 sm:text-lg">
               {webinar?.title || "Register for a Webinar"}
             </h3>
@@ -222,11 +262,18 @@ export default function WebinarEnrollModal({
 
         {/* Submit */}
         <div className="border-t border-gray-100 pt-5">
+          {error && (
+            <p className="mb-3 text-sm text-red-500">
+              {error}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99]"
+            disabled={loading}
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Submit Enrollment
+            {loading ? "Submitting..." : "Submit Enrollment"}
             <ArrowRight
               size={17}
               className="transition-transform duration-300 group-hover:translate-x-1"

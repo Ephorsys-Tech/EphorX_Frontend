@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   ArrowRight,
@@ -9,6 +8,8 @@ import {
   Phone,
   UserRound,
 } from "lucide-react";
+
+import { createCourseEnrollment } from "../../admin/api/courseEnrollApi.js";
 
 const initialForm = {
   name: "",
@@ -25,6 +26,8 @@ const labelClass = "mb-2 block text-sm font-semibold text-gray-700";
 
 const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
   const [form, setForm] = useState(initialForm);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,22 +38,49 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    onSubmit?.(
-      {
-        ...form,
-        phone: form.number,
-        wpNumber: form.wpNumber,
-        courseId: course?._id,
-        courseTitle: course?.title,
-      },
-      course
-    );
+    if (!course?._id && !course?.courseId) {
+      setError("Course ID is missing. Please try again.");
+      return;
+    }
 
-    setForm(initialForm);
-    onClose?.();
+    setLoading(true);
+    setError("");
+
+    const formData = {
+      courseId: course.courseId || course._id,
+      fullName: form.name.trim(),
+      email: form.email.trim().toLowerCase(),
+      phoneNumber: form.number.trim(),
+      whatsappNumber: form.wpNumber.trim(),
+      profession: form.profession,
+    };
+
+    try {
+      const result = await createCourseEnrollment(formData);
+
+      if (result?.alreadyEnrolled) {
+        setError("This email is already enrolled in this course.");
+        return;
+      }
+
+      // Optional parent callback
+      await onSubmit?.(result, course);
+
+      alert("Course enrollment saved successfully!");
+
+      setForm(initialForm);
+      onClose?.();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Unable to save enrollment. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -236,6 +266,12 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
         {/* Submit and cancel */}
         <div className="border-t border-gray-100 pt-5">
+          {error && (
+            <p className="mb-3 text-sm text-red-500">
+              {error}
+            </p>
+          )}
+
           <div className="flex flex-col-reverse gap-3 sm:flex-row">
             <button
               type="button"
@@ -247,9 +283,10 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
             <button
               type="submit"
-              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99]"
+              disabled={loading}
+              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Submit Enrollment
+              {loading ? "Submitting..." : "Submit Enrollment"}
 
               <ArrowRight
                 size={17}

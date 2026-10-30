@@ -22,6 +22,7 @@ import ViewTrainer from '../admin/pages/trainer/ViewTrainer'
 import ViewWebinar from '../admin/pages/webinar/ViewWebinar'
 import EditWebinar from '../admin/pages/webinar/EditWebinar'
 import AddWebinar from '../admin/pages/webinar/AddWebinar'
+import Enrollment from '../admin/pages/Enrollment/Enrollment'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -54,6 +55,8 @@ const AdminRoutes = (
         <Route path='add-trainer' element={<AddTrainer/>}/>
         <Route path='edit-trainer/:id' element={<EditTrainer/>}/>
         <Route path='view-trainer/:id' element={<ViewTrainer/>}/>
+
+        <Route path='enrollments' element={<Enrollment/>}/>
       </Route>
     </Route>
   </Route>
