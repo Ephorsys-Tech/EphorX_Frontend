@@ -9,6 +9,7 @@ import {
   LogOut,
   Phone,
   Cast,
+  UserRoundPen,
 } from "lucide-react";
 
 import logo from '../assets/Logolight.png'
@@ -49,9 +50,9 @@ const NAV_ITEMS = [
     icon: Cast,
   },
   {
-    path: "/admin/gallery",
-    label: "Gallery",
-    icon: Images,
+    path: "/admin/enrollments",
+    label: "Enrollments",
+    icon: UserRoundPen,
   },
 ];
 
