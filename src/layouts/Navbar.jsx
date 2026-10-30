@@ -27,7 +27,7 @@ function Logo() {
       <img
         src={image}
         alt="EphorX logo"
-        className="absolute -left-5 top-[37%] h-auto w-44 max-w-none -translate-y-1/2 object-contain sm:-left-7 sm:w-48 md:-left-8 md:w-52 lg:-left-10 lg:w-57"
+        className="absolute -left-5 top-[37%] h-auto w-44 max-w-none -translate-y-1/2 object-contain sm:-left-7 sm:w-48 md:-left-8 md:w-52 lg:-left-12 lg:w-57"
       />
     </Link>
   );
@@ -116,7 +116,7 @@ export default function Navbar() {
       {/* Mobile and Tablet Navbar */}
       <div className="relative mb-1 lg:hidden">
         <nav
-          className={`${pill} flex w-full items-center justify-between gap-2 p-1.5 pb-3`}
+          className={`${pill} flex w-full items-center justify-between gap-2 p-1.5 pb-1`}
         >
           <Logo />
 

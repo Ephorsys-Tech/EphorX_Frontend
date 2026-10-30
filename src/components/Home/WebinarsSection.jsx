@@ -204,7 +204,7 @@ export default function WebinarsSection({
 
   return (
     <>
-      <section className="relative overflow-hidden bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-40 lg:py-4">
+      <section className="relative overflow-hidden bg-white px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-40 lg:py-4">
         <div className="pointer-events-none absolute -right-40 top-20 h-80 w-80 rounded-full bg-sky-100/60 blur-3xl" />
 
         <div className="relative mx-auto w-full">
