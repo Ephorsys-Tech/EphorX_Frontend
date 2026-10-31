@@ -27,9 +27,10 @@ import CompanyMapModal from "../components/modal/CompanyMapModal";
 
 const quickLinks = [
   { label: "Home", to: "/" },
-  { label: "Courses", to: "/Course" },
+  { label: "Courses", to: "/Courses" },
   { label: "About Us", to: "/about" },
   { label: "Our Process", to: "/process" },
+   { label: "Careers", to: "/careers" },
   { label: "Contact", to: "/contact" },
   { label: "FAQs", to: "/faq" },
 ];
