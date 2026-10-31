@@ -8,6 +8,7 @@ import About from '../web/pages/About'
 import Courses from '../web/pages/Courses'
 import CourseDetails from '../components/course/CourseDetails'
 import Process from '../web/pages/Process'
+import Careers from '../web/pages/Careers'
 
 const PublicRoutes = (
   <Route path='/' element={<MainLayout />}>
@@ -17,6 +18,8 @@ const PublicRoutes = (
     <Route path='/contact' element={<Contact />} />
     <Route path='/about' element={<About />} />
     <Route path='/process' element={<Process />} />
+        <Route path='/careers' element={<Careers />} />
+
 
     <Route path="/CourseDetails" element={<CourseDetails />} />
     <Route path='*' element={<NotFound />} />

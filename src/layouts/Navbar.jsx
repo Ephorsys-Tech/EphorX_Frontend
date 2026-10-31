@@ -10,6 +10,7 @@ const LINKS = [
   { label: "Course", to: "/Courses" },
   { label: "About", to: "/about" },
   { label: "Process", to: "/process" },
+   { label: "Careers", to: "/careers" },
   { label: "Contact", to: "/contact" },
   { label: "FAQ", to: "/faq" },
 ];
@@ -80,7 +81,7 @@ export default function Navbar() {
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `block rounded-full px-3 py-2 text-sm font-semibold transition xl:px-5 xl:text-md ${
+                    `block rounded-full px-3 py-2 text-sm font-semibold transition md:px-0 xl:px-5 xl:text-md xl:mx-1 lg:mx-1.5  ${
                       isActive
                         ? "bg-sky-200/30 text-sky-500"
                         : "text-black hover:bg-black/5"
