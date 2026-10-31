@@ -190,17 +190,7 @@ const Courses = () => {
                       {course.type}
                     </span>
 
-                    <span className="absolute bottom-4 left-4 flex flex-wrap items-center gap-1.5 text-sm font-bold text-white">
-                      <Star
-                        size={16}
-                        fill="currentColor"
-                        className="shrink-0 text-amber-400"
-                      />
-                      {course.rating ?? "New"}
-                      <span className="font-normal text-white/80">
-                        ({course.students ?? 0} students)
-                      </span>
-                    </span>
+                    
                   </div>
 
                   {/* Course Content */}

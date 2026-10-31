@@ -10,6 +10,11 @@ import {
   Phone,
   Cast,
   UserRoundPen,
+  Target,
+  BriefcaseBusiness,
+  ScreenShare,
+  BookText,
+  FileUser,
 } from "lucide-react";
 
 import logo from '../assets/Logolight.png'
@@ -32,7 +37,7 @@ const NAV_ITEMS = [
   {
     path: "/admin/course",
     label: "Courses",
-    icon: Users,
+    icon: BookText,
   },
   {
     path: "/admin/contacts",
@@ -54,6 +59,26 @@ const NAV_ITEMS = [
     label: "Enrollments",
     icon: UserRoundPen,
   },
+  {
+    path: "/admin/jobs",
+    label: "Jobs",
+    icon: BriefcaseBusiness,
+  },
+  {
+    path: "/admin/careers",
+    label: "Job Applications",
+    icon: FileUser,
+  },
+  {
+    path: "/admin/book-demo",
+    label: "Demo Session",
+    icon: ScreenShare,
+  },
+  {
+    path: "/admin/syllabus-lead",
+    label: "Syllabus Leads",
+    icon: Target,
+  },
 ];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -73,17 +98,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         />
       )}
 
+
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50
-                    flex h-dvh w-64 flex-col
-                  bg-slate-900 text-white
-                    transition-transform duration-300
-                    lg:sticky lg:top-0 lg:translate-x-0 lg:shrink-0
-                   ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+              flex h-dvh w-64 shrink-0 flex-col overflow-hidden 
+              bg-slate-900 text-white
+              transition-transform duration-300
+              lg:sticky lg:top-0 lg:translate-x-0
+              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Logo */}
-        <div className="flex items-center justify-between border-b border-white/10 px-6 py-1">
+
+        {/* Fixed Logo */}
+        <div className="flex shrink-0 items-center justify-between
+                  border-b border-white/10 px-6 py-1">
+
           <div className="flex items-center justify-center overflow-hidden rounded-xl">
             <img
               src={logo}
@@ -106,8 +135,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="min-h-0 flex-1 space-y-1 overflow-y-hidden px-4 py-6">
+        {/* Scrollable Navigation */}
+        <nav className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden space-y-1 px-4 py-6 scrollbar-none">
           {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
             <NavLink
               key={path}
@@ -115,8 +144,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `flex w-full items-center gap-3 rounded-xl px-4 py-2.5
-                text-sm font-medium transition-all
-                ${isActive
+          text-sm font-medium transition-all
+          ${isActive
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
                   : "text-slate-400 hover:bg-white/10 hover:text-white"
                 }`
@@ -128,14 +157,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           ))}
         </nav>
 
-        {/* Logout Button at Bottom */}
-        <div className="mt-auto border-t border-white/10 p-4">
+        {/* Fixed Logout */}
+        <div className="shrink-0 border-t border-white/10 p-4">
           <button
             type="button"
             onClick={() => setLogoutModalOpen(true)}
             className="flex w-full items-center gap-3 rounded-xl px-4 py-3
-              text-sm font-medium text-red-400 transition-all
-              hover:bg-red-500/10 hover:text-red-300"
+        text-sm font-medium text-red-400 transition-all
+        hover:bg-red-500/10 hover:text-red-300"
           >
             <LogOut size={18} />
             Logout
