@@ -65,7 +65,7 @@ const NAV_ITEMS = [
     icon: BriefcaseBusiness,
   },
   {
-    path: "/admin/careers",
+    path: "/admin/apply-jobs",
     label: "Job Applications",
     icon: FileUser,
   },
@@ -75,7 +75,7 @@ const NAV_ITEMS = [
     icon: ScreenShare,
   },
   {
-    path: "/admin/syllabus-lead",
+    path: "/admin/syllabus-leads",
     label: "Syllabus Leads",
     icon: Target,
   },
