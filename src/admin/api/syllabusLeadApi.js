@@ -1,7 +1,9 @@
 
 import axios from "axios";
 
+
 const API_URL = "http://localhost:5500/api/auth/syllabus-lead";
+
 
 export const getAllSyllabusLeads = async () => {
   const response = await axios.get(`${API_URL}/get-all-lead`);

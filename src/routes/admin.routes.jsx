@@ -88,7 +88,7 @@ const AdminRoutes = (
         <Route path='view-demo/:id' element={<ViewDemoSession/>}/>
         <Route path='edit-demo/:id' element={<EditDemoSession/>}/>
 
-        <Route path='syllabus-leads' element={<SyllabusLeads/>}/>
+        <Route path='syllabus-lead' element={<SyllabusLeads/>}/>
         <Route path='view-lead/:id' element={<ViewSyllabusLead/>}/>
         <Route path='edit-lead/:id' element={<EditSyllabusLead/>}/>
       </Route>

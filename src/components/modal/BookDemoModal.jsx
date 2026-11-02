@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   User,
   Mail,
@@ -7,6 +6,9 @@ import {
   GraduationCap,
   BookOpen,
 } from "lucide-react";
+
+import { courseApi } from "../../admin/api/courseApi";
+import { createDemoBooking } from "../../admin/api/demoBookingApi";
 
 const initialForm = {
   name: "",
@@ -19,18 +21,39 @@ const initialForm = {
 
 const BookDemoModal = ({ onClose }) => {
   const [formData, setFormData] = useState(initialForm);
+  const [courses, setCourses] = useState([]);
+  const [coursesLoading, setCoursesLoading] = useState(true);
+
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const courses = [
-    "Web Development",
-    "MERN Stack Development",
-    "Python Programming",
-    "Java Programming",
-    "Data Analytics",
-    "Other",
-  ];
+  // Fetch courses from backend
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setCoursesLoading(true);
+
+        const response = await courseApi.getAll();
+
+        const courseData = Array.isArray(response)
+          ? response
+          : response?.courses ||
+            response?.data?.courses ||
+            response?.data ||
+            [];
+
+        setCourses(courseData);
+      } catch (err) {
+        console.error("FETCH COURSES ERROR:", err);
+        setError(err.message || "Unable to load courses.");
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,30 +68,65 @@ const BookDemoModal = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    if (!formData.name.trim() || !formData.email.trim()) {
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim() ||
+      !formData.course
+    ) {
       setError("Please fill in all required fields.");
+      return;
+    }
+
+    const selectedCourse = courses.find(
+      (course) => course._id === formData.course
+    );
+
+    if (!selectedCourse) {
+      setError("Please select a valid course.");
       return;
     }
 
     try {
       setLoading(true);
 
-      // Connect your demo booking API here.
-      console.log("Demo booking:", formData);
+      const bookingData = {
+        fullName: formData.name.trim(),
+        email: formData.email.trim(),
+        phoneNumber: formData.phone.trim(),
+        whatsappNumber: formData.wpno.trim() || formData.phone.trim(),
+        qualification: formData.qualification.trim(),
+        courseId: selectedCourse._id,
+        courseName: selectedCourse.title,
+      };
+
+      const response = await createDemoBooking(bookingData);
+
+      if (response?.success === false) {
+        throw new Error(
+          response.message || "Unable to submit your demo request."
+        );
+      }
 
       setSubmitted(true);
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      console.error("DEMO BOOKING ERROR:", err);
+
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleClose = () => {
-    onClose();
     setFormData(initialForm);
     setSubmitted(false);
     setError("");
+    onClose();
   };
 
   return (
@@ -106,7 +164,7 @@ const BookDemoModal = ({ onClose }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name */}
+            {/* Full Name */}
             <div>
               <label
                 htmlFor="demo-name"
@@ -120,6 +178,7 @@ const BookDemoModal = ({ onClose }) => {
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <input
                   id="demo-name"
                   type="text"
@@ -148,6 +207,7 @@ const BookDemoModal = ({ onClose }) => {
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <input
                   id="demo-email"
                   type="email"
@@ -177,6 +237,7 @@ const BookDemoModal = ({ onClose }) => {
                     size={18}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                   />
+
                   <input
                     id="demo-phone"
                     type="tel"
@@ -204,6 +265,7 @@ const BookDemoModal = ({ onClose }) => {
                     size={18}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                   />
+
                   <input
                     id="demo-wpno"
                     type="tel"
@@ -231,6 +293,7 @@ const BookDemoModal = ({ onClose }) => {
                   size={19}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <input
                   type="text"
                   id="demo-qualification"
@@ -257,24 +320,34 @@ const BookDemoModal = ({ onClose }) => {
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <select
                   id="demo-course"
                   name="course"
                   value={formData.course}
                   onChange={handleChange}
                   required
-                  className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-600 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  disabled={coursesLoading || courses.length === 0}
+                  className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-600 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100"
                 >
-                  <option value="">Select a course</option>
+                  <option value="">
+                    {coursesLoading
+                      ? "Loading courses..."
+                      : courses.length === 0
+                        ? "No courses available"
+                        : "Select a course"}
+                  </option>
+
                   {courses.map((course) => (
-                    <option key={course} value={course}>
-                      {course}
+                    <option key={course._id} value={course._id}>
+                      {course.title}
                     </option>
                   ))}
                 </select>
               </div>
             </div>
 
+            {/* Error */}
             {error && (
               <p
                 role="alert"
@@ -284,9 +357,10 @@ const BookDemoModal = ({ onClose }) => {
               </p>
             )}
 
+            {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || coursesLoading || courses.length === 0}
               className="w-full rounded-xl bg-[#156fb4] px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Submitting..." : "Book My Free Demo"}

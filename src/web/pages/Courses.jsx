@@ -14,6 +14,7 @@ import { categoryApi } from "../../admin/api/categoryApi.js";
 import { courseApi } from "../../admin/api/courseApi.js";
 import Modal from "../../ui/Modal.jsx";
 import SyllabusRequestModal from "../../components/modal/SyllabusRequestModal.jsx";
+import { createSyllabusLead } from "../../admin/api/syllabusLeadApi.js";
 
 const Courses = () => {
   const navigate = useNavigate();
@@ -22,6 +23,16 @@ const Courses = () => {
   const [fetchedCourses, setFetchedCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [syllabusForm, setSyllabusForm] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    whatsappNumber: "",
+    qualification: "",
+  });
+
+  const [syllabusLoading, setSyllabusLoading] = useState(false);
+  const [syllabusError, setSyllabusError] = useState("");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -95,6 +106,60 @@ const Courses = () => {
     });
   };
 
+  const handleSyllabusSubmit = async (e) => {
+  e.preventDefault();
+  setSyllabusError("");
+
+  if (!selectedSyllabusCourse) return;
+
+  try {
+    setSyllabusLoading(true);
+
+    const payload = {
+      ...syllabusForm,
+      courseId: selectedSyllabusCourse._id,
+      courseName: selectedSyllabusCourse.title,
+      syllabusUrl: selectedSyllabusCourse.syllabusUrl,
+    };
+
+    const response = await createSyllabusLead(payload);
+
+    if (!response.success) {
+      throw new Error(response.message || "Unable to save your details.");
+    }
+
+    const syllabusUrl =
+      response.syllabusUrl || response.download?.syllabusUrl;
+
+    if (!syllabusUrl) {
+      throw new Error("Your details were saved, but the syllabus URL is missing.");
+    }
+
+    // Open the syllabus after successful submission
+    window.open(syllabusUrl, "_blank", "noopener,noreferrer");
+
+    setSyllabusForm({
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      whatsappNumber: "",
+      qualification: "",
+    });
+
+    setSelectedSyllabusCourse(null);
+  } catch (error) {
+    console.error("SYLLABUS SUBMISSION ERROR:", error);
+
+    setSyllabusError(
+      error.response?.data?.message ||
+        error.message ||
+        "Something went wrong. Please try again."
+    );
+  } finally {
+    setSyllabusLoading(false);
+  }
+};
+
   return (
     <section
       id="courses"
@@ -134,8 +199,8 @@ const Courses = () => {
               type="button"
               onClick={() => setActiveCategory(category)}
               className={`rounded-full border px-4 py-2.5 text-xs font-bold transition-colors duration-200 sm:px-5 sm:text-sm ${activeCategory === category
-                  ? "border-slate-950 bg-slate-950 text-white shadow-lg shadow-slate-900/15"
-                  : "border-slate-200 bg-white/90 text-slate-600 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
+                ? "border-slate-950 bg-slate-950 text-white shadow-lg shadow-slate-900/15"
+                : "border-slate-200 bg-white/90 text-slate-600 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
                 }`}
             >
               {category}
@@ -271,20 +336,20 @@ const Courses = () => {
           )}
         </motion.div>
 
-      
+
       </div>
       <Modal
-  isOpen={Boolean(selectedSyllabusCourse)}
-  onClose={() => setSelectedSyllabusCourse(null)}
-  title="Get Course Syllabus"
-  size="lg"
-  theme="white"
->
-  <SyllabusRequestModal
-    course={selectedSyllabusCourse}
-    onClose={() => setSelectedSyllabusCourse(null)}
-  />
-</Modal>
+        isOpen={Boolean(selectedSyllabusCourse)}
+        onClose={() => setSelectedSyllabusCourse(null)}
+        title="Get Course Syllabus"
+        size="lg"
+        theme="white"
+      >
+        <SyllabusRequestModal
+          course={selectedSyllabusCourse}
+          onClose={() => setSelectedSyllabusCourse(null)}
+        />
+      </Modal>
     </section>
   );
 };

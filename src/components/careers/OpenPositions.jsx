@@ -1,90 +1,46 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, BriefcaseBusiness } from "lucide-react";
 import Modal from "../../ui/Modal";
 import JobInformation from "../../components/modal/JobInformation";
 import JobApplicationForm from "../../components/modal/JobApplicationForm";
-
-const jobs = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    type: "Full-time",
-    location: "Odisha",
-    experience: "Fresher / 0–1 Year",
-    shortDescription:
-      "Build responsive and interactive web applications using modern frontend technologies.",
-    description:
-      "We are looking for a motivated Frontend Developer who enjoys creating attractive and user-friendly web experiences.",
-    responsibilities: [
-      "Develop responsive user interfaces.",
-      "Build reusable React components.",
-      "Integrate frontend applications with REST APIs.",
-      "Identify and fix UI issues.",
-    ],
-    requirements: [
-      "Knowledge of HTML, CSS and JavaScript.",
-      "Basic understanding of React.js.",
-      "Familiarity with REST APIs.",
-      "Good problem-solving skills.",
-    ],
-  },
-  {
-    id: 2,
-    title: "MERN Stack Developer",
-    type: "Full-time",
-    location: "Odisha",
-    experience: "0–2 Years",
-    shortDescription:
-      "Work on full-stack applications using MongoDB, Express, React and Node.js.",
-    description:
-      "We are looking for a developer interested in building full-stack web applications and learning modern development practices.",
-    responsibilities: [
-      "Develop frontend features using React.",
-      "Build backend APIs using Node.js and Express.",
-      "Work with MongoDB databases.",
-      "Collaborate with the development team.",
-    ],
-    requirements: [
-      "Knowledge of JavaScript.",
-      "Basic understanding of React.js and Node.js.",
-      "Familiarity with MongoDB.",
-      "Understanding of REST API concepts.",
-    ],
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer",
-    type: "Full-time",
-    location: "Odisha",
-    experience: "Fresher / 0–1 Year",
-    shortDescription:
-      "Design intuitive interfaces and engaging digital experiences.",
-    description:
-      "We are looking for a creative designer who can turn ideas into clear and user-friendly digital experiences.",
-    responsibilities: [
-      "Create wireframes and prototypes.",
-      "Design website and application interfaces.",
-      "Collaborate with developers.",
-      "Improve designs based on feedback.",
-    ],
-    requirements: [
-      "Understanding of UI/UX principles.",
-      "Basic knowledge of Figma.",
-      "Good visual and creative skills.",
-      "Understanding of responsive design.",
-    ],
-  },
-];
+import { getAllJobs } from "../../admin/api/jobApi.js"
 
 const OpenPositions = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [search, setSearch] = useState("");
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await getAllJobs();
+
+      const jobData = Array.isArray(response)
+        ? response
+        : response?.jobs || response?.data || [];
+
+      setJobs(jobData);
+    } catch (error) {
+      console.error("FETCH JOBS ERROR:", error);
+      setError("Unable to load job positions.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
   const filteredJobs = jobs.filter((job) =>
-    `${job.title} ${job.location} ${job.type}`
+    `${job.title || ""} ${job.location || ""} ${job.employmentType || ""
+      }`
       .toLowerCase()
       .includes(search.toLowerCase())
   );
@@ -104,6 +60,7 @@ const OpenPositions = () => {
     console.log("Application for:", job.title);
     console.log("Application data:", Object.fromEntries(applicationData));
   };
+
 
   return (
     <section
@@ -147,12 +104,25 @@ const OpenPositions = () => {
         </div>
       </div>
 
-      {/* Job Cards */}
-      {filteredJobs.length > 0 ? (
+      {loading ? (
+        <div className="py-12 text-center text-slate-500">
+          Loading open positions...
+        </div>
+      ) : error ? (
+        <div className="py-12 text-center text-red-500">
+          {error}
+          <button
+            onClick={fetchJobs}
+            className="ml-3 font-bold text-sky-600"
+          >
+            Retry
+          </button>
+        </div>
+      ) : filteredJobs.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredJobs.map((job, index) => (
             <motion.div
-              key={job.id}
+              key={job._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -162,7 +132,7 @@ const OpenPositions = () => {
               <div className="group flex w-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-900/10">
                 {/* Job Type */}
                 <span className="w-fit rounded-full bg-sky-50 px-3 py-1 text-xs font-bold text-sky-700 transition group-hover:bg-sky-100">
-                  {job.type}
+                  {job.employmentType}
                 </span>
 
                 {/* Job Content */}
@@ -171,7 +141,7 @@ const OpenPositions = () => {
                 </h3>
 
                 <p className="mt-3 min-h-[72px] text-sm leading-6 text-slate-500">
-                  {job.shortDescription}
+                  {job.jobDescription}
                 </p>
 
                 {/* Job Info */}
