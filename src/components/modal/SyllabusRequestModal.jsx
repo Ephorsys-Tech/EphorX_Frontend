@@ -36,69 +36,63 @@ const SyllabusRequestModal = ({ course, onClose }) => {
   };
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (!course) return;
+    if (!course) return;
 
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {
-    const payload = {
-      fullName: formData.name.trim(),
-      email: formData.email.trim(),
-      phoneNumber: formData.phone.trim(),
-      whatsappNumber: formData.wpno.trim() || formData.phone.trim(),
-      qualification: formData.qualification.trim(),
-      courseId: course._id,
-      courseName: course.title,
-      syllabusUrl: course.syllabusUrl,
-    };
+    try {
+      const payload = {
+        fullName: formData.name.trim(),
+        email: formData.email.trim(),
+        phoneNumber: formData.phone.trim(),
+        whatsappNumber:
+          formData.wpno.trim() || formData.phone.trim(),
+        qualification: formData.qualification.trim(),
+        courseId: course._id,
+        courseName: course.title,
+        syllabusUrl: course.syllabusUrl || course.syllabus,
+      };
 
-    const response = await createSyllabusLead(payload);
+      if (!payload.syllabusUrl) {
+        throw new Error("Syllabus PDF is not available for this course.");
+      }
 
-    if (!response.success) {
-      throw new Error(
-        response.message || "Unable to submit your request."
+      const response = await createSyllabusLead(payload);
+
+      if (!response?.success) {
+        throw new Error(
+          response?.message || "Unable to submit your request."
+        );
+      }
+
+      // Open the syllabus after successful lead creation.
+      const link = document.createElement("a");
+      link.href = payload.syllabusUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.download = `${course.title}-syllabus.pdf`;
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setFormData(initialForm);
+      onClose();
+    } catch (err) {
+      console.error("Syllabus request failed:", err);
+
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
-
-    const pdfUrl =
-      response.syllabusUrl ||
-      response.download?.syllabusUrl ||
-      course.syllabusUrl;
-
-    if (!pdfUrl) {
-      throw new Error(
-        "Your details were submitted, but the syllabus URL was not found."
-      );
-    }
-
-    // Open the syllabus PDF.
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.download = `${course.title}-syllabus.pdf`;
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setFormData(initialForm);
-    onClose();
-  } catch (err) {
-    console.error("Syllabus request failed:", err);
-
-    setError(
-      err.response?.data?.message ||
-        err.message ||
-        "Something went wrong. Please try again."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   if (!course) return null;
 
@@ -265,11 +259,11 @@ const SyllabusRequestModal = ({ course, onClose }) => {
         </p>
       )}
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? (
           <>
