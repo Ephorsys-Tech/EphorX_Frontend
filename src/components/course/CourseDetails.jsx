@@ -15,6 +15,7 @@ import {
 import Modal from "../../ui/Modal";
 import SyllabusModal from "../modal/SyllabusModal";
 import CourseEnrollModal from "../modal/CourseEnrollModal";
+import SyllabusRequestModal from "../modal/SyllabusRequestModal";
 
 function Detail({ icon: Icon, label, value }) {
   return (
@@ -38,8 +39,8 @@ export default function CourseDetails() {
   const navigate = useNavigate();
 
   const selectedCourse = location.state?.course;
+  const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null);
 
-  const [selectedSyllabus, setSelectedSyllabus] = useState(null);
   const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
   // No backend changes: use the selected course returned by the existing API.
@@ -201,7 +202,7 @@ export default function CourseDetails() {
             </div>
 
             {/* Course syllabus */}
-            <div className="mt-6 flex gap-59.5 border-t border-slate-100 pt-4">
+            <div className="mt-6 flex gap-6  lg:gap-5 xl:gap-49.5 border-t border-slate-100 pt-4 flex-col md:flex-row">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
                   <FileText size={19} />
@@ -219,8 +220,8 @@ export default function CourseDetails() {
 
               <button
                 type="button"
-                onClick={() => setSelectedSyllabus(course)}
-                className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-slate-950 sm:self-auto"
+                onClick={() => setSelectedSyllabusCourse(course)}
+                className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-slate-950 sm:self-auto ml-10"
               >
                 <FileText size={16} />
                 View Syllabus
@@ -293,7 +294,7 @@ export default function CourseDetails() {
 
       <div className="mt-6 text-center">
         <Link
-          to="/Course"
+          to="/Courses"
           className="text-sm font-medium text-slate-500 transition-colors duration-200 hover:text-sky-600"
         >
           Explore more courses
@@ -317,14 +318,17 @@ export default function CourseDetails() {
 
       {/* Syllabus modal */}
       <Modal
-        isOpen={Boolean(selectedSyllabus)}
-        onClose={() => setSelectedSyllabus(null)}
-        title="Course Syllabus"
-        size="xl"
-        theme="white"
-      >
-        <SyllabusModal course={selectedSyllabus} />
-      </Modal>
+  isOpen={Boolean(selectedSyllabusCourse)}
+  onClose={() => setSelectedSyllabusCourse(null)}
+  title="Get Course Syllabus"
+  size="lg"
+  theme="white"
+>
+  <SyllabusRequestModal
+    course={selectedSyllabusCourse}
+    onClose={() => setSelectedSyllabusCourse(null)}
+  />
+</Modal>
     </main>
   );
 }
