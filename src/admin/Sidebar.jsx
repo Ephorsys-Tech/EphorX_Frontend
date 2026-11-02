@@ -75,7 +75,7 @@ const NAV_ITEMS = [
     icon: ScreenShare,
   },
   {
-    path: "/admin/syllabus-leads",
+    path: "/admin/syllabus-lead",
     label: "Syllabus Leads",
     icon: Target,
   },

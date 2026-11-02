@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil, ExternalLink } from "lucide-react";
+import { ArrowLeft, Pencil, DownloadCloud  } from "lucide-react";
 import { getSyllabusLeadById } from "../../api/syllabusLeadApi";
 
 const ViewSyllabusLead = () => {
@@ -47,7 +47,7 @@ const ViewSyllabusLead = () => {
     return (
         <div className="p-4 md:p-6">
             <button
-                onClick={() => navigate("/admin/syllabus-leads")}
+                onClick={() => navigate("/admin/syllabus-lead")}
                 className="mb-7 flex items-center gap-3 text-[17px] font-medium text-slate-600 transition hover:text-blue-600"
             >
                 <ArrowLeft size={17} /> Back to Syllabus Leads
@@ -104,7 +104,7 @@ const ViewSyllabusLead = () => {
                                 rel="noreferrer"
                                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
                             >
-                                <Download size={17} />
+                                <DownloadCloud size={17} />
                                 Download Syllabus PDF
                             </a>
                         ) : (

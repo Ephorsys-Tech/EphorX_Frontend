@@ -11,6 +11,8 @@ import {
   LoaderCircle,
 } from "lucide-react";
 
+import { createSyllabusLead } from "../../admin/api/syllabusLeadApi.js";
+
 const initialForm = {
   name: "",
   email: "",
@@ -34,90 +36,69 @@ const SyllabusRequestModal = ({ course, onClose }) => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (!course) return;
+  if (!course) return;
 
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/course/syllabus-request`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...formData,
-            courseId: course._id,
-            course: course.title,
-          }),
-        }
+  try {
+    const payload = {
+      fullName: formData.name.trim(),
+      email: formData.email.trim(),
+      phoneNumber: formData.phone.trim(),
+      whatsappNumber: formData.wpno.trim() || formData.phone.trim(),
+      qualification: formData.qualification.trim(),
+      courseId: course._id,
+      courseName: course.title,
+      syllabusUrl: course.syllabusUrl,
+    };
+
+    const response = await createSyllabusLead(payload);
+
+    if (!response.success) {
+      throw new Error(
+        response.message || "Unable to submit your request."
       );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.message ||
-            "Unable to submit your request. Please try again."
-        );
-      }
-
-      const contentType = response.headers.get("content-type") || "";
-
-      // Case 1: Backend sends the PDF directly.
-      if (contentType.includes("application/pdf")) {
-        const pdfBlob = await response.blob();
-        const fileUrl = URL.createObjectURL(pdfBlob);
-
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.download = `${course.title}-syllabus.pdf`;
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        URL.revokeObjectURL(fileUrl);
-      } else {
-        // Case 2: Backend returns a PDF URL.
-        const result = await response.json();
-
-        const pdfUrl =
-          result.syllabusUrl ||
-          result.pdfUrl ||
-          result.downloadUrl;
-
-        if (!pdfUrl) {
-          throw new Error(
-            "Your details were submitted, but the syllabus download link was not returned."
-          );
-        }
-
-        const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.download = `${course.title}-syllabus.pdf`;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }
-
-      setFormData(initialForm);
-      onClose();
-    } catch (err) {
-      console.error("Syllabus request failed:", err);
-      setError(
-        err.message || "Something went wrong. Please try again."
-      );
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const pdfUrl =
+      response.syllabusUrl ||
+      response.download?.syllabusUrl ||
+      course.syllabusUrl;
+
+    if (!pdfUrl) {
+      throw new Error(
+        "Your details were submitted, but the syllabus URL was not found."
+      );
+    }
+
+    // Open the syllabus PDF.
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.download = `${course.title}-syllabus.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setFormData(initialForm);
+    onClose();
+  } catch (err) {
+    console.error("Syllabus request failed:", err);
+
+    setError(
+      err.response?.data?.message ||
+        err.message ||
+        "Something went wrong. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!course) return null;
 

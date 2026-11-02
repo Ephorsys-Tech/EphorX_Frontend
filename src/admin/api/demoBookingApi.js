@@ -14,9 +14,9 @@ export const getDemoBookingById = async (id) => {
     return response.data;
 };
 
-export const createDemoBooking = async (id) => {
-    const response = await axios.create(`${API_URL}/create-demo/${id}`);
-    return response.data;
+export const createDemoBooking = async (data) => {
+  const response = await axios.post(`${API_URL}/create-demo`, data);
+  return response.data;
 };
 
 export const updateDemoBooking = async (id, data) => {
