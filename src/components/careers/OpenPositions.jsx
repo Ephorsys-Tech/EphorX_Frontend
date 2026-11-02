@@ -6,6 +6,8 @@ import JobInformation from "../../components/modal/JobInformation";
 import JobApplicationForm from "../../components/modal/JobApplicationForm";
 import { getAllJobs } from "../../admin/api/jobApi.js"
 
+import {createJobApplication} from "../../admin/api/jobApplicationApi.js"
+
 const OpenPositions = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalType, setModalType] = useState(null);
@@ -56,10 +58,71 @@ const OpenPositions = () => {
   };
 
   const handleApplicationSubmit = async (applicationData, job) => {
-    // Backend API integration will go here.
-    console.log("Application for:", job.title);
-    console.log("Application data:", Object.fromEntries(applicationData));
-  };
+  try {
+    const formData = new FormData();
+
+    // Support both frontend field naming conventions
+    const fullName =
+      applicationData.get?.("fullName") ||
+      applicationData.get?.("name") ||
+      applicationData.fullName ||
+      applicationData.name;
+
+    const email =
+      applicationData.get?.("email") ||
+      applicationData.email;
+
+    const phoneNumber =
+      applicationData.get?.("phoneNumber") ||
+      applicationData.get?.("phone") ||
+      applicationData.phoneNumber ||
+      applicationData.phone;
+
+    const resume =
+      applicationData.get?.("resume") ||
+      applicationData.resume;
+
+    if (!fullName || !email || !phoneNumber || !resume) {
+      alert("Please complete all fields and upload your resume.");
+      return;
+    }
+
+    if (!job?._id || !job?.title) {
+      alert("Invalid job selection. Please select a job again.");
+      return;
+    }
+
+    formData.append("fullName", fullName.trim());
+    formData.append("email", email.trim());
+    formData.append("phoneNumber", phoneNumber.trim());
+    formData.append("jobId", job._id);
+    formData.append("jobTitle", job.title);
+    formData.append("resume", resume);
+
+    console.log("Submitting application:");
+
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    const response = await createJobApplication(formData);
+
+    console.log("Application submitted successfully:", response);
+
+    alert("Your application has been submitted successfully!");
+
+    closeModal();
+  } catch (error) {
+    console.error("Application submission failed:", error);
+    console.error("Backend response:", error.response?.data);
+
+    alert(
+      error.response?.data?.message ||
+      error.response?.data?.errors?.map((item) => item.msg).join(", ") ||
+      "Failed to submit your application. Please try again."
+    );
+  }
+};
 
 
   return (
