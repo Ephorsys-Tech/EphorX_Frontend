@@ -12,10 +12,12 @@ import {
 
 import { categoryApi } from "../../admin/api/categoryApi.js";
 import { courseApi } from "../../admin/api/courseApi.js";
+import Modal from "../../ui/Modal.jsx";
+import SyllabusRequestModal from "../../components/modal/SyllabusRequestModal.jsx";
 
 const Courses = () => {
   const navigate = useNavigate();
-
+  const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All Courses");
   const [fetchedCourses, setFetchedCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,9 +34,9 @@ const Courses = () => {
         const categoryList = Array.isArray(categoryResponse)
           ? categoryResponse
           : categoryResponse?.categories ??
-            categoryResponse?.data?.categories ??
-            categoryResponse?.data ??
-            [];
+          categoryResponse?.data?.categories ??
+          categoryResponse?.data ??
+          [];
 
         const response = await courseApi.getAll();
 
@@ -43,8 +45,8 @@ const Courses = () => {
         const courses = Array.isArray(response)
           ? response
           : response?.courses ??
-            response?.data?.courses ??
-            [];
+          response?.data?.courses ??
+          [];
 
         const coursesWithCategory = courses.map((course) => {
           const matchedCategory = categoryList.find(
@@ -84,8 +86,8 @@ const Courses = () => {
     activeCategory === "All Courses"
       ? fetchedCourses
       : fetchedCourses.filter(
-          (course) => course.categoryName === activeCategory
-        );
+        (course) => course.categoryName === activeCategory
+      );
 
   const openCourseDetails = (course) => {
     navigate("/CourseDetails", {
@@ -96,7 +98,7 @@ const Courses = () => {
   return (
     <section
       id="courses"
-      className="relative isolate overflow-hidden bg-white px-5 py-10 sm:px-8 md:px-10 lg:px-41 lg:pb-10 lg:pt-20"
+      className="relative isolate overflow-hidden bg-white px-5 py-22 sm:px-8 md:px-10 lg:px-41 lg:pb-10 lg:pt-20"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute -right-32 top-20 -z-10 h-80 w-80 rounded-full bg-sky-100/70 blur-3xl" />
@@ -131,11 +133,10 @@ const Courses = () => {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-              className={`rounded-full border px-4 py-2.5 text-xs font-bold transition-colors duration-200 sm:px-5 sm:text-sm ${
-                activeCategory === category
+              className={`rounded-full border px-4 py-2.5 text-xs font-bold transition-colors duration-200 sm:px-5 sm:text-sm ${activeCategory === category
                   ? "border-slate-950 bg-slate-950 text-white shadow-lg shadow-slate-900/15"
                   : "border-slate-200 bg-white/90 text-slate-600 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
-              }`}
+                }`}
             >
               {category}
             </button>
@@ -190,7 +191,7 @@ const Courses = () => {
                       {course.type}
                     </span>
 
-                    
+
                   </div>
 
                   {/* Course Content */}
@@ -218,26 +219,15 @@ const Courses = () => {
                     </p>
 
                     <div className="mt-5">
-                      <a
-                        href={course.syllabusUrl || undefined}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(event) => {
-                          if (!course.syllabusUrl) {
-                            event.preventDefault();
-                          }
-                        }}
-                        aria-disabled={!course.syllabusUrl}
-                        className={`inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-200 ${
-                          course.syllabusUrl
-                            ? "hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
-                            : "cursor-not-allowed opacity-50"
-                        }`}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSyllabusCourse(course)}
+                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
                       >
                         <FileText size={16} />
                         View Syllabus
                         <ArrowRight size={14} />
-                      </a>
+                      </button>
                     </div>
 
                     <div className="my-4 border-t border-slate-100" />
@@ -281,40 +271,20 @@ const Courses = () => {
           )}
         </motion.div>
 
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="relative mt-10 overflow-hidden rounded-2xl bg-slate-950 p-6 sm:mt-12 sm:p-8 lg:p-10"
-        >
-          {/* CTA decoration */}
-          <div className="pointer-events-none absolute -right-10 -top-20 h-56 w-56 rounded-full bg-sky-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 right-1/3 h-24 w-24 rounded-full bg-blue-500/10 blur-2xl" />
-
-          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-            <div className="min-w-0">
-              <h3 className="text-xl font-extrabold leading-snug text-white sm:text-2xl">
-                Not sure which course is right for you?
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                Find the right learning path for your career goals.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => navigate("/Course")}
-              className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-white hover:text-slate-950 sm:self-auto sm:px-6"
-            >
-              View All Courses
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        </motion.div>
+      
       </div>
+      <Modal
+  isOpen={Boolean(selectedSyllabusCourse)}
+  onClose={() => setSelectedSyllabusCourse(null)}
+  title="Get Course Syllabus"
+  size="lg"
+  theme="white"
+>
+  <SyllabusRequestModal
+    course={selectedSyllabusCourse}
+    onClose={() => setSelectedSyllabusCourse(null)}
+  />
+</Modal>
     </section>
   );
 };

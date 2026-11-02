@@ -45,7 +45,7 @@ const MissionVision = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-14 sm:px-6 sm:py-16 md:px-8 lg:px-41 lg:py-7">
+    <section className="relative overflow-hidden bg-white px-4 py-1 sm:px-6 sm:py-16 md:px-8 lg:px-41 lg:py-7">
       <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-sky-100/60 blur-3xl" />
 
       <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
@@ -148,7 +148,7 @@ const CardFace = ({ data, dark, rotate }) => {
         </span>
       </div>
 
-      <div className="relative my-3 grid min-h-0 flex-1 grid-cols-1 items-center gap-3 overflow-y-auto overscroll-contain sm:my-4 sm:gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
+      <div className="relative my-3 grid min-h-0 flex-1 grid-cols-1 items-center gap-3 overflow-y-auto overscroll-y-auto touch-pan-y sm:my-4 sm:gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
         <div className="min-w-0">
           <p
             className={`text-[10px] font-bold uppercase tracking-[0.2em] sm:text-xs ${

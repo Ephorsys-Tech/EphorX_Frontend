@@ -63,7 +63,7 @@ const WhyJoinUs = () => {
   return (
     <section
       id="why-join-us"
-      className="relative overflow-hidden bg-white py-20 sm:pt-28 sm:pb-13 "
+      className="relative overflow-hidden bg-white pt-20 pb-10 sm:pt-28 sm:pb-13 "
     >
       <div className="px-5 sm:px-6 md:px-8 lg:px-41">
 

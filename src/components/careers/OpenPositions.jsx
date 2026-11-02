@@ -108,7 +108,7 @@ const OpenPositions = () => {
   return (
     <section
       id="open-positions"
-      className="bg-slate-50 px-4 py-5 sm:px-6 md:px-8 lg:px-41"
+      className="bg-slate-50 px-4 py-0 sm:px-6 md:px-8 lg:px-41"
     >
       {/* Section Heading */}
       <div className="mb-5">

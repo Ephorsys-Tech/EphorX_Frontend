@@ -34,7 +34,7 @@ const steps = [
     number: "03",
     title: "Reserve Your Seat",
     description: "Pay the booking amount to reserve your seat in your selected course.",
-    highlight: "₹4,999",
+    highlight: "Limited Seats",
     icon: Armchair,
     color: "black",
   },

@@ -88,7 +88,7 @@ const JobApplicationForm = ({ job, onSubmit }) => {
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-10 text-center sm:px-8">
+      <div className="rounded-2xl border border-emerald-100 bg-emerald-50 py-10 text-center sm:px-9 ">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
           <CheckCircle2 size={32} className="text-emerald-600" />
         </div>
