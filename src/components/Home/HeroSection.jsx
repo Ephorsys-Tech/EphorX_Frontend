@@ -124,7 +124,7 @@ function SocialLinks() {
           aria-label={label}
           title={label}
           className={`group flex h-10 w-10 items-center justify-center rounded-xl
-            border border-blue-200 bg-white text-blue-700
+            border border-blue-300 bg-gray-600/20 text-blue-700
             transition-all duration-300 hover:-translate-y-1
             hover:border-transparent hover:text-white ${color}`}
         >
@@ -152,7 +152,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100vh] overflow-hidden bg-sky-300 text-black"
+      className="relative min-h-[100vh] overflow-hidden bg-white text-black"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-blue-100/70 blur-3xl" />
@@ -204,7 +204,7 @@ const HeroSection = () => {
           </div>
 
           {/* Reusable buttons */}
-          <div className="mt-8 flex flex-wrap items-center gap-4 animate-pulse">
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             <HeroButton to="/Courses">
               Apply Now
               <ArrowRight

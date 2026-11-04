@@ -1,105 +1,82 @@
+
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { UsersRound, BookOpen, Star, GraduationCap } from "lucide-react";
+import { motion, useInView, animate } from "framer-motion";
 
 const stats = [
-  {
-    value: 10000,
-    suffix: "+",
-    label: "Active Members",
-    icon: UsersRound,
-  },
-  {
-    value: 20,
-    suffix: "+",
-    label: "Courses Available",
-    icon: BookOpen,
-  },
-  {
-    value: 4.9,
-    suffix: "/5",
-    label: "Student Rating",
-    icon: Star,
-    decimal: true,
-  },
-  {
-  value: 25,
-  suffix: "+",
-  label: "Expert Mentors",
-  icon: GraduationCap,
-},
+  { value: 10000, suffix: "+", label: "Active Members" },
+  { value: 20, suffix: "+", label: "Courses Available" },
+  { value: 4.9, suffix: "/5", label: "Student Rating", decimal: true },
+  { value: 25, suffix: "+", label: "Expert Mentors" },
 ];
 
-function StatItem({ stat, index }) {
+export default function StatsSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (value) =>
-    stat.decimal ? value.toFixed(1) : Math.round(value).toLocaleString("en-IN")
-  );
-  const [displayValue, setDisplayValue] = useState("0");
+  const isInView = useInView(ref, { once: true });
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
 
   useEffect(() => {
-    const unsubscribe = rounded.on("change", setDisplayValue);
-    return unsubscribe;
-  }, [rounded]);
+    if (!isInView) return;
 
-  useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, stat.value, {
+    const animations = stats.map((stat, index) =>
+      animate(0, stat.value, {
         duration: 1.8,
         ease: "easeOut",
-      });
+        delay: index * 0.12,
+        onUpdate: (value) => {
+          setCounts((prev) =>
+            prev.map((count, i) => (i === index ? value : count))
+          );
+        },
+      })
+    );
 
-      return () => controls.stop();
-    }
-  }, [isInView, count, stat.value]);
-
-  const Icon = stat.icon;
+    return () => animations.forEach((animation) => animation.stop());
+  }, [isInView]);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
-      className="group flex min-w-0 flex-1 items-center justify-center gap-3 px-3 py-5 sm:gap-4 sm:px-5"
-    >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-100 bg-sky-50 text-sky-600 transition-all duration-300 group-hover:border-sky-200 group-hover:bg-sky-500 group-hover:text-white sm:h-12 sm:w-12">
-        <Icon size={21} strokeWidth={1.8} />
-      </div>
+    <section className="bg-white px-4 py-6 sm:px-6 lg:px-0 lg:py-0">
 
-      <div className="min-w-0">
-        <div className="flex items-baseline gap-0.5 whitespace-nowrap">
-          <span className="text-xl font-extrabold tracking-tight text-black sm:text-2xl lg:text-3xl">
-            {displayValue}
-          </span>
-          <span className="text-lg font-bold text-sky-500 sm:text-xl">
-            {stat.suffix}
-          </span>
-        </div>
+      {/* BLUE BACKGROUND */}
+      <div ref={ref} className="bg-blue-700 px-10">
 
-        <p className="mt-1 text-xs font-medium text-gray-500 sm:text-sm">
-          {stat.label}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
+        {/* GRID ALIGNMENT */}
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-white/20 md:divide-y-0">
 
-export default function StatsSection() {
-  return (
-    <section className="relative overflow-hidden bg-white px-4 py-6 sm:px-6 lg:px-0 lg:py-8">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-3/4 -translate-x-1/2 rounded-full bg-sky-100/60 blur-3xl" />
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.12 }}
 
-      <div className="relative  mx-auto w-full max-w-none">
-        <div className="overflow-hidden  border border-gray-200/80 bg-white/90 shadow-[0_12px_40px_-24px_rgba(14,165,233,0.35)] backdrop-blur-sm">
-          <div className="grid grid-cols-2 divide-x divide-y divide-gray-200/80 md:grid-cols-4 md:divide-y-0">
-            {stats.map((stat, index) => (
-              <StatItem key={stat.label} stat={stat} index={index} />
-            ))}
-          </div>
+              // CHANGE ALIGNMENT AND SPACING HERE
+              className="flex items-center justify-center px-2 py-3 sm:px-3 sm:py-4"
+            >
+              <div className="text-center">
+
+                {/* NUMBER */}
+                <div className="flex items-baseline justify-center gap-0.5">
+                  <span className="text-xl font-extrabold text-white sm:text-2xl lg:text-3xl">
+                    {stat.decimal
+                      ? counts[index].toFixed(1)
+                      : Math.round(counts[index]).toLocaleString("en-IN")}
+                  </span>
+
+                  <span className="text-lg font-bold text-blue-200 sm:text-xl">
+                    {stat.suffix}
+                  </span>
+                </div>
+
+                {/* LABEL */}
+                <p className="mt-1 text-xs font-medium text-blue-100 sm:text-sm">
+                  {stat.label}
+                </p>
+
+              </div>
+            </motion.div>
+          ))}
+
         </div>
       </div>
     </section>

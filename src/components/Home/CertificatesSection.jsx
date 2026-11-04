@@ -58,7 +58,7 @@ const CertificatesSection = () => {
         <>
             <section
                 id="certificates"
-                className="relative isolate overflow-hidden bg-sky-400 px-4 py-16 sm:px-6 sm:py-2 md:px-8 lg:px-41"
+                className="relative isolate overflow-hidden bg-blue-600 px-4 py-16 sm:px-6 sm:py-2 md:px-8 lg:px-41"
             >
                 {/* Background decoration */}
                 <div className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
@@ -69,12 +69,12 @@ const CertificatesSection = () => {
                     <div>
                        
 
-                        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#071927] sm:text-4xl lg:text-5xl">
+                        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-black sm:text-4xl lg:text-5xl">
                             Certificates We{" "}
                             <span className="text-white">Provide</span>
                         </h2>
 
-                        <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-600 sm:text-base">
+                        <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-300 sm:text-base">
                             Every achievement tells a story of learning, dedication,
                             and growth. Explore the certificates our students can earn
                             through their learning journey with EphorX.

@@ -109,7 +109,7 @@ function FooterHeading({ children }) {
         {children}
       </h3>
 
-      <span className="mt-3 block h-[3px] w-8 rounded-full bg-sky-400" />
+      <span className="mt-3 block h-[3px] w-8 rounded-full bg-blue-600" />
     </div>
   );
 }
@@ -126,7 +126,7 @@ function SocialLinks() {
           aria-label={label}
           title={label}
           className={`group flex h-10 w-10 items-center justify-center rounded-xl
-            border border-white/10 bg-sky-300 text-gray-700
+            border border-white/10 bg-blue-500 text-gray-700
             transition-all duration-300 hover:-translate-y-1 hover:border-transparent
             hover:text-white ${color}`}
         >
@@ -142,11 +142,11 @@ function FooterLink({ to, children }) {
     <Link
       to={to}
       className="group flex w-fit items-center gap-2 py-1.5 text-sm
-        font-semibold text-gray-700 transition-colors duration-300 hover:text-sky-500"
+        font-semibold text-gray-700 transition-colors duration-300 hover:text-blue-500"
     >
       <ChevronRight
         size={15}
-        className="shrink-0 text-sky-400 transition-transform duration-300
+        className="shrink-0 text-blue-600 transition-transform duration-300
           group-hover:translate-x-1"
       />
       <span>{children}</span>
@@ -163,9 +163,9 @@ function CourseLink({ title, subtitle, icon: Icon }) {
     >
       <span
         className="flex h-11 w-11 shrink-0 items-center justify-center
-          rounded-xl border border-sky-300 bg-black text-sky-300
-          transition-all duration-300 group-hover:border-sky-300/30
-          group-hover:bg-sky-400 group-hover:text-white"
+          rounded-xl border border-blue-500 bg-black text-blue-500
+          transition-all duration-300 group-hover:border-blue-500/30
+          group-hover:bg-blue-600 group-hover:text-white"
       >
         <Icon size={20} />
       </span>
@@ -173,7 +173,7 @@ function CourseLink({ title, subtitle, icon: Icon }) {
       <span className="min-w-0 flex-1">
         <span
           className="block text-sm font-semibold text-gray-400
-            transition-colors group-hover:text-sky-400"
+            transition-colors group-hover:text-blue-600"
         >
           {title}
         </span>
@@ -187,7 +187,7 @@ function CourseLink({ title, subtitle, icon: Icon }) {
         size={16}
         className="shrink-0 text-gray-600 transition-all duration-300
           group-hover:-translate-y-0.5 group-hover:translate-x-0.5
-          group-hover:text-sky-300"
+          group-hover:text-blue-500"
       />
     </Link>
   );
@@ -198,8 +198,8 @@ function ContactItem({ icon: Icon, title, description, to, onClick }) {
     <>
       <span
         className="flex h-11 w-11 shrink-0 items-center justify-center
-          rounded-xl border border-sky-500 bg-black text-sky-300
-          transition-colors duration-300 group-hover:bg-sky-400 group-hover:text-white"
+          rounded-xl border border-blue-500 bg-black text-blue-500
+          transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white"
       >
         <Icon size={19} />
       </span>
@@ -248,7 +248,7 @@ export default function Footer() {
       {/* Background decoration */}
       <div
         className="pointer-events-none absolute -right-40 -top-40
-          h-96 w-96 rounded-full bg-sky-500/[0.08] blur-3xl"
+          h-96 w-96 rounded-full bg-blue-500/[0.08] blur-3xl"
       />
 
       <div
@@ -273,25 +273,25 @@ export default function Footer() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="relative mt-4 overflow-hidden rounded-b-[28px]
-            border-x border-b border-sky-200
-            bg-gradient-to-br from-sky-400 via-black to-sky-300
+            border-x border-b border-blue-200
+            bg-gradient-to-br from-blue-600 via-black to-blue-500
             px-6 py-8 sm:px-9 sm:py-10"
         >
           <div
             className="pointer-events-none absolute -right-10 -top-15
-              h-52 w-52 rounded-full border border-sky-300/30"
+              h-52 w-52 rounded-full border border-blue-500/30"
           />
 
           <div
             className="pointer-events-none absolute -right-5 -top-10
-              h-40 w-40 rounded-full border border-sky-300/30"
+              h-40 w-40 rounded-full border border-blue-500/30"
           />
 
           <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-center">
             <div className="max-w-xl">
               <span
                 className="mb-3 inline-flex items-center gap-2
-                  text-xs font-bold uppercase tracking-[0.2em] text-sky-300"
+                  text-xs font-bold uppercase tracking-[0.2em] text-blue-500"
               >
                 Your next chapter starts here
               </span>
@@ -301,7 +301,7 @@ export default function Footer() {
                   tracking-tight text-white sm:text-3xl lg:text-4xl"
               >
                 Ready to build your{" "}
-                <span className="text-sky-300">future?</span>
+                <span className="text-blue-500">future?</span>
               </h2>
 
               <p className="mt-3 max-w-lg text-sm leading-6 text-gray-400 sm:text-base">
@@ -313,10 +313,10 @@ export default function Footer() {
             <Link
               to="/contact"
               className="group inline-flex min-h-12 shrink-0 items-center
-                justify-center gap-3 self-start rounded-xl bg-sky-400
-                px-6 py-3 text-sm font-bold text-slate-950
-                shadow-lg shadow-sky-500/10 transition-all duration-300
-                hover:-translate-y-1 hover:bg-sky-300 hover:shadow-sky-400/20
+                justify-center gap-3 self-start rounded-xl bg-blue-600
+                px-6 py-3 text-sm font-bold text-slate-100
+                shadow-lg shadow-blue-500/10 transition-all duration-300
+                hover:-translate-y-1 hover:bg-blue-500 hover:shadow-blue-600/20
                 md:self-center"
             >
               Let's Talk
@@ -356,9 +356,9 @@ export default function Footer() {
 
             <div
               className="mt-7 inline-flex items-center gap-2.5
-                rounded-xl border border-sky-400 bg-white/[0.035] px-3.5 py-3"
+                rounded-xl border border-blue-600 bg-white/[0.035] px-3.5 py-3"
             >
-              <GraduationCap size={21} className="shrink-0 text-sky-600" />
+              <GraduationCap size={21} className="shrink-0 text-blue-700" />
 
               <span className="text-xs leading-5 text-gray-600">
                 Learn today.
@@ -408,7 +408,7 @@ export default function Footer() {
             <Link
               to="/Courses"
               className="group mt-5 inline-flex items-center gap-2
-                text-sm font-semibold text-sky-400 transition-colors hover:text-black"
+                text-sm font-semibold text-blue-600 transition-colors hover:text-black"
             >
               Explore all courses
               <ArrowRight
@@ -453,8 +453,8 @@ export default function Footer() {
             <Link
               to="/contact"
               className="group mt-7 flex w-full items-center
-                justify-between gap-3 rounded-xl border bg-sky-400
-                px-4 py-3.5 text-sm font-semibold text-sky-100
+                justify-between gap-3 rounded-xl border bg-blue-600
+                px-4 py-3.5 text-sm font-semibold text-blue-100
                 transition-all duration-300 hover:bg-black"
             >
               <span className="inline-flex items-center gap-2">
@@ -490,7 +490,7 @@ export default function Footer() {
             sm:px-10 md:flex-row md:items-center md:justify-between
             lg:px-40 2xl:px-41"
         >
-          <p className="text-xs leading-5 text-sky-500">
+          <p className="text-xs leading-5 text-blue-500">
             © {year}{" "}
             <span className="font-semibold text-gray-300">EphorX</span>.
             All rights reserved.
@@ -499,14 +499,14 @@ export default function Footer() {
          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
   <Link
     to="/privacy-policy"
-    className="text-xs text-sky-400 transition-colors hover:text-sky-300"
+    className="text-xs text-blue-600 transition-colors hover:text-blue-500"
   >
     Privacy Policy
   </Link>
 
   <Link
     to="/terms"
-    className="text-xs text-sky-400 transition-colors hover:text-sky-300"
+    className="text-xs text-blue-600 transition-colors hover:text-blue-500"
   >
     Terms & Conditions
   </Link>
@@ -515,7 +515,7 @@ export default function Footer() {
     type="button"
     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     aria-label="Back to top"
-    className="ml-1 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-gray-300 transition-all duration-300 hover:-translate-y-1 hover:border-sky-400/40 hover:bg-sky-400/10 hover:text-sky-300"
+    className="ml-1 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-gray-300 transition-all duration-300 hover:-translate-y-1 hover:border-blue-600/40 hover:bg-blue-600/10 hover:text-blue-500"
   >
     <ArrowRight size={17} className="-rotate-90" />
   </button>

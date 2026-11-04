@@ -163,7 +163,6 @@ function WebinarCard({ webinar, index, onEnroll }) {
 
 
 export default function WebinarsSection({
-  eyebrow = "LEARN FROM THE BEST",
   title = "Live Webinars",
   highlight = "By Industry Experts.",
   description = "Learn directly from experienced professionals, explore new technologies, and gain insights you can put into practice.",
@@ -217,16 +216,11 @@ export default function WebinarsSection({
             className="mb-10 flex flex-col justify-between gap-5 sm:mb-12 lg:flex-row lg:items-end"
           >
             <div className="max-w-2xl">
-              {eyebrow && (
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sky-100 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
-                  {eyebrow}
-                </div>
-              )}
+             
 
               <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
                 {title}{" "}
-                <span className="animate-pulse text-sky-500">
+                <span className=" text-blue-700">
                   {highlight}
                 </span>
               </h2>
@@ -241,7 +235,7 @@ export default function WebinarsSection({
             {showButton && (
               <Link
                 to={buttonTo}
-                className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-sky-500"
+                className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700"
               >
                 {buttonText}
                 <ArrowUpRight

@@ -240,16 +240,13 @@ export default function IndustryExperts() {
           className="mb-10 flex flex-col justify-between gap-5 sm:mb-12 md:flex-row md:items-end lg:mb-10"
         >
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-sky-700">
-              <span className="h-2 w-2 rounded-full bg-sky-500" />
-              Learn from the best
-            </span>
+           
 
             <h2 className="mt-2 text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
               Our Industry{" "}
-              <span className="relative inline-block text-sky-500">
+              <span className="relative inline-block text-blue-700">
                 Experts
-                <span className="absolute -bottom-1 left-0 h-1 w-2/3 rounded-full bg-sky-200" />
+                <span className="absolute -bottom-1 left-0 h-1 w-2/3 rounded-full bg-sky-300" />
               </span>
             </h2>
           </div>
