@@ -205,7 +205,7 @@ const HeroSection = () => {
 
           {/* Reusable buttons */}
           <div className="mt-8 flex flex-wrap items-center gap-4 animate-pulse">
-            <HeroButton to="/apply">
+            <HeroButton to="/Courses">
               Apply Now
               <ArrowRight
                 size={17}

@@ -9,6 +9,8 @@ import Courses from '../web/pages/Courses'
 import CourseDetails from '../components/course/CourseDetails'
 import Process from '../web/pages/Process'
 import Careers from '../web/pages/Careers'
+import PrivacyPolicy from '../components/legalPages/PrivacyPolicy'
+import TermsConditions from '../components/legalPages/TermsConditions'
 
 const PublicRoutes = (
   <Route path='/' element={<MainLayout />}>
@@ -19,7 +21,8 @@ const PublicRoutes = (
     <Route path='/about' element={<About />} />
     <Route path='/process' element={<Process />} />
         <Route path='/careers' element={<Careers />} />
-
+    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/terms" element={<TermsConditions />} />
 
     <Route path="/CourseDetails" element={<CourseDetails />} />
     <Route path='*' element={<NotFound />} />

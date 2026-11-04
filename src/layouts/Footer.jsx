@@ -157,7 +157,7 @@ function FooterLink({ to, children }) {
 function CourseLink({ title, subtitle, icon: Icon }) {
   return (
     <Link
-      to="/Course"
+      to="/Courses"
       className="group flex items-center gap-3 rounded-xl p-2.5
         transition-all duration-300 hover:bg-white/[0.07]"
     >
@@ -262,7 +262,7 @@ export default function Footer() {
 
       <div className="pointer-events-none absolute left-99 bottom-15 h-7 w-7 rounded-full bg-blue-500" />
 
-      <div className="pointer-events-none absolute left-320 top-53 h-7 w-7 rounded-full bg-blue-300" />
+      <div className="pointer-events-none absolute left-320 top-56 h-7 w-7 rounded-full bg-blue-300" />
 
       {/* Main footer container: aligned with the Home HeroSection */}
       <div className="relative px-5 sm:px-10 lg:px-40 2xl:px-41">
@@ -397,13 +397,16 @@ export default function Footer() {
             <FooterHeading>Our Top Courses</FooterHeading>
 
             <div className="-mx-2 flex flex-col gap-1">
-              {courses.map((course) => (
+              <Link
+               to="/Courses">
+                 {courses.map((course) => (
                 <CourseLink key={course.title} {...course} />
               ))}
+              </Link>
             </div>
 
             <Link
-              to="/Course"
+              to="/Courses"
               className="group mt-5 inline-flex items-center gap-2
                 text-sm font-semibold text-sky-400 transition-colors hover:text-black"
             >
@@ -493,34 +496,30 @@ export default function Footer() {
             All rights reserved.
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <Link
-              to="/privacy-policy"
-              className="text-xs text-sky-400 transition-colors hover:text-sky-700"
-            >
-              Privacy Policy
-            </Link>
+         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+  <Link
+    to="/privacy-policy"
+    className="text-xs text-sky-400 transition-colors hover:text-sky-300"
+  >
+    Privacy Policy
+  </Link>
 
-            <Link
-              to="/terms"
-              className="text-xs text-sky-400 transition-colors hover:text-sky-700"
-            >
-              Terms & Conditions
-            </Link>
+  <Link
+    to="/terms"
+    className="text-xs text-sky-400 transition-colors hover:text-sky-300"
+  >
+    Terms & Conditions
+  </Link>
 
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="Back to top"
-              className="ml-1 flex h-9 w-9 items-center justify-center
-                rounded-xl border border-white/10 bg-white/[0.04]
-                text-gray-300 transition-all duration-300
-                hover:-translate-y-1 hover:border-sky-400/40
-                hover:bg-sky-400/10 hover:text-sky-300"
-            >
-              <ArrowRight size={17} className="-rotate-90" />
-            </button>
-          </div>
+  <button
+    type="button"
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    aria-label="Back to top"
+    className="ml-1 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-gray-300 transition-all duration-300 hover:-translate-y-1 hover:border-sky-400/40 hover:bg-sky-400/10 hover:text-sky-300"
+  >
+    <ArrowRight size={17} className="-rotate-90" />
+  </button>
+</div>
         </div>
       </div>
     </footer>
