@@ -1,252 +1,196 @@
-
-import {
-  BookOpen,
-  MessageCircle,
-  Armchair,
-  ClipboardCheck,
-  FileText,
-  CreditCard,
-  CalendarCheck,
-  GraduationCap,
-  ArrowRight,
-  ArrowLeft,
-  ArrowDown,
-} from "lucide-react";
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const steps = [
   {
-    number: "01",
-    title: "Choose Your Course",
-    description: "Explore our courses and select the one that matches your career goals.",
-    highlight: "Find Your Course",
-    icon: BookOpen,
-    color: "blue",
+    number: '01',
+    title: 'Choose Your Course',
+    description:
+      'Explore our courses and select the one that matches your career goals.',
+    highlight: 'Find your course'
   },
   {
-    number: "02",
-    title: "Enquiry & Counselling",
-    description: "Connect with our team to discuss course details and clear your doubts.",
-    highlight: "Get Guidance",
-    icon: MessageCircle,
-    color: "white",
+    number: '02',
+    title: 'Enquiry & Counselling',
+    description:
+      'Connect with our team to discuss course details and clear your doubts.',
+    highlight: 'Get guidance'
   },
   {
-    number: "03",
-    title: "Reserve Your Seat",
-    description: "Pay the booking amount to reserve your seat in your selected course.",
-    highlight: "Limited Seats",
-    icon: Armchair,
-    color: "black",
+    number: '03',
+    title: 'Reserve Your Seat',
+    description:
+      'Pay the booking amount to reserve your seat in your selected course.',
+    highlight: 'Limited seats'
   },
   {
-    number: "04",
-    title: "Admission Confirmation",
-    description: "Receive your admission confirmation and further joining instructions.",
-    highlight: "Admission Confirmed",
-    icon: ClipboardCheck,
-    color: "white",
+    number: '04',
+    title: 'Admission Confirmation',
+    description:
+      'Receive your admission confirmation and further joining instructions.',
+    highlight: 'Admission confirmed'
   },
   {
-    number: "05",
-    title: "Document Submission",
-    description: "Submit the required documents to complete your admission formalities.",
-    highlight: "Submit Documents",
-    icon: FileText,
-    color: "blue",
+    number: '05',
+    title: 'Document Submission',
+    description:
+      'Submit the required documents to complete your admission formalities.',
+    highlight: 'Submit documents'
   },
   {
-    number: "06",
-    title: "Fee Payment",
-    description: "Complete the applicable course fee payment as per the payment plan.",
-    highlight: "Flexible Payment",
-    icon: CreditCard,
-    color: "black",
+    number: '06',
+    title: 'Fee Payment',
+    description:
+      'Complete the applicable course fee payment as per the payment plan.',
+    highlight: 'Flexible payment'
   },
   {
-    number: "07",
-    title: "Batch Allocation",
-    description: "Receive your batch schedule and training commencement details.",
-    highlight: "Get Your Schedule",
-    icon: CalendarCheck,
-    color: "white",
+    number: '07',
+    title: 'Batch Allocation',
+    description:
+      'Receive your batch schedule and training commencement details.',
+    highlight: 'Get your schedule'
   },
   {
-    number: "08",
-    title: "Welcome to EphorX",
-    description: "Your admission is complete. Get ready to begin your learning journey.",
-    highlight: "Let's Get Started",
-    icon: GraduationCap,
-    color: "blue",
-  },
-];
+    number: '08',
+    title: 'Welcome to EphorX',
+    description:
+      'Your admission is complete. Get ready to begin your learning journey.',
+    highlight: "Let's get started"
+  }
+]
 
-const colorStyles = {
-  blue: {
-    card: "bg-sky-600 border-sky-300",
-    number: "bg-sky-200/20",
-    icon: "bg-sky-200 text-sky-800",
-    highlight: "text-sky-200",
-    description:"text-slate-300 ",
-    title:"text-slate-950"
-
-  },
-  black: {
-    card: "bg-black border-sky-300/30",
-    number: "bg-gray-100/25",
-    icon: "bg-sky-200 text-sky-800",
-    highlight: "text-sky-700",
-    description:"text-slate-400 ",
-    title:"text-slate-100"
-
-  },
-  white: {
-    card: "bg-white border-sky-300",
-    number: "bg-sky-500/50 ",
-    icon: "bg-sky-200 text-sky-800",
-    highlight: "text-sky-800",
-    description:"text-slate-600 ",
-    title:"text-slate-950"
-
-  },
-  
-};
-
-// Individual small square card
-function ProcessCard({ step }) {
-  const Icon = step.icon;
-  const styles = colorStyles[step.color];
-
+function StepCard ({ step, isLast }) {
   return (
     <div
-      className={`flex h-[230px] w-[240px] flex-col rounded-xl border p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${styles.card}`}
+      className={`rounded-2xl border p-5 transition duration-300 sm:p-6 ${
+        isLast
+          ? 'border-[#0b2a5b] bg-[#0b2a5b] text-white shadow-xl shadow-blue-950/20'
+          : 'border-slate-200 bg-white text-slate-900 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10'
+      }`}
     >
-      <div className="flex items-center justify-between">
-        <span
-          className={`flex h-7 w-7 items-center justify-center rounded-lg text-sm font-extrabold text-white ${styles.number}`}
-        >
-          {step.number}
-        </span>
+      <p
+        className={`text-xs font-semibold uppercase tracking-wider ${
+          isLast ? 'text-sky-300' : 'text-blue-700'
+        }`}
+      >
+        Step {step.number}
+      </p>
 
-        <span
-          className={`flex h-8 w-8 items-center justify-center rounded-lg ${styles.icon}`}
-        >
-          <Icon size={17} strokeWidth={2} />
-        </span>
-      </div>
+      <h3 className='mt-2 text-xl font-bold leading-snug'>{step.title}</h3>
 
-      <h3 className={`mt-3 text-[17px] font-extrabold leading-tight  ${styles.title} `}>
-        {step.title}
-      </h3>
-
-      <p className={`mt-2 line-clamp-2 text-[14px] leading-relaxed  ${styles.description}`}>
+      <p
+        className={`mt-2 text-sm leading-6 ${
+          isLast ? 'text-blue-100/90' : 'text-slate-600'
+        }`}
+      >
         {step.description}
       </p>
 
-      <p
-        className={`mt-auto pt-2 text-xs font-extrabold leading-tight ${styles.highlight}`}
+      <span
+        className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+          isLast ? 'bg-white/15 text-white' : 'bg-blue-50 text-blue-700'
+        }`}
       >
         {step.highlight}
-      </p>
+      </span>
     </div>
-  );
+  )
 }
 
-function Process() {
-  // Snake / zigzag order
-  const rows = [
-    {
-      cards: [steps[0], steps[1], steps[2]],
-      direction: "right",
-      down: "right",
-    },
-    {
-      cards: [steps[5], steps[4], steps[3]],
-      direction: "left",
-      down: "left",
-    },
-    {
-      cards: [steps[6], steps[7]],
-      direction: "right",
-    },
-  ];
-
+function Process () {
   return (
-    <section className="min-h-screen bg-white px-4 pb-10 pt-28 sm:px-6 md:px-8 lg:px-41">
-      {/* Heading */}
-      <div className="mb-17">
-        <h1 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-          Admission <span className="text-sky-600">Process</span>
-        </h1>
-
-        <p className="mt-2 text-sm text-slate-500 sm:text-base">
-          Follow these simple steps to complete your admission at EphorX.
-        </p>
+    <section className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10'>
+      {/* Background design */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+      >
+        <div className='absolute -top-10 left-[14%] h-[40%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[60%] h-[40%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -left-20 top-[45%] h-64 w-64 rounded-full border border-white/70 bg-gradient-to-tr from-sky-200/40 to-white/10' />
+        <div className='absolute -bottom-24 right-[8%] h-72 w-72 rounded-full border border-white/70 bg-gradient-to-tl from-blue-200/40 to-white/10' />
       </div>
 
-      {/* Desktop: Three small boxes with zigzag arrows */}
-      <div className="hidden md:block">
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            <div className="flex items-center justify-center gap-3">
-              {row.cards.map((step, index) => (
-                <div key={step.number} className="contents">
-                  <ProcessCard step={step} />
+      <div className='mx-auto max-w-5xl px-5 sm:px-8'>
+        {/* Heading */}
+        <div className='mx-auto max-w-2xl text-center'>
+          <h1 className='text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl'>
+            Admission <span className='text-blue-700'>Process</span>
+          </h1>
+          <p className='mt-4 text-base leading-7 text-slate-600'>
+            Follow these simple steps to complete your admission at EphorX.
+          </p>
+        </div>
 
-                  {index < row.cards.length - 1 && (
-                    <div className="flex w-7 shrink-0 justify-center text-sky-500">
-                      {row.direction === "right" ? (
-                        <ArrowRight size={27} strokeWidth={2.9} />
-                      ) : (
-                        <ArrowLeft size={27} strokeWidth={2.9} />
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+        {/* Timeline */}
+        <ol className='relative mt-14 space-y-8 sm:mt-16'>
+          {/* Vertical line */}
+          <div
+            aria-hidden='true'
+            className='absolute bottom-5 left-5 top-5 w-px bg-gradient-to-b from-blue-300 via-blue-200 to-blue-300 md:left-1/2 md:-translate-x-1/2'
+          />
 
-            {/* Connect the end of one row to the next */}
-            {row.down && (
-              <div
-                className={`flex h-8 items-center ${
-                  row.down === "right"
-                    ? "justify-end pr-[calc(50%-280px)]"
-                    : "justify-start pl-[calc(50%-280px)]"
-                }`}
+          {steps.map((step, index) => {
+            const isLast = index === steps.length - 1
+            const onLeft = index % 2 === 0
+
+            return (
+              <motion.li
+                key={step.number}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.45 }}
+                className='relative pl-14 md:grid md:grid-cols-2 md:gap-x-20 md:pl-0'
               >
-                <ArrowDown
-                  size={27}
-                  strokeWidth={2.9}
-                  className="text-sky-500"
-                />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+                {/* Number marker on the line */}
+                <span
+                  className={`absolute left-0 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ring-4 ring-white md:left-1/2 md:-translate-x-1/2 ${
+                    isLast ? 'bg-[#0b2a5b]' : 'bg-blue-700'
+                  }`}
+                >
+                  {step.number}
+                </span>
 
-      {/* Mobile: Vertical flow */}
-      <div className="flex flex-col items-center gap-2 md:hidden">
-        {steps.map((step, index) => (
-          <div key={step.number} className="flex w-full flex-col items-center">
-            <div className="w-full max-w-[170px]">
-              <ProcessCard step={step} />
-            </div>
+                <div className={onLeft ? 'md:col-start-1' : 'md:col-start-2'}>
+                  <StepCard step={step} isLast={isLast} />
+                </div>
+              </motion.li>
+            )
+          })}
+        </ol>
 
-            {index < steps.length - 1 && (
-              <div className="flex h-8 items-center justify-center">
-                <ArrowDown
-                  size={27}
-                  strokeWidth={2.9}
-                  className="text-sky-500"
-                />
-              </div>
-            )}
+        {/* Call to action */}
+        <div className='mt-16 flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#0b2a5b] p-6 text-white sm:flex-row sm:items-center sm:p-8'>
+          <div>
+            <h2 className='text-xl font-bold sm:text-2xl'>
+              Ready to start your admission?
+            </h2>
+            <p className='mt-1.5 text-sm text-blue-100/90'>
+              Talk to our team and reserve your seat today.
+            </p>
           </div>
-        ))}
+
+          <div className='flex flex-wrap gap-3'>
+            <Link
+              to='/contact'
+              className='rounded-full bg-white px-6 py-3 text-sm font-semibold text-blue-800 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
+            >
+              Contact us
+            </Link>
+            <Link
+              to='/Courses'
+              className='rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
+            >
+              Browse courses
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
-  );
+  )
 }
 
-export default Process;
+export default Process

@@ -1,349 +1,398 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { ArrowRight, BookOpen, Clock3, FileText } from 'lucide-react'
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Clock3,
-  Star,
-  FileText,
-  Code2,
-} from "lucide-react";
+import { categoryApi } from '../../admin/api/categoryApi.js'
+import { courseApi } from '../../admin/api/courseApi.js'
+import Modal from '../../ui/Modal.jsx'
+import SyllabusRequestModal from '../../components/modal/SyllabusRequestModal.jsx'
+import { createSyllabusLead } from '../../admin/api/syllabusLeadApi.js'
 
-import { categoryApi } from "../../admin/api/categoryApi.js";
-import { courseApi } from "../../admin/api/courseApi.js";
-import Modal from "../../ui/Modal.jsx";
-import SyllabusRequestModal from "../../components/modal/SyllabusRequestModal.jsx";
-import { createSyllabusLead } from "../../admin/api/syllabusLeadApi.js";
+const getDiscountPercent = course => {
+  const original = Number(course?.Originalprice)
+  const discounted = Number(course?.discountPrice)
+  if (!original || !discounted || discounted >= original) return 0
+  return Math.round((1 - discounted / original) * 100)
+}
+
+const formatPrice = value => {
+  const number = Number(value)
+  return Number.isNaN(number) ? '0' : number.toLocaleString('en-IN')
+}
+
+// Course image with a clean fallback if missing or broken
+function CourseImage ({ src, alt }) {
+  const [failed, setFailed] = useState(false)
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        loading='lazy'
+        onError={() => setFailed(true)}
+        className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
+      />
+    )
+  }
+
+  return (
+    <div className='flex h-full w-full items-center justify-center bg-gradient-to-br from-[#0b2a5b] to-blue-600'>
+      <BookOpen size={30} strokeWidth={1.5} className='text-white/70' />
+    </div>
+  )
+}
+
+function CardSkeleton () {
+  return (
+    <div className='animate-pulse overflow-hidden rounded-xl border border-slate-200 bg-white'>
+      <div className='aspect-[16/9] bg-slate-100' />
+      <div className='space-y-2.5 p-4'>
+        <div className='h-3 w-1/3 rounded bg-slate-100' />
+        <div className='h-4 w-3/4 rounded bg-slate-100' />
+        <div className='h-3 w-full rounded bg-slate-100' />
+        <div className='h-9 rounded-lg bg-slate-100' />
+      </div>
+    </div>
+  )
+}
 
 const Courses = () => {
-  const navigate = useNavigate();
-  const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null);
-  const [activeCategory, setActiveCategory] = useState("All Courses");
-  const [fetchedCourses, setFetchedCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const navigate = useNavigate()
+  const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null)
+  const [activeCategory, setActiveCategory] = useState('All Courses')
+  const [fetchedCourses, setFetchedCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [syllabusForm, setSyllabusForm] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    whatsappNumber: "",
-    qualification: "",
-  });
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    whatsappNumber: '',
+    qualification: ''
+  })
 
-  const [syllabusLoading, setSyllabusLoading] = useState(false);
-  const [syllabusError, setSyllabusError] = useState("");
+  const [syllabusLoading, setSyllabusLoading] = useState(false)
+  const [syllabusError, setSyllabusError] = useState('')
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        setLoading(true);
-        setError("");
+        setLoading(true)
+        setError('')
 
-        const categoryResponse = await categoryApi.getAll();
+        const categoryResponse = await categoryApi.getAll()
 
         const categoryList = Array.isArray(categoryResponse)
           ? categoryResponse
           : categoryResponse?.categories ??
-          categoryResponse?.data?.categories ??
-          categoryResponse?.data ??
-          [];
+            categoryResponse?.data?.categories ??
+            categoryResponse?.data ??
+            []
 
-        const response = await courseApi.getAll();
-
-        console.log("Courses API response:", response);
+        const response = await courseApi.getAll()
 
         const courses = Array.isArray(response)
           ? response
-          : response?.courses ??
-          response?.data?.courses ??
-          [];
+          : response?.courses ?? response?.data?.courses ?? []
 
-        const coursesWithCategory = courses.map((course) => {
+        const coursesWithCategory = courses.map(course => {
           const matchedCategory = categoryList.find(
-            (category) => category._id === course.categoryId
-          );
+            category => category._id === course.categoryId
+          )
 
           return {
             ...course,
-            categoryName: matchedCategory?.name ?? "Other",
-          };
-        });
+            categoryName: matchedCategory?.name ?? 'Other'
+          }
+        })
 
-        setFetchedCourses(coursesWithCategory);
-
-        console.log("Categories API response:", categoryList);
+        setFetchedCourses(coursesWithCategory)
       } catch (err) {
-        console.error("Failed to fetch courses:", err);
-        setError(err.message || "Failed to load courses.");
+        console.error('Failed to fetch courses:', err)
+        setError(err.message || 'Failed to load courses.')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchCourses();
-  }, []);
+    fetchCourses()
+  }, [])
 
   const categories = [
-    "All Courses",
+    'All Courses',
     ...new Set(
-      fetchedCourses
-        .map((course) => course.categoryName)
-        .filter(Boolean)
-    ),
-  ];
+      fetchedCourses.map(course => course.categoryName).filter(Boolean)
+    )
+  ]
 
   const filteredCourses =
-    activeCategory === "All Courses"
+    activeCategory === 'All Courses'
       ? fetchedCourses
-      : fetchedCourses.filter(
-        (course) => course.categoryName === activeCategory
-      );
+      : fetchedCourses.filter(course => course.categoryName === activeCategory)
 
-  const openCourseDetails = (course) => {
-    navigate("/CourseDetails", {
-      state: { course },
-    });
-  };
-
-  const handleSyllabusSubmit = async (e) => {
-  e.preventDefault();
-  setSyllabusError("");
-
-  if (!selectedSyllabusCourse) return;
-
-  try {
-    setSyllabusLoading(true);
-
-    const payload = {
-      ...syllabusForm,
-      courseId: selectedSyllabusCourse._id,
-      courseName: selectedSyllabusCourse.title,
-      syllabusUrl: selectedSyllabusCourse.syllabusUrl,
-    };
-
-    const response = await createSyllabusLead(payload);
-
-    if (!response.success) {
-      throw new Error(response.message || "Unable to save your details.");
-    }
-
-    const syllabusUrl =
-      response.syllabusUrl || response.download?.syllabusUrl;
-
-    if (!syllabusUrl) {
-      throw new Error("Your details were saved, but the syllabus URL is missing.");
-    }
-
-    // Open the syllabus after successful submission
-    window.open(syllabusUrl, "_blank", "noopener,noreferrer");
-
-    setSyllabusForm({
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      whatsappNumber: "",
-      qualification: "",
-    });
-
-    setSelectedSyllabusCourse(null);
-  } catch (error) {
-    console.error("SYLLABUS SUBMISSION ERROR:", error);
-
-    setSyllabusError(
-      error.response?.data?.message ||
-        error.message ||
-        "Something went wrong. Please try again."
-    );
-  } finally {
-    setSyllabusLoading(false);
+  const openCourseDetails = course => {
+    navigate('/CourseDetails', {
+      state: { course }
+    })
   }
-};
+
+  const handleSyllabusSubmit = async e => {
+    e.preventDefault()
+    setSyllabusError('')
+
+    if (!selectedSyllabusCourse) return
+
+    try {
+      setSyllabusLoading(true)
+
+      const payload = {
+        ...syllabusForm,
+        courseId: selectedSyllabusCourse._id,
+        courseName: selectedSyllabusCourse.title,
+        syllabusUrl: selectedSyllabusCourse.syllabusUrl
+      }
+
+      const response = await createSyllabusLead(payload)
+
+      if (!response.success) {
+        throw new Error(response.message || 'Unable to save your details.')
+      }
+
+      const syllabusUrl = response.syllabusUrl || response.download?.syllabusUrl
+
+      if (!syllabusUrl) {
+        throw new Error(
+          'Your details were saved, but the syllabus URL is missing.'
+        )
+      }
+
+      // Open the syllabus after successful submission
+      window.open(syllabusUrl, '_blank', 'noopener,noreferrer')
+
+      setSyllabusForm({
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        whatsappNumber: '',
+        qualification: ''
+      })
+
+      setSelectedSyllabusCourse(null)
+    } catch (error) {
+      console.error('SYLLABUS SUBMISSION ERROR:', error)
+
+      setSyllabusError(
+        error.response?.data?.message ||
+          error.message ||
+          'Something went wrong. Please try again.'
+      )
+    } finally {
+      setSyllabusLoading(false)
+    }
+  }
+
+  const pillBase =
+    'rounded-full border px-4 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+  const pillActive = 'border-blue-700 bg-blue-700 text-white'
+  const pillIdle =
+    'border-slate-300 bg-white text-slate-700 hover:border-blue-700 hover:text-blue-700'
 
   return (
     <section
-      id="courses"
-      className="relative isolate overflow-hidden bg-white px-5 py-22 sm:px-8 md:px-10 lg:px-41 lg:pb-10 lg:pt-20"
+      id='courses'
+      className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10'
     >
-      {/* Background decoration */}
-      <div className="pointer-events-none absolute -right-32 top-20 -z-10 h-80 w-80 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="pointer-events-none absolute -left-32 bottom-40 -z-10 h-72 w-72 rounded-full bg-blue-50 blur-3xl" />
+      {/* Background design */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+      >
+        <div className='absolute -top-10 left-[16%] h-[45%] w-20 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[60%] h-[45%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute left-[5%] top-32 h-12 w-12 rounded-full bg-blue-200/40' />
+      </div>
 
-      <div className="relative">
-        {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mb-8 sm:mb-10"
+      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
+        {/* Heading */}
+        <div className='max-w-2xl'>
+          <h2 className='text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl'>
+            Explore Our <span className='text-blue-700'>Top Courses</span>
+          </h2>
+          <p className='mt-3 text-sm leading-6 text-slate-600 sm:text-base'>
+            Upgrade your skills with industry-focused IT training, hands-on
+            projects, and practical learning designed for your career.
+          </p>
+        </div>
+
+        {/* Category filters */}
+        <div
+          className='mt-7 flex flex-wrap gap-2'
+          role='tablist'
+          aria-label='Filter courses by category'
         >
-          <div className="max-w-162.5">
-            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-              Explore Our{" "}
-              <span className="text-sky-500">Top Courses</span>
-            </h2>
-
-            <p className="mt-2 text-sm leading-7 text-slate-600 sm:text-base">
-              Upgrade your skills with industry-focused IT training, hands-on
-              projects, and practical learning designed for your career.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Category Filters */}
-        <div className="mb-8 flex flex-wrap items-center gap-2 sm:mb-9 sm:gap-3">
-          {categories.map((category) => (
+          {categories.map(category => (
             <button
               key={category}
-              type="button"
+              type='button'
+              role='tab'
+              aria-selected={activeCategory === category}
               onClick={() => setActiveCategory(category)}
-              className={`rounded-full border px-4 py-2.5 text-xs font-bold transition-colors duration-200 sm:px-5 sm:text-sm ${activeCategory === category
-                ? "border-slate-950 bg-slate-950 text-white shadow-lg shadow-slate-900/15"
-                : "border-slate-200 bg-white/90 text-slate-600 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
-                }`}
+              className={`${pillBase} ${
+                activeCategory === category ? pillActive : pillIdle
+              }`}
             >
               {category}
             </button>
           ))}
         </div>
 
-        {/* Courses Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
-        >
+        {!loading && !error && (
+          <p className='mt-5 text-[13px] text-slate-600'>
+            Showing{' '}
+            <span className='font-semibold text-slate-900'>
+              {filteredCourses.length}
+            </span>{' '}
+            {filteredCourses.length === 1 ? 'course' : 'courses'}
+          </p>
+        )}
+
+        {/* Courses grid */}
+        <div className='mt-4'>
           {loading ? (
-            <p className="col-span-full py-12 text-center text-gray-500">
-              Loading courses...
-            </p>
+            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <CardSkeleton key={i} />
+              ))}
+            </div>
           ) : error ? (
-            <p className="col-span-full wrap-break-word py-12 text-center text-red-500">
+            <p className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'>
               {error}
             </p>
           ) : filteredCourses.length === 0 ? (
-            <p className="col-span-full py-12 text-center text-gray-500">
-              No courses found.
-            </p>
+            <div className='rounded-xl border border-dashed border-slate-300 bg-white py-12 text-center'>
+              <BookOpen className='mx-auto mb-3 text-blue-700' size={26} />
+              <p className='text-sm font-semibold text-slate-900'>
+                No courses found
+              </p>
+              <p className='mt-1 text-[13px] text-slate-600'>
+                Try selecting a different category.
+              </p>
+            </div>
           ) : (
-            filteredCourses.map((course, index) => {
-              const CourseIcon = Code2;
+            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {filteredCourses.map((course, index) => {
+                const discount = getDiscountPercent(course)
 
-              return (
-                <motion.article
-                  layout
-                  key={course._id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    opacity: { duration: 0.25, ease: "easeOut" },
-                    layout: { duration: 0.25, ease: "easeOut" },
-                  }}
-                  className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:border-sky-200 hover:shadow-lg hover:shadow-slate-900/10"
-                >
-                  {/* Course Image */}
-                  <div className="relative h-48 shrink-0 overflow-hidden sm:h-52">
-                    <img
-                      src={course.imageUrl}
-                      alt={course.title || "Course"}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
+                return (
+                  <motion.article
+                    key={course._id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: Math.min(index % 4, 3) * 0.05
+                    }}
+                    className='group flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10'
+                  >
+                    {/* Image */}
+                    <div className='relative aspect-[16/9] shrink-0 overflow-hidden bg-slate-100'>
+                      <CourseImage
+                        src={course.imageUrl}
+                        alt={course.title || 'Course'}
+                      />
 
-                    <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-slate-950/10 to-slate-950/10" />
+                      {course.type && (
+                        <span className='absolute left-2.5 top-2.5 max-w-[calc(100%-1.25rem)] truncate rounded-md bg-white/95 px-2 py-0.5 text-[11px] font-semibold capitalize text-slate-800 shadow-sm'>
+                          {course.type}
+                        </span>
+                      )}
+                    </div>
 
-                    <span className="absolute left-4 top-4 max-w-[calc(100%-2rem)] truncate rounded-full border border-white/40 bg-white/95 px-3 py-1.5 text-[11px] font-bold text-slate-800 shadow-sm">
-                      {course.type}
-                    </span>
-
-
-                  </div>
-
-                  {/* Course Content */}
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                      <span className="inline-flex max-w-full items-center gap-2 rounded-lg bg-sky-50 px-3 py-2 text-xs font-bold text-sky-700">
-                        <CourseIcon size={15} className="shrink-0" />
-                        <span className="wrap-break-word">
+                    {/* Content */}
+                    <div className='flex flex-1 flex-col p-4'>
+                      <div className='flex items-center justify-between gap-2'>
+                        <span className='truncate text-xs font-semibold text-blue-700'>
                           {course.categoryName}
                         </span>
-                      </span>
 
-                      <span className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-slate-500">
-                        <Clock3 size={14} className="text-sky-600" />
-                        {course.duration}
-                      </span>
-                    </div>
+                        {course.duration && (
+                          <span className='flex shrink-0 items-center gap-1 text-xs text-slate-500'>
+                            <Clock3 size={12} />
+                            {course.duration}
+                          </span>
+                        )}
+                      </div>
 
-                    <h3 className="wrap-break-word text-lg font-extrabold leading-snug text-slate-950 transition-colors duration-200 group-hover:text-sky-600 sm:text-xl">
-                      {course.title}
-                    </h3>
+                      <h3 className='mt-2 line-clamp-2 min-h-[2.5rem] text-[15px] font-semibold leading-5 text-slate-900'>
+                        {course.title}
+                      </h3>
 
-                    <p className="mt-3 flex-1 wrap-break-word text-sm leading-6 text-slate-600">
-                      {course.description}
-                    </p>
+                      <p className='mt-1.5 line-clamp-2 text-[13px] leading-5 text-slate-600'>
+                        {course.description}
+                      </p>
 
-                    <div className="mt-5">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedSyllabusCourse(course)}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
-                      >
-                        <FileText size={16} />
-                        View Syllabus
-                        <ArrowRight size={14} />
-                      </button>
-                    </div>
-
-                    <div className="my-4 border-t border-slate-100" />
-
-                    {/* Price and CTA */}
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium text-slate-500">
-                          Course Fee
-                        </p>
-
-                        <div className="mt-1 flex flex-wrap items-center gap-2">
-                          <span className="text-xl font-extrabold tracking-tight text-slate-950">
-                            ₹{course.discountPrice}
+                      {/* Price and actions */}
+                      <div className='mt-auto pt-4'>
+                        <div className='flex items-baseline gap-2 border-t border-slate-100 pt-3'>
+                          <span className='text-lg font-bold text-blue-800'>
+                            ₹{formatPrice(course.discountPrice)}
                           </span>
 
                           {course.Originalprice != null && (
-                            <span className="text-sm text-slate-400 line-through">
-                              ₹{course.Originalprice}
+                            <span className='text-xs text-slate-400 line-through'>
+                              ₹{formatPrice(course.Originalprice)}
+                            </span>
+                          )}
+
+                          {discount > 0 && (
+                            <span className='ml-auto text-xs font-semibold text-emerald-700'>
+                              {discount}% off
                             </span>
                           )}
                         </div>
+
+                        <div className='mt-3 flex items-center gap-2'>
+                          <button
+                            type='button'
+                            onClick={() => setSelectedSyllabusCourse(course)}
+                            className='inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-medium text-slate-700 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                          >
+                            <FileText size={14} />
+                            Syllabus
+                          </button>
+
+                          <button
+                            type='button'
+                            onClick={() => openCourseDetails(course)}
+                            className='group/btn inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-blue-700 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                          >
+                            Explore
+                            <ArrowRight
+                              size={14}
+                              className='transition-transform duration-300 group-hover/btn:translate-x-0.5'
+                            />
+                          </button>
+                        </div>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => openCourseDetails(course)}
-                        className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-sky-50 px-3.5 py-3 text-sm font-bold text-sky-700 transition-colors duration-200 hover:bg-slate-950 hover:text-white sm:px-4"
-                      >
-                        Explore
-                        <ArrowRight
-                          size={16}
-                          className="transition-transform duration-200 group-hover:translate-x-1"
-                        />
-                      </button>
                     </div>
-                  </div>
-                </motion.article>
-              );
-            })
+                  </motion.article>
+                )
+              })}
+            </div>
           )}
-        </motion.div>
-
-
+        </div>
       </div>
+
+      {/* Syllabus request modal */}
       <Modal
         isOpen={Boolean(selectedSyllabusCourse)}
         onClose={() => setSelectedSyllabusCourse(null)}
-        title="Get Course Syllabus"
-        size="lg"
-        theme="white"
+        title='Get Course Syllabus'
+        size='lg'
+        theme='white'
       >
         <SyllabusRequestModal
           course={selectedSyllabusCourse}
@@ -351,7 +400,7 @@ const Courses = () => {
         />
       </Modal>
     </section>
-  );
-};
+  )
+}
 
-export default Courses;
+export default Courses

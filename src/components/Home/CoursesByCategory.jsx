@@ -1,164 +1,142 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Code2
-} from "lucide-react";
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 
-import { categoryApi } from "../../admin/api/categoryApi.js";
-import { courseApi } from "../../admin/api/courseApi.js";
+import { categoryApi } from '../../admin/api/categoryApi.js'
+import { courseApi } from '../../admin/api/courseApi.js'
 
-function CategoryCard({
-  title,
-  description,
-  courses,
-  icon: Icon,
-  to = "/Course",
-  featured = false,
-  index = 0,
-}) {
-  const isDark = featured;
+// Find the category image from whichever field your backend uses
+const getCategoryImage = category => {
+  const value =
+    category.image ??
+    category.imageUrl ??
+    category.image_url ??
+    category.thumbnail ??
+    category.icon ??
+    category.logo ??
+    ''
+  if (typeof value === 'string') return value
+  return value?.url ?? value?.secure_url ?? ''
+}
+
+// Thumbnail: category image, or a clean initial tile if there is no image
+function Thumb ({ src, title }) {
+  const [failed, setFailed] = useState(false)
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt=''
+        loading='lazy'
+        onError={() => setFailed(true)}
+        className='h-[88px] w-[88px] shrink-0 rounded-lg object-cover'
+      />
+    )
+  }
 
   return (
+    <div
+      aria-hidden='true'
+      className='flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#0b2a5b] to-blue-700 text-3xl font-bold text-white'
+    >
+      {title.trim().charAt(0).toUpperCase()}
+    </div>
+  )
+}
+
+function CategoryCard ({ title, image, courses, to, index = 0 }) {
+  return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.45, delay: (index % 3) * 0.08 }}
-      className="h-full"
+      transition={{ duration: 0.4, delay: (index % 3) * 0.06 }}
+      className='h-full'
     >
       <Link
         to={to}
-        className={`group relative flex h-full min-h-57.5 flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 sm:p-6 ${
-          isDark
-            ? "border-gray-800 bg-[#111318] text-white hover:border-sky-400/60"
-            : "border-gray-200 bg-white text-gray-900 hover:border-sky-300 hover:bg-sky-50/40"
-        }`}
+        className='group relative flex h-full min-h-[130px] gap-4 overflow-hidden rounded-xl border border-blue-100 bg-gradient-to-br from-sky-50 via-blue-50 to-blue-100 p-3 transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
       >
-        {/* Decorative glow */}
+        {/* Card background design */}
         <div
-          className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-400/15 blur-3xl transition-opacity duration-500 ${
-            isDark
-              ? "opacity-60 group-hover:opacity-100"
-              : "opacity-0 group-hover:opacity-100"
-          }`}
-        />
-
-        {/* Icon and arrow */}
-        <div className="relative flex items-start justify-between gap-3">
-          <div
-            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-105 ${
-              isDark
-                ? "border-sky-400/20 bg-sky-400/10 text-sky-300 group-hover:bg-sky-400 group-hover:text-black"
-                : "border-sky-100 bg-sky-50 text-sky-600 group-hover:bg-sky-500 group-hover:text-white"
-            }`}
-          >
-            {Icon ? <Icon size={23} strokeWidth={1.8} /> : <Code2 size={23} />}
-          </div>
-
-          {featured ? (
-            <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-[9px] font-bold tracking-wider text-sky-300">
-              FEATURED
-            </span>
-          ) : (
-            <ArrowUpRight
-              size={19}
-              className="text-gray-400 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-sky-500"
-            />
-          )}
+          aria-hidden='true'
+          className='pointer-events-none absolute inset-0 overflow-hidden'
+        >
+          {/* Soft diagonal light streaks */}
+          <div className='absolute -top-10 left-[18%] h-52 w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0 transition-transform duration-500 group-hover:translate-x-3' />
+          <div className='absolute -top-10 left-[42%] h-52 w-12 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0 transition-transform duration-500 group-hover:translate-x-4' />
+          <div className='absolute -top-10 left-[62%] h-52 w-28 -skew-x-[28deg] bg-gradient-to-b from-white/50 to-white/0 transition-transform duration-500 group-hover:translate-x-2' />
+          {/* Corner shapes */}
+          <div className='absolute -bottom-10 -left-8 h-20 w-44 -rotate-[16deg] bg-blue-200/60' />
+          <div className='absolute -right-10 -top-10 h-28 w-28 rounded-full bg-blue-200/50 blur-xl' />
+          <div className='absolute -bottom-12 right-6 h-24 w-24 rounded-full bg-sky-200/50 blur-xl' />
         </div>
 
-        {/* Category information */}
-        <div className="relative mt-7">
-          <h3
-            className={`text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-sky-500 sm:text-xl ${
-              isDark ? "text-white" : "text-gray-900"
-            }`}
-          >
+        <div className='relative z-10'>
+          <Thumb src={image} title={title} />
+        </div>
+
+        <div className='relative z-10 flex min-w-0 flex-1 flex-col justify-between py-0.5'>
+          <h3 className='line-clamp-2 text-[17px] font-semibold leading-snug text-[#0b2a5b] transition-colors group-hover:text-blue-700'>
             {title}
           </h3>
 
-          {description && (
-            <p
-              className={`mt-2 max-w-xs text-sm leading-6 ${
-                isDark ? "text-gray-400" : "text-gray-500"
-              }`}
-            >
-              {description}
-            </p>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div
-          className={`relative mt-auto flex items-center justify-between gap-2 border-t pt-4 ${
-            isDark ? "border-white/10" : "border-gray-100"
-          }`}
-        >
-          <span
-            className={`text-xs font-medium ${
-              isDark ? "text-gray-400" : "text-gray-500"
-            }`}
-          >
-            <span
-              className={`mr-1 font-bold ${
-                isDark ? "text-sky-300" : "text-gray-900"
-              }`}
-            >
-              {courses}
+          <div className='mt-3 flex items-center justify-between gap-2'>
+            <span className='rounded-full border border-slate-300 bg-white px-2.5 py-0.5 text-xs font-medium text-slate-700'>
+              {courses} {courses === 1 ? 'Course' : 'Courses'}
             </span>
-            courses available
-          </span>
-
-          <span
-            className={`flex shrink-0 items-center gap-1 text-xs font-semibold transition-all duration-300 group-hover:gap-2 ${
-              isDark ? "text-sky-300" : "text-sky-600"
-            }`}
-          >
-            Explore
-            <ArrowRight size={14} />
-          </span>
+            <ArrowRight
+              size={16}
+              className='text-slate-300 transition duration-300 group-hover:translate-x-1 group-hover:text-blue-700'
+            />
+          </div>
         </div>
       </Link>
     </motion.div>
-  );
+  )
 }
 
-export default function CoursesByCategory({
-  eyebrow = "LEARN BY INTEREST",
-  title = "Courses by",
-  highlight = "Category.",
-  description = "Discover your next skill. Explore expert-led courses designed to help you learn, grow, and move forward with confidence.",
-  buttonText = "Explore All Courses",
-  buttonTo = "/Courses",
+function CardSkeleton () {
+  return (
+    <div className='flex animate-pulse gap-4 rounded-xl border border-slate-200 bg-white p-3'>
+      <div className='h-[88px] w-[88px] rounded-lg bg-slate-100' />
+      <div className='flex-1 space-y-3 py-1'>
+        <div className='h-4 w-3/4 rounded bg-slate-100' />
+        <div className='h-5 w-1/3 rounded-full bg-slate-100' />
+      </div>
+    </div>
+  )
+}
+
+export default function CoursesByCategory ({
+  title = 'Courses by',
+  highlight = 'Category',
+  description = 'Discover your next skill with expert-led courses designed to help you learn, grow, and move forward.',
+  buttonText = 'Explore all courses',
+  buttonTo = '/Courses',
   showButton = true,
-  showBottomNote = true,
-  bottomNote = "Find the right course for your next big step.",
   columns = 3,
-  fullWidth = false,
+  fullWidth = false
 }) {
-  const [fetchedCategories, setFetchedCategories] = useState([]);
-  const [fetchedCourses, setFetchedCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [categories, setCategories] = useState([])
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        setLoading(true);
-        setError("");
+        setLoading(true)
+        setError('')
 
         const [categoryResponse, courseResponse] = await Promise.all([
           categoryApi.getAll(),
-          courseApi.getAll(),
-        ]);
-
-        console.log("Backend categories:", categoryResponse);
-        console.log("Backend courses:", courseResponse);
+          courseApi.getAll()
+        ])
 
         const categoryData = Array.isArray(categoryResponse)
           ? categoryResponse
@@ -168,7 +146,7 @@ export default function CoursesByCategory({
           ? categoryResponse.data
           : Array.isArray(categoryResponse?.data?.categories)
           ? categoryResponse.data.categories
-          : [];
+          : []
 
         const courseData = Array.isArray(courseResponse)
           ? courseResponse
@@ -176,77 +154,51 @@ export default function CoursesByCategory({
           ? courseResponse.courses
           : Array.isArray(courseResponse?.data?.courses)
           ? courseResponse.data.courses
-          : [];
+          : []
 
         if (isMounted) {
-          setFetchedCategories(categoryData);
-          setFetchedCourses(courseData);
+          setCategories(categoryData)
+          setCourses(courseData)
         }
       } catch (err) {
-        console.error("Failed to fetch categories or courses:", err);
-
+        console.error('Failed to fetch categories or courses:', err)
         if (isMounted) {
-          setError(
-            err.message || "Failed to load categories and courses."
-          );
+          setError(err.message || 'Failed to load categories and courses.')
         }
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        if (isMounted) setLoading(false)
       }
-    };
+    }
 
-    fetchCategories();
-
+    fetchData()
     return () => {
-      isMounted = false;
-    };
-  }, []);
+      isMounted = false
+    }
+  }, [])
 
   const columnClasses = {
-    2: "sm:grid-cols-2",
-    3: "sm:grid-cols-2 lg:grid-cols-3",
-    4: "sm:grid-cols-2 lg:grid-cols-4",
-  };
+    2: 'sm:grid-cols-2',
+    3: 'sm:grid-cols-2 lg:grid-cols-3',
+    4: 'sm:grid-cols-2 lg:grid-cols-4'
+  }
+  const grid = `grid grid-cols-1 gap-4 sm:gap-5 ${
+    columnClasses[columns] || columnClasses[3]
+  }`
 
-  // Count courses belonging to a category.
-  const getCourseCount = (categoryId) => {
-    return fetchedCourses.filter(
-      (course) => String(course.categoryId) === String(categoryId)
-    ).length;
-  };
+  const getCourseCount = categoryId =>
+    courses.filter(c => String(c.categoryId) === String(categoryId)).length
 
   return (
-    <section
-      className={`relative overflow-hidden bg-white px-4 py-3 sm:px-10 sm:py-20 lg:px-40 lg:py-5 ${
-        fullWidth ? "w-full" : ""
-      }`}
-    >
-      {/* Background accent */}
-      <div className="pointer-events-none absolute -left-40 top-40 h-80 w-80 rounded-full bg-sky-100/50 blur-3xl" />
-
-      <div className="relative mx-auto w-full">
+    <section className={`bg-white py-16 sm:py-20 ${fullWidth ? 'w-full' : ''}`}>
+      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         {/* Section heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-10 flex flex-col justify-between gap-5 sm:mb-12 md:flex-row md:items-end"
-        >
-          <div className="max-w-2xl">
-           
-
-            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
-              {title}{" "}
-              <span className="text-blue-700">
-                {highlight}
-              </span>
+        <div className='mb-10 flex flex-col justify-between gap-5 sm:mb-12 md:flex-row md:items-end'>
+          <div className='max-w-2xl'>
+            <h2 className='text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl'>
+              {title} <span className='text-blue-700'>{highlight}</span>
             </h2>
-
             {description && (
-              <p className="mt-4 max-w-xl text-sm leading-7 text-gray-500 sm:text-base">
+              <p className='mt-3 max-w-xl text-base leading-7 text-slate-600'>
                 {description}
               </p>
             )}
@@ -255,68 +207,56 @@ export default function CoursesByCategory({
           {showButton && (
             <Link
               to={buttonTo}
-              className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700"
+              className='group inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
             >
               {buttonText}
-              <ArrowUpRight
-                size={17}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              <ArrowRight
+                size={16}
+                className='transition-transform duration-300 group-hover:translate-x-1'
               />
             </Link>
           )}
-        </motion.div>
+        </div>
 
         {/* Category cards */}
         {loading ? (
-          <p className="py-4 text-sm text-gray-500">
-            Loading categories...
-          </p>
+          <div className={grid}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : error ? (
-          <p className="py-4 text-sm text-red-600">{error}</p>
-        ) : fetchedCategories.length === 0 ? (
-          <p className="py-4 text-sm text-gray-500">
-            No categories found.
+          <p className='rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'>
+            {error}
+          </p>
+        ) : categories.length === 0 ? (
+          <p className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-6 text-center text-sm text-slate-600'>
+            No categories are available yet. Please check back soon.
           </p>
         ) : (
-          <div
-            className={`grid grid-cols-1 gap-4 sm:gap-5 ${
-              columnClasses[columns] || columnClasses[3]
-            }`}
-          >
-            {fetchedCategories.map((category, index) => {
-              const categoryId = category._id ?? category.id;
-
+          <div className={grid}>
+            {categories.map((category, index) => {
+              const categoryId = category._id ?? category.id
               return (
                 <CategoryCard
                   key={categoryId ?? index}
+                  index={index}
                   title={
                     category.title ??
                     category.name ??
                     category.categoryName ??
                     category.category_name ??
-                    "Untitled Category"
+                    'Untitled category'
                   }
-                  description={
-                    category.description ?? category.details ?? ""
-                  }
+                  image={getCategoryImage(category)}
                   courses={getCourseCount(categoryId)}
-                  featured={index % 2 === 0}
-                  to="/Courses"
-                  index={index}
+                  to='/Courses'
                 />
-              );
+              )
             })}
           </div>
         )}
-
-        {/* Optional bottom note */}
-        {/* {showBottomNote && bottomNote && (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-xs text-gray-400 sm:mt-10 sm:text-sm">
-            <Star size={15} className="text-sky-500" />
-            {bottomNote}
-          </div>
-        )} */}
       </div>
     </section>
-  );
+  )
 }

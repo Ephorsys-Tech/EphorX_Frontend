@@ -1,32 +1,58 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
-  ArrowUpRight,
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
   Clock3,
   FileText,
   Layers3,
-  Tag,
-  CheckCircle2,
+  MonitorPlay,
 } from "lucide-react";
 
 import Modal from "../../ui/Modal";
-import SyllabusModal from "../modal/SyllabusModal";
 import CourseEnrollModal from "../modal/CourseEnrollModal";
 import SyllabusRequestModal from "../modal/SyllabusRequestModal";
 
+const formatPrice = (value) => {
+  const number = Number(String(value ?? "").replace(/[^\d.]/g, ""));
+  return Number.isNaN(number) ? String(value) : number.toLocaleString("en-IN");
+};
+
+// Course image with a clean fallback
+function CourseImage({ src, alt }) {
+  const [failed, setFailed] = useState(false);
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        onError={() => setFailed(true)}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#0b2a5b] to-blue-600">
+      <BookOpen size={48} strokeWidth={1.5} className="text-white/70" />
+    </div>
+  );
+}
+
 function Detail({ icon: Icon, label, value }) {
   return (
-    <div className="flex min-w-0 items-start gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
-        <Icon size={17} />
+    <div className="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+        <Icon size={18} />
       </div>
 
       <div className="min-w-0">
         <p className="text-xs text-slate-500">{label}</p>
-        <p className="mt-1 break-words text-sm font-semibold text-slate-900">
+        <p className="mt-0.5 break-words text-sm font-semibold capitalize text-slate-900">
           {value || "Not specified"}
         </p>
       </div>
@@ -40,7 +66,6 @@ export default function CourseDetails() {
 
   const selectedCourse = location.state?.course;
   const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null);
-
   const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
   // No backend changes: use the selected course returned by the existing API.
@@ -72,148 +97,148 @@ export default function CourseDetails() {
     originalPrice > 0 && discountedPrice >= 0
       ? Math.max(
           0,
-          Math.round(
-            ((originalPrice - discountedPrice) / originalPrice) * 100
-          )
+          Math.round(((originalPrice - discountedPrice) / originalPrice) * 100)
         )
       : 0;
 
-  // Handle opening the details page without a selected course.
+  const backLink =
+    "inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-blue-700";
+
+  // Opening the details page without a selected course
   if (!course) {
     return (
-      <main className="min-h-screen bg-[#f8fafc] px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-41">
-        <Link
-          to="/Course"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors duration-200 hover:text-sky-600"
-        >
-          <ArrowLeft size={16} />
-          Back to courses
-        </Link>
+      <main className="min-h-screen bg-slate-50 pb-16 pt-8 sm:pt-10">
+        <div className="mx-auto max-w-3xl px-5 sm:px-8">
+          <Link to="/Courses" className={backLink}>
+            <ArrowLeft size={16} />
+            Back to courses
+          </Link>
 
-        <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 text-center sm:p-10">
-          <h1 className="text-xl font-bold text-slate-950">
-            Course details unavailable
-          </h1>
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-8 text-center sm:p-12">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+              <BookOpen size={22} />
+            </div>
 
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            Please select a course from the courses page to view its details.
-          </p>
+            <h1 className="mt-4 text-xl font-bold text-slate-900">
+              Course details unavailable
+            </h1>
 
-          <button
-            type="button"
-            onClick={() => navigate("/Course")}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-sky-500"
-          >
-            Browse Courses
-            <ArrowUpRight size={16} />
-          </button>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Please select a course from the courses page to view its
+              details.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => navigate("/Courses")}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800"
+            >
+              Browse courses
+              <ArrowRight size={16} />
+            </button>
+          </div>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f8fafc] px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-41">
-      <Link
-        to="/Courses"
-        className="mb-7 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors duration-200 hover:text-sky-600"
+    <main className="relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10">
+      {/* Background design */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <ArrowLeft size={16} />
-        Back to courses
-      </Link>
+        <div className="absolute -top-10 left-[16%] h-[40%] w-20 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0" />
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10" />
+        <div className="absolute left-[4%] top-40 h-12 w-12 rounded-full bg-blue-200/40" />
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-      >
-        {/* Course image */}
-        <div className="relative h-56 overflow-hidden bg-slate-100 sm:h-72 lg:h-80">
-          {course.image && (
-            <img
-              src={course.image}
-              alt={course.title || "Course"}
-              className="h-full w-full object-cover"
-            />
-          )}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <Link to="/Courses" className={`${backLink} mb-6`}>
+          <ArrowLeft size={16} />
+          Back to courses
+        </Link>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 to-transparent" />
-
-          <span className="absolute bottom-4 left-4 inline-flex max-w-[calc(100%-2rem)] items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-slate-800 shadow-sm">
-            <Layers3 size={15} className="shrink-0 text-sky-600" />
-            <span className="break-words">{course.category}</span>
-          </span>
-        </div>
-
-        <div className="grid min-w-0 lg:grid-cols-[minmax(0,1fr)_290px]">
-          {/* Main information */}
-          <div className="min-w-0 p-5 sm:p-7 lg:p-8">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="max-w-full break-words rounded-md bg-sky-50 px-2.5 py-1.5 text-xs font-semibold text-sky-700">
-                {course.type || "Course"}
-              </span>
-
-              <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
-                <Clock3 size={14} />
-                {course.duration || "Duration not specified"}
-              </span>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px]"
+        >
+          {/* Main content */}
+          <div className="min-w-0 space-y-8">
+            <div className="aspect-[16/8] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+              <CourseImage src={course.image} alt={course.title || "Course"} />
             </div>
 
-            <h1 className="mt-4 break-words text-2xl font-bold leading-snug tracking-tight text-slate-950 sm:text-3xl">
-              {course.title}
-            </h1>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                  {course.category}
+                </span>
 
-            <p className="mt-3 break-words text-sm leading-6 text-slate-600">
-              {course.description}
-            </p>
+                {course.type && (
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold capitalize text-slate-700">
+                    {course.type}
+                  </span>
+                )}
+
+                {course.duration && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+                    <Clock3 size={14} />
+                    {course.duration}
+                  </span>
+                )}
+              </div>
+
+              <h1 className="mt-4 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+                {course.title}
+              </h1>
+
+              <p className="mt-4 break-words text-base leading-7 text-slate-600">
+                {course.description}
+              </p>
+            </div>
 
             {/* Course information */}
-            <div className="mt-7 border-t border-slate-100 pt-6">
-              <h2 className="text-base font-bold text-slate-950">
+            <section>
+              <h2 className="text-lg font-bold text-slate-900">
                 Course information
               </h2>
 
-              <div className="mt-5 grid gap-x-6 gap-y-6 sm:grid-cols-2">
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <Detail
                   icon={Layers3}
                   label="Category"
                   value={course.category}
                 />
-
-                <Detail
-                  icon={Tag}
-                  label="Category ID"
-                  value={course.categoryId}
-                />
-
                 <Detail
                   icon={Clock3}
                   label="Duration"
                   value={course.duration}
                 />
-
                 <Detail
-                  icon={CheckCircle2}
+                  icon={MonitorPlay}
                   label="Course type"
                   value={course.type}
                 />
               </div>
-            </div>
+            </section>
 
-            {/* Course syllabus */}
-            <div className="mt-6 flex gap-6  lg:gap-5 xl:gap-49.5 border-t border-slate-100 pt-4 flex-col md:flex-row">
-              <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
-                  <FileText size={19} />
+            {/* Syllabus */}
+            <section className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                  <FileText size={22} />
                 </div>
 
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-slate-900">
+                  <h2 className="text-base font-semibold text-slate-900">
                     Course syllabus
-                  </p>
-                  <p className="mt-0.5 text-xs text-slate-500">
-                    View curriculum and topics
+                  </h2>
+                  <p className="mt-0.5 text-sm text-slate-600">
+                    View the complete curriculum and topics covered.
                   </p>
                 </div>
               </div>
@@ -221,84 +246,81 @@ export default function CourseDetails() {
               <button
                 type="button"
                 onClick={() => setSelectedSyllabusCourse(course)}
-                className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-slate-950 sm:self-auto ml-10"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-blue-700 px-6 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-700 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
               >
-                <FileText size={16} />
-                View Syllabus
-                <ArrowUpRight size={16} />
+                View syllabus
+                <ArrowRight size={16} />
               </button>
-            </div>
+            </section>
           </div>
 
           {/* Pricing panel */}
-          <aside className="min-w-0 border-t border-slate-200 bg-slate-50 p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-6">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Course fee
-            </p>
+          <aside className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-blue-900/5 lg:sticky lg:top-32">
+            <p className="text-sm font-medium text-slate-500">Course fee</p>
 
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="break-words text-3xl font-bold tracking-tight text-slate-950">
-                ₹{course.price ?? "Contact us"}
+            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="break-words text-3xl font-bold tracking-tight text-blue-800">
+                {course.price != null ? `₹${formatPrice(course.price)}` : "Contact us"}
               </span>
 
               {discount > 0 && (
-                <span className="rounded-md bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">
-                  {discount}% OFF
+                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                  {discount}% off
                 </span>
               )}
             </div>
 
-            {course.oldPrice != null && (
+            {course.oldPrice != null && discount > 0 && (
               <p className="mt-1 text-sm text-slate-400 line-through">
-                ₹{course.oldPrice}
+                ₹{formatPrice(course.oldPrice)}
               </p>
             )}
 
             {discount > 0 && (
-              <div className="mt-5 flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-3">
-                <CheckCircle2 size={17} className="shrink-0 text-sky-600" />
-
-                <span className="text-xs leading-5 text-slate-600">
-                  Save ₹
+              <div className="mt-5 flex items-center gap-2.5 rounded-lg bg-slate-50 px-4 py-3">
+                <CheckCircle2
+                  size={17}
+                  className="shrink-0 text-emerald-600"
+                />
+                <span className="text-sm text-slate-700">
+                  You save ₹
                   {(originalPrice - discountedPrice).toLocaleString("en-IN")}
-                  {" "}on this course
                 </span>
               </div>
             )}
 
-            {/* Enroll button: opens the existing enrollment modal */}
-            <button
-              type="button"
-              onClick={() => setSelectedEnrollment(course)}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-slate-900"
-            >
-              Enroll Now
-              <ArrowUpRight size={17} />
-            </button>
+            <div className="mt-6 space-y-3">
+              {/* Enroll: opens the existing enrollment modal */}
+              <button
+                type="button"
+                onClick={() => setSelectedEnrollment(course)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              >
+                Enroll now
+                <ArrowRight size={16} />
+              </button>
 
-            {/* Enquire button: navigates to Contact */}
-            <Link
-              to="/contact"
-              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
-            >
-              Enquire Now
-              <ArrowUpRight size={17} />
-            </Link>
+              {/* Enquire: navigates to Contact */}
+              <Link
+                to="/contact"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-700 hover:text-blue-700"
+              >
+                Enquire now
+              </Link>
+            </div>
 
-            <p className="mt-3 text-center text-xs leading-5 text-slate-500">
-              Interested in joining? Contact our team.
+            <p className="mt-4 text-center text-xs leading-5 text-slate-500">
+              Interested in joining? Our team will guide you.
             </p>
           </aside>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      <div className="mt-6 text-center">
-        <Link
-          to="/Courses"
-          className="text-sm font-medium text-slate-500 transition-colors duration-200 hover:text-sky-600"
-        >
-          Explore more courses
-        </Link>
+        <div className="mt-10 text-center">
+          <Link to="/Courses" className={backLink}>
+            Explore more courses
+            <ArrowRight size={15} />
+          </Link>
+        </div>
       </div>
 
       {/* Enrollment modal */}
@@ -318,17 +340,17 @@ export default function CourseDetails() {
 
       {/* Syllabus modal */}
       <Modal
-  isOpen={Boolean(selectedSyllabusCourse)}
-  onClose={() => setSelectedSyllabusCourse(null)}
-  title="Get Course Syllabus"
-  size="lg"
-  theme="white"
->
-  <SyllabusRequestModal
-    course={selectedSyllabusCourse}
-    onClose={() => setSelectedSyllabusCourse(null)}
-  />
-</Modal>
+        isOpen={Boolean(selectedSyllabusCourse)}
+        onClose={() => setSelectedSyllabusCourse(null)}
+        title="Get Course Syllabus"
+        size="lg"
+        theme="white"
+      >
+        <SyllabusRequestModal
+          course={selectedSyllabusCourse}
+          onClose={() => setSelectedSyllabusCourse(null)}
+        />
+      </Modal>
     </main>
   );
 }

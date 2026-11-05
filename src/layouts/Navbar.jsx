@@ -1,170 +1,237 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import image from "../assets/Logo.png";
-import { Phone } from "lucide-react";
-import Modal from "../ui/Modal";
-import ContactModal from "../components/modal/ContactModal";
+import { useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import { Phone, Mail, Menu, X, GraduationCap } from 'lucide-react'
+import image from '../assets/Logo.png'
+import Modal from '../ui/Modal'
+import ContactModal from '../components/modal/ContactModal'
 
 const LINKS = [
-  { label: "Home", to: "/" },
-  { label: "Course", to: "/Courses" },
-  { label: "About", to: "/about" },
-  { label: "Process", to: "/process" },
-  { label: "Careers", to: "/careers" },
-  { label: "Contact", to: "/contact" },
-  { label: "FAQ", to: "/faq" },
-];
+  { label: 'Home', to: '/' },
+  { label: 'Courses', to: '/Courses' },
+  { label: 'About', to: '/about' },
+  { label: 'Process', to: '/process' },
+  { label: 'Careers', to: '/careers' },
+  { label: 'Contact', to: '/contact' },
+  { label: 'FAQ', to: '/faq' }
+]
 
-const pill =
-  "rounded-3xl bg-[#fdfbf7] shadow-[0_4px_20px_-8px_rgba(0,0,0,0.3)]";
+// TODO: replace with your real contact details
+const PHONE = '+91 00000 00000'
+const EMAIL = 'info@ephorx.com'
 
-function Logo() {
+function Logo () {
   return (
     <Link
-      to="/"
-      aria-label="EphorX Home"
-      className="relative flex h-12 w-32 shrink-0 items-center sm:w-36 md:w-40 lg:w-40"
+      to='/'
+      aria-label='EphorX Home'
+      className='flex shrink-0 items-center'
     >
       <img
         src={image}
-        alt="EphorX logo"
-        className="absolute -left-5 top-[37%] h-auto w-44 max-w-none -translate-y-1/2 object-contain sm:-left-7 sm:w-48 md:-left-8 md:w-52 lg:-left-12 lg:w-57 pb-1"
+        alt='EphorX logo'
+        className='h-10 w-auto object-contain sm:h-11 lg:h-12'
       />
     </Link>
-  );
+  )
 }
 
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+export default function Navbar () {
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 15);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 15)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+  // Close mobile menu with Escape
+  useEffect(() => {
+    if (!open) return
+    const onKey = e => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleContactSubmit = async formData => {
+    console.log('Contact enquiry:', formData)
+  }
 
-  const handleContactSubmit = async (formData) => {
-    console.log("Contact enquiry:", formData);
-  };
+  const openContact = () => {
+    setOpen(false)
+    setContactOpen(true)
+  }
 
   return (
-    <header
-      id="top"
-      className="fixed inset-x-0 top-0 z-50 bg-white px-3 pt-1 shadow-sm sm:px-6 sm:pt-2 md:px-8 lg:px-40 xl:px-40 2xl:px-41"
-    >
-      {/* Desktop Navbar */}
-      <nav className="hidden min-h-12 items-center justify-between gap-3 lg:flex xl:gap-4">
-
-        {/* Logo */}
-        <div className="flex min-w-0 shrink-0 items-center">
-          <Logo />
+    <header id='top' className='fixed inset-x-0 top-0 z-50'>
+      {/* Top info bar (desktop only, collapses on scroll) */}
+      <div
+        className={`hidden overflow-hidden bg-[#0b2a5b] text-white transition-all duration-300 lg:block ${
+          scrolled ? 'max-h-0' : 'max-h-10'
+        }`}
+      >
+        <div className='mx-auto flex h-10 max-w-7xl items-center justify-between px-8 text-[13px]'>
+          <p className='flex items-center gap-2 text-white/90'>
+            <GraduationCap size={16} className='text-amber-300' />
+            Admissions are open for the new batch
+          </p>
+          <div className='flex items-center gap-6 text-white/90'>
+            <a
+              href={`tel:${PHONE.replace(/\s/g, '')}`}
+              className='flex items-center gap-2 transition hover:text-white'
+            >
+              <Phone size={14} />
+              {PHONE}
+            </a>
+            <a
+              href={`mailto:${EMAIL}`}
+              className='flex items-center gap-2 transition hover:text-white'
+            >
+              <Mail size={14} />
+              {EMAIL}
+            </a>
+          </div>
         </div>
+      </div>
 
-        {/* Navigation Links */}
-        <div className="flex min-w-0 items-center gap-1 p-1.5 xl:gap-3 xl:p-2">
-          <ul className="flex min-w-0 items-center gap-0.5 xl:gap-1">
-            {LINKS.map((link) => (
-              <li key={link.label} className="shrink-0">
+      {/* Main bar */}
+      <div
+        className={`bg-white/95 backdrop-blur transition-shadow duration-300 ${
+          scrolled
+            ? 'shadow-[0_6px_24px_-12px_rgba(11,42,91,0.35)]'
+            : 'border-b border-slate-200'
+        }`}
+      >
+        <nav className='mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[72px] lg:px-8'>
+          <Logo />
+
+          {/* Desktop links */}
+          <ul className='hidden items-center gap-1 lg:flex xl:gap-2'>
+            {LINKS.map(link => (
+              <li key={link.label}>
                 <NavLink
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `block rounded-full px-3 py-2 text-sm font-semibold transition md:px-0 xl:px-5 xl:text-md xl:mx-1 lg:mx-2 ${
+                    `group relative block px-3 py-2 text-[15px] font-semibold transition-colors xl:px-4 ${
                       isActive
-                        ? "text-blue-700"
-                        : "text-black hover:text-blue-600"
+                        ? 'text-blue-700'
+                        : 'text-slate-700 hover:text-blue-700'
                     }`
                   }
                 >
-                  {link.label}
+                  {({ isActive }) => (
+                    <>
+                      {link.label}
+                      <span
+                        className={`absolute inset-x-3 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-4 ${
+                          isActive
+                            ? 'scale-x-100'
+                            : 'scale-x-0 group-hover:scale-x-100'
+                        }`}
+                      />
+                    </>
+                  )}
                 </NavLink>
               </li>
             ))}
           </ul>
-        </div>
 
-        {/* Contact */}
-        <div className="flex shrink-0 items-center gap-1 px-3 py-2 text-sm font-medium text-black transition hover:-translate-y-0.5 xl:px-4 xl:text-md hover:text-blue-700">
-          <button
-            type="button"
-            onClick={() => setContactOpen(true)}
-            className="whitespace-nowrap text-sm xl:text-md"
-          >
-            Contact Us
-          </button>
-
-          <Phone
-            size={17}
-            className="shrink-0 text-blue-600 transition-transform duration-200 hover:scale-110"
-          />
-        </div>
-      </nav>
-
-      {/* Mobile and Tablet Navbar */}
-      <div className="relative mb-1 lg:hidden">
-        <nav
-          className={`${pill} flex w-full items-center justify-between gap-2 p-1.5 pb-1`}
-        >
-          <Logo />
-
-          <div className="flex shrink-0 items-center gap-2">
+          {/* Desktop CTA */}
+          <div className='hidden items-center gap-3 lg:flex'>
             <button
-              type="button"
-              onClick={() => setContactOpen(true)}
-              aria-label="Contact Us"
-              className="flex items-center justify-center p-1"
+              type='button'
+              onClick={openContact}
+              className='flex items-center gap-2 rounded-full bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
             >
-              <Phone
-                size={25}
-                className="text-blue-600 transition-transform duration-200 hover:scale-110"
-              />
+              <Phone size={16} />
+              Contact us
             </button>
+          </div>
 
+          {/* Mobile actions */}
+          <div className='flex items-center gap-2 lg:hidden'>
             <button
-              type="button"
-              onClick={() => setOpen(!open)}
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl text-white"
+              type='button'
+              onClick={openContact}
+              aria-label='Contact us'
+              className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-700 transition hover:bg-blue-100'
             >
-              {open ? "×" : "☰"}
+              <Phone size={18} />
+            </button>
+            <button
+              type='button'
+              onClick={() => setOpen(v => !v)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              className='flex h-10 w-10 items-center justify-center rounded-full bg-[#0b2a5b] text-white transition hover:bg-[#0f3a7d]'
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </nav>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile menu */}
         <div
-          className={`${pill} absolute right-0 mt-2 w-56 max-w-full overflow-hidden py-2 transition-all duration-200 ${
-            open
-              ? "visible translate-y-0 opacity-100"
-              : "invisible -translate-y-2 opacity-0"
+          className={`grid border-slate-200 bg-white transition-all duration-300 lg:hidden ${
+            open ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr] border-t-0'
           }`}
         >
-          {LINKS.map((link) => (
-            <NavLink
-              key={link.label}
-              to={link.to}
-              end
-              tabIndex={open ? 0 : -1}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `block px-4 py-3 text-center font-semibold transition ${
-                  isActive
-                    ? "bg-sky-100 text-sky-400"
-                    : "text-black hover:bg-black/5"
-                }`
-              }
-            >
-              {link.label}
-            </NavLink>
-          ))}
+          <div className='overflow-hidden'>
+            <ul className='px-4 py-3 sm:px-6'>
+              {LINKS.map(link => (
+                <li key={link.label}>
+                  <NavLink
+                    to={link.to}
+                    end
+                    tabIndex={open ? 0 : -1}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition ${
+                        isActive
+                          ? 'bg-blue-50 text-blue-700'
+                          : 'text-slate-800 hover:bg-slate-50'
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+
+            <div className='border-t border-slate-100 px-4 pb-5 pt-4 sm:px-6'>
+              <button
+                type='button'
+                tabIndex={open ? 0 : -1}
+                onClick={openContact}
+                className='flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 py-3 text-base font-semibold text-white transition hover:bg-blue-800'
+              >
+                <Phone size={18} />
+                Contact us
+              </button>
+              <div className='mt-4 flex flex-col gap-2 text-sm text-slate-600'>
+                <a
+                  href={`tel:${PHONE.replace(/\s/g, '')}`}
+                  tabIndex={open ? 0 : -1}
+                  className='flex items-center gap-2'
+                >
+                  <Phone size={15} className='text-blue-700' />
+                  {PHONE}
+                </a>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  tabIndex={open ? 0 : -1}
+                  className='flex items-center gap-2'
+                >
+                  <Mail size={15} className='text-blue-700' />
+                  {EMAIL}
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -172,9 +239,9 @@ export default function Navbar() {
       <Modal
         isOpen={contactOpen}
         onClose={() => setContactOpen(false)}
-        title="Contact Us"
-        size="lg"
-        theme="white"
+        title='Contact Us'
+        size='lg'
+        theme='white'
       >
         <ContactModal
           onClose={() => setContactOpen(false)}
@@ -182,5 +249,5 @@ export default function Navbar() {
         />
       </Modal>
     </header>
-  );
+  )
 }

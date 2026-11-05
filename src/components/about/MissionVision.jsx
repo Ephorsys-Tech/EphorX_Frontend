@@ -1,18 +1,9 @@
-
-import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Compass,
-  Eye,
-  Lightbulb,
-  Target,
-} from "lucide-react";
+import { Compass, Eye, Lightbulb, Target } from "lucide-react";
 
-const content = {
-  mission: {
-    label: "OUR MISSION",
+const content = [
+  {
+    label: "Our mission",
     title: "Make Learning",
     highlight: "Meaningful.",
     description:
@@ -21,10 +12,10 @@ const content = {
       "We aim to connect foundational knowledge with practical application, helping learners strengthen their abilities, explore new opportunities, and take meaningful steps toward personal and professional growth.",
     footer: "Learn with purpose",
     icon: Target,
-    smallIcon: Lightbulb,
+    footerIcon: Lightbulb,
   },
-  vision: {
-    label: "OUR VISION",
+  {
+    label: "Our vision",
     title: "Inspire the",
     highlight: "Next Generation.",
     description:
@@ -33,195 +24,87 @@ const content = {
       "Through practical education and continuous improvement, we want learners to prepare for evolving industry needs, discover their potential, and pursue professional ambitions with confidence.",
     footer: "Grow beyond limits",
     icon: Eye,
-    smallIcon: Compass,
+    footerIcon: Compass,
   },
-};
+];
 
 const MissionVision = () => {
-  const [showVision, setShowVision] = useState(false);
-
-  const toggleCard = () => {
-    setShowVision((current) => !current);
-  };
-
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-1 sm:px-6 sm:py-16 md:px-8 lg:px-41 lg:py-7">
-      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-sky-100/60 blur-3xl" />
+    <section className="relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-20">
+      {/* Background design */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <div className="absolute -top-10 left-[14%] h-[130%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/[0.07] to-transparent" />
+        <div className="absolute -top-10 left-[44%] h-[130%] w-14 -skew-x-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent" />
+        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/10 bg-gradient-to-br from-blue-500/25 to-transparent" />
+        <div className="absolute -bottom-28 -left-20 h-96 w-96 rounded-full border border-white/10 bg-gradient-to-tr from-sky-400/15 to-transparent" />
+      </div>
 
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
-
-      <div className="relative mx-auto w-full min-w-0">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-8 max-w-3xl text-center sm:mb-10"
+          className="mx-auto mb-12 max-w-2xl text-center"
         >
-          <h2 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
-            Our Mission & <span className="text-sky-500">Vision</span>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            Our Mission &amp; <span className="text-sky-300">Vision</span>
           </h2>
-
-          <p className="mx-auto mt-1.5 max-w-2xl text-sm leading-7 text-gray-600 sm:text-base sm:leading-8">
+          <p className="mt-4 text-base leading-7 text-blue-100/90">
             Every learning journey needs a purpose and a direction. Discover
             the principles that guide our approach to education and future
             growth.
           </p>
         </motion.div>
 
-        <div
-          className="mx-auto w-full min-w-0"
-          style={{ perspective: "1600px" }}
-        >
-          <motion.div
-            className="relative h-[560px] w-full min-w-0 cursor-pointer rounded-[1.5rem] sm:h-[480px] sm:rounded-[1.75rem] md:h-[430px] lg:h-[410px]"
-            style={{ transformStyle: "preserve-3d" }}
-            animate={{ rotateY: showVision ? 180 : 0 }}
-            transition={{
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            onClick={toggleCard}
-            role="button"
-            tabIndex={0}
-            aria-label={
-              showVision
-                ? "Flip back to our mission"
-                : "Flip to our vision"
-            }
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                toggleCard();
-              }
-            }}
-          >
-            <CardFace data={content.mission} dark rotate={0} />
-            <CardFace data={content.vision} dark={false} rotate={180} />
-          </motion.div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          {content.map((item, index) => {
+            const Icon = item.icon;
+            const FooterIcon = item.footerIcon;
+
+            return (
+              <motion.article
+                key={item.label}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.45, delay: index * 0.1 }}
+                className="flex flex-col rounded-2xl bg-white p-6 text-slate-900 shadow-xl shadow-black/10 sm:p-8"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-700 text-white">
+                    <Icon size={22} />
+                  </span>
+                  <span className="text-sm font-semibold uppercase tracking-wider text-blue-700">
+                    {item.label}
+                  </span>
+                </div>
+
+                <h3 className="mt-6 text-2xl font-bold leading-tight sm:text-3xl">
+                  {item.title}{" "}
+                  <span className="text-blue-700">{item.highlight}</span>
+                </h3>
+
+                <p className="mt-4 text-[15px] leading-7 text-slate-700">
+                  {item.description}
+                </p>
+                <p className="mt-3 text-[15px] leading-7 text-slate-600">
+                  {item.extra}
+                </p>
+
+                <div className="mt-auto flex items-center gap-2.5 border-t border-slate-100 pt-5 text-sm font-semibold text-slate-800">
+                  <FooterIcon size={18} className="text-blue-700" />
+                  {item.footer}
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-};
-
-const CardFace = ({ data, dark, rotate }) => {
-  const Icon = data.icon;
-  const FooterIcon = data.smallIcon;
-
-  return (
-    <div
-      className={`absolute inset-0 flex flex-col overflow-hidden rounded-[1.5rem] border p-4 sm:rounded-[1.75rem] sm:p-6 lg:p-9 ${
-        dark
-          ? "border-gray-800 bg-gradient-to-br from-[#030b12] via-[#071927] to-[#0c3049] text-white"
-          : "border-sky-100 bg-gradient-to-br from-sky-50 via-white to-blue-50 text-gray-950 shadow-2xl"
-      }`}
-      style={{
-        transform: `rotateY(${rotate}deg)`,
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-      }}
-    >
-      <div
-        className={`pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full blur-3xl ${
-          dark ? "bg-sky-400/15" : "bg-sky-300/30"
-        }`}
-      />
-
-      <div className="relative flex shrink-0 items-center justify-between">
-        <div
-          className={`flex h-11 w-11 items-center justify-center rounded-xl sm:h-12 sm:w-12 sm:rounded-2xl ${
-            dark
-              ? "bg-sky-400 text-gray-950"
-              : "bg-gray-950 text-sky-400"
-          }`}
-        >
-          <Icon size={24} />
-        </div>
-
-        <span
-          className={`text-4xl font-black sm:text-5xl ${
-            dark ? "text-white/[0.08]" : "text-gray-950/[0.07]"
-          }`}
-        >
-          {data.number || (rotate === 0 ? "01" : "02")}
-        </span>
-      </div>
-
-      <div className="relative my-3 grid min-h-0 flex-1 grid-cols-1 items-center gap-3 overflow-y-auto overscroll-y-auto touch-pan-y sm:my-4 sm:gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
-        <div className="min-w-0">
-          <p
-            className={`text-[10px] font-bold uppercase tracking-[0.2em] sm:text-xs ${
-              dark ? "text-sky-300" : "text-sky-700"
-            }`}
-          >
-            {data.label}
-          </p>
-
-          <h3 className="mt-2 text-xl font-black leading-tight sm:text-2xl lg:text-4xl">
-            {data.title}
-
-            <span
-              className={`mt-1 block ${
-                dark ? "text-sky-400" : "text-sky-600"
-              }`}
-            >
-              {data.highlight}
-            </span>
-          </h3>
-        </div>
-
-        <div className="min-w-0">
-          <p
-            className={`text-xs leading-5 sm:text-sm sm:leading-6 lg:text-[15px] lg:leading-7 ${
-              dark ? "text-gray-300" : "text-gray-600"
-            }`}
-          >
-            {data.description}
-          </p>
-
-          <p
-            className={`mt-2 text-xs leading-5 sm:mt-3 sm:text-sm sm:leading-6 lg:text-[15px] lg:leading-7 ${
-              dark ? "text-gray-400" : "text-gray-500"
-            }`}
-          >
-            {data.extra}
-          </p>
-        </div>
-      </div>
-
-      <div
-        className={`relative mt-1 flex shrink-0 items-center justify-between gap-3 border-t pt-3 sm:pt-4 ${
-          dark ? "border-white/10" : "border-gray-200"
-        }`}
-      >
-        <div
-          className={`flex items-center gap-2 text-xs font-semibold sm:gap-3 sm:text-sm ${
-            dark ? "text-sky-300" : "text-gray-800"
-          }`}
-        >
-          <FooterIcon
-            size={18}
-            className={dark ? "" : "text-sky-600"}
-          />
-          {data.footer}
-        </div>
-
-        <span
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-            dark
-              ? "border border-white/20 text-white"
-              : "bg-gray-950 text-white"
-          }`}
-        >
-          {rotate === 0 ? (
-            <ArrowRight size={17} />
-          ) : (
-            <ArrowLeft size={17} />
-          )}
-        </span>
-      </div>
-    </div>
   );
 };
 
