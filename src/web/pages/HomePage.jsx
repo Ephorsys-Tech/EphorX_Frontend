@@ -5,6 +5,8 @@ import WebinarsSection from "../../components/Home/WebinarsSection";
 import ReviewsSection from "../../components/Home/ReviewsSection";
 import IndustryExperts from "../../components/Home/IndustryExperts";
 import CertificatesSection from "../../components/Home/CertificatesSection";
+import CollegeTieUp from "../../components/Home/CollegeTieUp";
+import InternSection from "../../components/Home/InternSection";
 const HomePage = () => {
 
   return (
@@ -32,6 +34,8 @@ const HomePage = () => {
       />
       <IndustryExperts/>
       <CertificatesSection />
+      <CollegeTieUp />
+      <InternSection />
       <ReviewsSection/>
     </div>
   )

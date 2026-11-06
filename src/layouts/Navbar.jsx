@@ -24,12 +24,12 @@ function Logo () {
     <Link
       to='/'
       aria-label='EphorX Home'
-      className='flex shrink-0 items-center'
+      className='flex shrink-0 items-center '
     >
       <img
         src={image}
         alt='EphorX logo'
-        className='h-10 w-auto object-contain sm:h-11 lg:h-12'
+        className='h-10 w-auto object-contain sm:h-11 lg:h-20 '
       />
     </Link>
   )
