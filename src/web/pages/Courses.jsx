@@ -38,7 +38,7 @@ function CourseImage ({ src, alt }) {
   }
 
   return (
-    <div className='flex h-full w-full items-center justify-center bg-gradient-to-br from-[#0b2a5b] to-blue-600'>
+    <div className='flex h-full w-full items-center justify-center bg-linear-to-br from-[#0b2a5b] to-blue-600'>
       <BookOpen size={30} strokeWidth={1.5} className='text-white/70' />
     </div>
   )
@@ -47,7 +47,7 @@ function CourseImage ({ src, alt }) {
 function CardSkeleton () {
   return (
     <div className='animate-pulse overflow-hidden rounded-xl border border-slate-200 bg-white'>
-      <div className='aspect-[16/9] bg-slate-100' />
+      <div className='aspect-video bg-slate-100' />
       <div className='space-y-2.5 p-4'>
         <div className='h-3 w-1/3 rounded bg-slate-100' />
         <div className='h-4 w-3/4 rounded bg-slate-100' />
@@ -132,11 +132,9 @@ const Courses = () => {
       ? fetchedCourses
       : fetchedCourses.filter(course => course.categoryName === activeCategory)
 
-  const openCourseDetails = course => {
-    navigate('/CourseDetails', {
-      state: { course }
-    })
-  }
+  const openCourseDetails = (course) => {
+  navigate(`/course-details/${course._id}`);
+};
 
   const handleSyllabusSubmit = async e => {
     e.preventDefault()
@@ -202,16 +200,16 @@ const Courses = () => {
   return (
     <section
       id='courses'
-      className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10'
+      className='relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10'
     >
       {/* Background design */}
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
       >
-        <div className='absolute -top-10 left-[16%] h-[45%] w-20 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
-        <div className='absolute -top-10 left-[60%] h-[45%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
-        <div className='absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -top-10 left-[16%] h-[45%] w-20 skew-x-[-28deg] bg-linear-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[60%] h-[45%] w-24 skew-x-[-28deg] bg-linear-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-linear-to-br from-blue-200/50 to-sky-100/10' />
         <div className='absolute left-[5%] top-32 h-12 w-12 rounded-full bg-blue-200/40' />
       </div>
 
@@ -298,7 +296,7 @@ const Courses = () => {
                     className='group flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10'
                   >
                     {/* Image */}
-                    <div className='relative aspect-[16/9] shrink-0 overflow-hidden bg-slate-100'>
+                    <div className='relative aspect-video shrink-0 overflow-hidden bg-slate-100'>
                       <CourseImage
                         src={course.imageUrl}
                         alt={course.title || 'Course'}
@@ -326,7 +324,7 @@ const Courses = () => {
                         )}
                       </div>
 
-                      <h3 className='mt-2 line-clamp-2 min-h-[2.5rem] text-[15px] font-semibold leading-5 text-slate-900'>
+                      <h3 className='mt-2 line-clamp-2 min-h-10 text-[15px] font-semibold leading-5 text-slate-900'>
                         {course.title}
                       </h3>
 

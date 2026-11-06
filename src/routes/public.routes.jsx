@@ -24,7 +24,7 @@ const PublicRoutes = (
     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 <Route path="/terms" element={<TermsConditions />} />
 
-    <Route path="/CourseDetails" element={<CourseDetails />} />
+    <Route  path="/course-details/:id" element={<CourseDetails />} />
     <Route path='*' element={<NotFound />} />
   </Route>
 )

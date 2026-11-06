@@ -15,6 +15,7 @@ import {
   ScreenShare,
   BookText,
   FileUser,
+  University,
 } from "lucide-react";
 
 import logo from '../assets/Logolight.png'
@@ -78,6 +79,11 @@ const NAV_ITEMS = [
     path: "/admin/syllabus-lead",
     label: "Syllabus Leads",
     icon: Target,
+  },
+  {
+    path: "/admin/college-tie-ups",
+    label: "Colleges",
+    icon: University
   },
 ];
 
