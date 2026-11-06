@@ -393,7 +393,7 @@ const CollegeTieUp = () => {
                                 className="rounded-lg px-2 text-2xl text-[#718096] hover:bg-gray-100"
                                 aria-label="Close modal"
                             >
-                                ×
+                                <X size={12}/>
                             </button>
                         </div>
 
@@ -403,7 +403,7 @@ const CollegeTieUp = () => {
                                     <img
                                         src={selectedCollege?.collegeLogo}
                                         alt={selectedCollege?.collegeName}
-                                        className="h-36 w-36 object-contain"
+                                        className="h-25 w-25 object-contain"
                                     />
                                 </div>
 

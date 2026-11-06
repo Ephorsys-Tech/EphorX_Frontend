@@ -16,6 +16,7 @@ import {
   BookText,
   FileUser,
   University,
+  Ad,
 } from "lucide-react";
 
 import logo from '../assets/Logolight.png'
@@ -84,6 +85,11 @@ const NAV_ITEMS = [
     path: "/admin/college-tie-ups",
     label: "Colleges",
     icon: University
+  },
+  {
+    path: "/admin/campaigns",
+    label: "Campaigns",
+    icon: Ad
   },
 ];
 

@@ -39,6 +39,7 @@ import ViewSyllabusLead from '../admin/pages/syllabusLead/viewSyllabusLead'
 import SyllabusLeads from '../admin/pages/syllabusLead/SyllabusLead'
 import EditSyllabusLead from '../admin/pages/syllabusLead/EditSyllabusLead'
 import CollegeTieUp from '../admin/pages/CollegeTieUp'
+import CampaignManagement from '../admin/pages/Campaign'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -94,6 +95,8 @@ const AdminRoutes = (
         <Route path='edit-lead/:id' element={<EditSyllabusLead/>}/>
 
         <Route path='college-tie-ups' element={<CollegeTieUp/>}/>
+
+        <Route path='campaigns' element={<CampaignManagement/>}/>
       </Route>
     </Route>
   </Route>

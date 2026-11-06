@@ -1,50 +1,59 @@
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
-import collegeLogo from "../../assets/collegeLogo.jpeg"
-
-const colleges = [
-  { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
-  { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
-  { name:  "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
-  { name:  "GIFT Autonomous, Bhubaneswar", logo: collegeLogo  },
-];
+import collegeTieUpApi from "../../admin/api/collegeTieUpApi";
 
 const CollegeTieUp = () => {
+  const [colleges, setColleges] = useState([]);
+
+  useEffect(() => {
+    const fetchColleges = async () => {
+      try {
+        const response = await collegeTieUpApi.getAll();
+        setColleges(response.data || []);
+      } catch (error) {
+        console.error("Failed to fetch college tie-ups:", error);
+      }
+    };
+
+    fetchColleges();
+  }, []);
+
   return (
     <section className="bg-white px-5 py-10 sm:px-8 md:px-10 lg:px-38">
 
       <div className="mx-auto">
 
         {/* Heading */}
-       <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
 
-        <div>
-          <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
-            Our College Network
+          <div>
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
+              Our College Network
+            </p>
+
+            <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
+              Building Stronger
+              <span className="block text-blue-700">
+                Academic Connections.
+              </span>
+            </h2>
+          </div>
+
+          <p className="max-w-md text-sm leading-7 text-gray-500">
+            We work alongside colleges to connect academic learning with
+            practical skills, industry exposure, and career opportunities.
           </p>
 
-          <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
-            Building Stronger
-            <span className="block text-blue-700">
-              Academic Connections.
-            </span>
-          </h2>
         </div>
-
-        <p className="max-w-md text-sm leading-7 text-gray-500">
-          We work alongside colleges to connect academic learning with
-          practical skills, industry exposure, and career opportunities.
-        </p>
-
-      </div>
 
         {/* College Boxes */}
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
           {colleges.map((college, index) => (
             <motion.div
-              key={college.name}
+              key={college._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -53,10 +62,10 @@ const CollegeTieUp = () => {
             >
 
               {/* College Logo */}
-              {college.logo ? (
+              {college.collegeLogo ? (
                 <img
-                  src={college.logo}
-                  alt={college.name}
+                  src={college.collegeLogo}
+                  alt={college.collegeName}
                   className="h-26 w-28 rounded-xl border border-blue-100 bg-white object-contain p-2 shadow-sm"
                 />
               ) : (
@@ -67,7 +76,7 @@ const CollegeTieUp = () => {
 
               {/* College Name */}
               <h3 className="text-center text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-blue-700 sm:text-base">
-                {college.name}
+                {college.collegeName}
               </h3>
 
             </motion.div>
