@@ -38,6 +38,7 @@ import EditDemoSession from '../admin/pages/demoSession/EditDemoSession'
 import ViewSyllabusLead from '../admin/pages/syllabusLead/viewSyllabusLead'
 import SyllabusLeads from '../admin/pages/syllabusLead/SyllabusLead'
 import EditSyllabusLead from '../admin/pages/syllabusLead/EditSyllabusLead'
+import CollegeTieUp from '../admin/pages/CollegeTieUp'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -91,6 +92,8 @@ const AdminRoutes = (
         <Route path='syllabus-lead' element={<SyllabusLeads/>}/>
         <Route path='view-lead/:id' element={<ViewSyllabusLead/>}/>
         <Route path='edit-lead/:id' element={<EditSyllabusLead/>}/>
+
+        <Route path='college-tie-ups' element={<CollegeTieUp/>}/>
       </Route>
     </Route>
   </Route>

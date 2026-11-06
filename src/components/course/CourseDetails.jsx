@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -15,13 +16,16 @@ import {
 import Modal from "../../ui/Modal";
 import CourseEnrollModal from "../modal/CourseEnrollModal";
 import SyllabusRequestModal from "../modal/SyllabusRequestModal";
+import courseApi from "../../admin/api/courseApi.js"; 
 
 const formatPrice = (value) => {
   const number = Number(String(value ?? "").replace(/[^\d.]/g, ""));
-  return Number.isNaN(number) ? String(value) : number.toLocaleString("en-IN");
+  return Number.isNaN(number)
+    ? String(value)
+    : number.toLocaleString("en-IN");
 };
 
-// Course image with a clean fallback
+// Course image with fallback
 function CourseImage({ src, alt }) {
   const [failed, setFailed] = useState(false);
 
@@ -37,8 +41,12 @@ function CourseImage({ src, alt }) {
   }
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#0b2a5b] to-blue-600">
-      <BookOpen size={48} strokeWidth={1.5} className="text-white/70" />
+    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#0b2a5b] to-blue-600">
+      <BookOpen
+        size={48}
+        strokeWidth={1.5}
+        className="text-white/70"
+      />
     </div>
   );
 }
@@ -52,7 +60,7 @@ function Detail({ icon: Icon, label, value }) {
 
       <div className="min-w-0">
         <p className="text-xs text-slate-500">{label}</p>
-        <p className="mt-0.5 break-words text-sm font-semibold capitalize text-slate-900">
+        <p className="mt-0.5 wrap-break-word text-sm font-semibold capitalize text-slate-900">
           {value || "Not specified"}
         </p>
       </div>
@@ -61,24 +69,73 @@ function Detail({ icon: Icon, label, value }) {
 }
 
 export default function CourseDetails() {
-  const location = useLocation();
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const selectedCourse = location.state?.course;
-  const [selectedSyllabusCourse, setSelectedSyllabusCourse] = useState(null);
-  const [selectedEnrollment, setSelectedEnrollment] = useState(null);
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // No backend changes: use the selected course returned by the existing API.
-  const course = selectedCourse
-    ? {
-        ...selectedCourse,
-        category: selectedCourse.categoryName || "Other",
-        image: selectedCourse.imageUrl,
-        syllabus: selectedCourse.syllabusUrl,
-        price: selectedCourse.discountPrice,
-        oldPrice: selectedCourse.Originalprice,
+  const [selectedSyllabusCourse, setSelectedSyllabusCourse] =
+    useState(null);
+
+  const [selectedEnrollment, setSelectedEnrollment] =
+    useState(null);
+
+  // Fetch course details using URL ID
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCourseDetails = async () => {
+      try {
+        setLoading(true);
+        setCourse(null);
+
+        if (!id) {
+          throw new Error("Course ID is missing.");
+        }
+
+        const response = await courseApi.getById(id);
+
+        // Support common API response structures
+        const selectedCourse =
+          response?.data?.course ||
+          response?.data ||
+          response?.course ||
+          response;
+
+        if (!selectedCourse || typeof selectedCourse !== "object") {
+          throw new Error("Course not found.");
+        }
+
+        if (isMounted) {
+          setCourse({
+            ...selectedCourse,
+            category: selectedCourse.categoryName || "Other",
+            image: selectedCourse.imageUrl,
+            syllabus: selectedCourse.syllabusUrl,
+            price: selectedCourse.discountPrice,
+            oldPrice: selectedCourse.Originalprice,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch course details:", error);
+
+        if (isMounted) {
+          setCourse(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-    : null;
+    };
+
+    fetchCourseDetails();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const handleEnrollment = (enrollmentData) => {
     console.log("Course enrollment details:", enrollmentData);
@@ -97,14 +154,30 @@ export default function CourseDetails() {
     originalPrice > 0 && discountedPrice >= 0
       ? Math.max(
           0,
-          Math.round(((originalPrice - discountedPrice) / originalPrice) * 100)
+          Math.round(
+            ((originalPrice - discountedPrice) / originalPrice) * 100
+          )
         )
       : 0;
 
   const backLink =
     "inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-blue-700";
 
-  // Opening the details page without a selected course
+  // Loading state
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-100 border-t-blue-700" />
+          <p className="mt-4 text-sm font-medium text-slate-600">
+            Loading course details...
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  // Course not found
   if (!course) {
     return (
       <main className="min-h-screen bg-slate-50 pb-16 pt-8 sm:pt-10">
@@ -124,8 +197,8 @@ export default function CourseDetails() {
             </h1>
 
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              Please select a course from the courses page to view its
-              details.
+              The requested course could not be found.
+              Please browse courses and try again.
             </p>
 
             <button
@@ -143,14 +216,14 @@ export default function CourseDetails() {
   }
 
   return (
-    <main className="relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10">
+    <main className="relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10">
       {/* Background design */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="absolute -top-10 left-[16%] h-[40%] w-20 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0" />
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10" />
+        <div className="absolute -top-10 left-[16%] h-[40%] w-20 skew-x-[-28deg] bg-linear-to-b from-white/70 to-white/0" />
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/70 bg-linear-to-br from-blue-200/50 to-sky-100/10" />
         <div className="absolute left-[4%] top-40 h-12 w-12 rounded-full bg-blue-200/40" />
       </div>
 
@@ -168,8 +241,11 @@ export default function CourseDetails() {
         >
           {/* Main content */}
           <div className="min-w-0 space-y-8">
-            <div className="aspect-[16/8] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-              <CourseImage src={course.image} alt={course.title || "Course"} />
+            <div className="aspect-16/8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+              <CourseImage
+                src={course.image}
+                alt={course.title || "Course"}
+              />
             </div>
 
             <div>
@@ -192,11 +268,11 @@ export default function CourseDetails() {
                 )}
               </div>
 
-              <h1 className="mt-4 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              <h1 className="mt-4 wrap-break-word text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
                 {course.title}
               </h1>
 
-              <p className="mt-4 break-words text-base leading-7 text-slate-600">
+              <p className="mt-4 wrap-break-word text-base leading-7 text-slate-600">
                 {course.description}
               </p>
             </div>
@@ -213,11 +289,13 @@ export default function CourseDetails() {
                   label="Category"
                   value={course.category}
                 />
+
                 <Detail
                   icon={Clock3}
                   label="Duration"
                   value={course.duration}
                 />
+
                 <Detail
                   icon={MonitorPlay}
                   label="Course type"
@@ -237,6 +315,7 @@ export default function CourseDetails() {
                   <h2 className="text-base font-semibold text-slate-900">
                     Course syllabus
                   </h2>
+
                   <p className="mt-0.5 text-sm text-slate-600">
                     View the complete curriculum and topics covered.
                   </p>
@@ -256,11 +335,15 @@ export default function CourseDetails() {
 
           {/* Pricing panel */}
           <aside className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-blue-900/5 lg:sticky lg:top-32">
-            <p className="text-sm font-medium text-slate-500">Course fee</p>
+            <p className="text-sm font-medium text-slate-500">
+              Course fee
+            </p>
 
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="break-words text-3xl font-bold tracking-tight text-blue-800">
-                {course.price != null ? `₹${formatPrice(course.price)}` : "Contact us"}
+              <span className="wrap-break-word text-3xl font-bold tracking-tight text-blue-800">
+                {course.price != null
+                  ? `₹${formatPrice(course.price)}`
+                  : "Contact us"}
               </span>
 
               {discount > 0 && (
@@ -282,6 +365,7 @@ export default function CourseDetails() {
                   size={17}
                   className="shrink-0 text-emerald-600"
                 />
+
                 <span className="text-sm text-slate-700">
                   You save ₹
                   {(originalPrice - discountedPrice).toLocaleString("en-IN")}
@@ -290,7 +374,7 @@ export default function CourseDetails() {
             )}
 
             <div className="mt-6 space-y-3">
-              {/* Enroll: opens the existing enrollment modal */}
+              {/* Enrollment */}
               <button
                 type="button"
                 onClick={() => setSelectedEnrollment(course)}
@@ -300,7 +384,7 @@ export default function CourseDetails() {
                 <ArrowRight size={16} />
               </button>
 
-              {/* Enquire: navigates to Contact */}
+              {/* Enquire */}
               <Link
                 to="/contact"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-700 hover:text-blue-700"
