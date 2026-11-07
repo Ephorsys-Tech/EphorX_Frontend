@@ -63,11 +63,11 @@ const WhyJoinUs = () => {
   return (
     <section
       id="why-join-us"
-      className="relative overflow-hidden bg-white pt-20 pb-10 sm:pt-28 sm:pb-13 "
+      className="relative overflow-hidden bg-white pt-8 pb-10 sm:pt-10 sm:pb-13"
     >
-      <div className="px-5 sm:px-6 md:px-8 lg:px-41">
+      {/* Heading and Description */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
 
-        {/* Heading and Description */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -75,11 +75,11 @@ const WhyJoinUs = () => {
           transition={{ duration: 0.6 }}
           className="relative"
         >
-         
+
           <h2 className="text-3xl font-black leading-tight text-slate-950 sm:text-4xl lg:text-5xl">
-           Your Next Chapter
+            Your Next Chapter
             Starts Here.
-            <span className="block text-sky-600 text-3xl mt-2">
+            <span className="mt-2 block text-3xl text-blue-700">
               A Place to Grow
             </span>
           </h2>
@@ -92,37 +92,37 @@ const WhyJoinUs = () => {
             valuable experience, we believe that curiosity and dedication
             make a difference.
           </p>
-           
-           <button
-  type="button"
-  onClick={() =>
-    document.getElementById("open-positions")?.scrollIntoView({
-      behavior: "smooth",
-    })
-  }
-  className="group inline-flex items-center gap-3 rounded-xl  py-3 text-sm font-bold text-black transition-all duration-300 hover:text-sky-400"
->
-  Explore Open Positions
-  <ArrowRight
-    size={18}
-    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45"
-  />
-</button>
-         
+
+          <button
+            type="button"
+            onClick={() =>
+              document.getElementById("open-positions")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="group inline-flex items-center gap-3 rounded-xl py-3 text-sm font-bold text-black transition-all duration-300 hover:text-sky-400"
+          >
+            Explore Open Positions
+            <ArrowRight
+              size={18}
+              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45"
+            />
+          </button>
+
         </motion.div>
       </div>
 
       {/* Automatically Scrolling Benefit Cards */}
-      <div className="relative mt-3  lg:mx-40 md:mx-10">
+      <div className="relative mx-auto mt-3 max-w-7xl px-5 sm:px-9">
 
         {/* Left fade */}
-        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-12 bg-gradient-to-r from-white to-transparent sm:w-24" />
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-5 bg-gradient-to-r from-white/60 to-transparent sm:w-24" />
 
         {/* Right fade */}
-        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-12 bg-gradient-to-l from-white to-transparent sm:w-24" />
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-5 bg-gradient-to-l from-white/60 to-transparent sm:w-24" />
 
         <div className="group overflow-hidden">
-          <div className="career-scroll-track flex w-max gap-5 px-3 py-5">
+          <div className="career-scroll-track flex w-max gap-5 px-5 py-5 sm:px-8">
 
             {scrollingBenefits.map((item, index) => {
               const Icon = item.icon;
@@ -135,35 +135,34 @@ const WhyJoinUs = () => {
                   transition={{ duration: 0.3 }}
                   className={`group/card relative flex min-h-[230px] w-[270px] shrink-0 flex-col overflow-hidden rounded-2xl border p-6 shadow-sm transition-all duration-500 hover:border-slate-950 hover:bg-[#071927] hover:shadow-xl sm:w-[300px] ${
                     isBlue
-                      ? "border-sky-300 bg-sky-500"
+                      ? "border-blue-300 bg-blue-700"
                       : "border-slate-200 bg-white"
                   }`}
                 >
 
                   {/* Card top */}
                   <div className="relative flex items-center justify-between">
-                   
-                     {/* Icon */}
-                  <div
-                    className={`relative mt-1 flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover/card:bg-sky-500 group-hover/card:text-white ${
-                      isBlue
-                        ? "bg-white/20 text-white"
-                        : "bg-sky-100 text-sky-700"
-                    }`}
-                  >
-                    <Icon size={24} strokeWidth={1.8} />
-                  </div>
+
+                    {/* Icon */}
+                    <div
+                      className={`relative mt-1 flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover/card:bg-blue-600 group-hover/card:text-white ${
+                        isBlue
+                          ? "bg-white/20 text-white"
+                          : "bg-blue-100 text-blue-700"
+                      }`}
+                    >
+                      <Icon size={24} strokeWidth={1.8} />
+                    </div>
+
                     <ArrowUpRight
                       size={19}
                       className={`transition-all duration-300 group-hover/card:rotate-45 ${
                         isBlue
-                          ? "text-white group-hover/card:text-sky-400"
-                          : "text-slate-400 group-hover/card:text-sky-400"
+                          ? "text-white group-hover/card:text-blue-600"
+                          : "text-slate-400 group-hover/card:text-blue-600"
                       }`}
                     />
                   </div>
-
-                 
 
                   {/* Content */}
                   <div className="relative mt-auto pt-5">
@@ -189,7 +188,8 @@ const WhyJoinUs = () => {
                   </div>
 
                   {/* Bottom decorative line */}
-                  <div className="absolute bottom-0 left-0 h-1 w-0 bg-sky-400 transition-all duration-500 group-hover/card:w-full" />
+                  <div className="absolute bottom-0 left-0 h-1 w-0 bg-blue-700 transition-all duration-500 group-hover/card:w-full" />
+
                 </motion.div>
               );
             })}

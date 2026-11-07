@@ -1,50 +1,51 @@
 
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
-import collegeLogo from "../../assets/collegeLogo.jpeg"
+import collegeLogo from "../../assets/collegeLogo.jpeg";
 
 const colleges = [
   { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
   { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
-  { name:  "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
-  { name:  "GIFT Autonomous, Bhubaneswar", logo: collegeLogo  },
+  { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
+  { name: "GIFT Autonomous, Bhubaneswar", logo: collegeLogo },
 ];
 
 const CollegeTieUp = () => {
   return (
-    <section className="bg-white px-5 py-10 sm:px-8 md:px-10 lg:px-38">
+    <section className="bg-white py-16 sm:py-10">
 
-      <div className="mx-auto">
+      {/* Same container as CoursesByCategory */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
 
         {/* Heading */}
-       <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
 
-        <div>
-          <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
-            Our College Network
+          <div>
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
+              Our College Network
+            </p>
+
+            <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
+              Building Stronger
+              <span className="block text-blue-700">
+                Academic Connections.
+              </span>
+            </h2>
+          </div>
+
+          <p className="max-w-md text-sm leading-7 text-gray-500">
+            We work alongside colleges to connect academic learning with
+            practical skills, industry exposure, and career opportunities.
           </p>
 
-          <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
-            Building Stronger
-            <span className="block text-blue-700">
-              Academic Connections.
-            </span>
-          </h2>
         </div>
-
-        <p className="max-w-md text-sm leading-7 text-gray-500">
-          We work alongside colleges to connect academic learning with
-          practical skills, industry exposure, and career opportunities.
-        </p>
-
-      </div>
 
         {/* College Boxes */}
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
           {colleges.map((college, index) => (
             <motion.div
-              key={college.name}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -77,6 +78,7 @@ const CollegeTieUp = () => {
 
         {/* Bottom CTA */}
         <div className="mt-12 flex flex-col items-center justify-center gap-3 text-center">
+
           <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
             Want to Partner With EphorX?
           </h3>
@@ -92,6 +94,7 @@ const CollegeTieUp = () => {
             Connect With Us
             <span>→</span>
           </a>
+
         </div>
 
       </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, ArrowUp, Mail, MapPin, Phone } from 'lucide-react'
 import {
   FaFacebookF,
@@ -8,7 +8,6 @@ import {
   FaXTwitter,
   FaYoutube
 } from 'react-icons/fa6'
-
 import image from '../assets/Logo.png'
 import Modal from '../ui/Modal'
 import CompanyMapModal from '../components/modal/CompanyMapModal'
@@ -16,7 +15,6 @@ import CompanyMapModal from '../components/modal/CompanyMapModal'
 // TODO: replace with your real contact details
 const PHONE = '+91 00000 00000'
 const EMAIL = 'info@ephorx.com'
-
 const quickLinks = [
   { label: 'Home', to: '/' },
   { label: 'Courses', to: '/Courses' },
@@ -62,6 +60,7 @@ export default function Footer () {
     'group flex items-start gap-3 text-sm text-slate-600 transition-colors hover:text-blue-700'
   const contactIcon =
     'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700 transition-colors group-hover:bg-blue-700 group-hover:text-white'
+  const navigate = useNavigate();
 
   return (
     <footer className='border-t border-slate-200 bg-slate-50 text-slate-700'>
@@ -112,7 +111,9 @@ export default function Footer () {
             </nav>
           </div>
 
-          {/* Top courses */}
+          {/* both */}
+          <div>
+                {/* Top courses */}
           <div>
             <FooterHeading>Top Courses</FooterHeading>
             <div className='flex flex-col'>
@@ -134,6 +135,10 @@ export default function Footer () {
               />
             </Link>
           </div>
+
+          <button onClick={() => navigate("/gallery")} className='bg-blue-800 text-white px-3 py-2 mt-4 rounded-2xl'>Gallery</button>
+          </div>
+        
 
           {/* Contact */}
           <div>

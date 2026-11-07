@@ -1,51 +1,5 @@
-
 import { motion } from "framer-motion";
-import intern from "../../assets/intern.png"
-const internsRow1 = [
-  {
-    name: "Aarushi Sharma",
-    college: "KIIT University",
-    photo: intern,
-  },
-  {
-    name: "Rohan Mehta",
-    college: "NIT Rourkela",
-    photo: intern,
-  },
-  {
-    name: "Diya Patel",
-    college: "IIT Bhubaneswar",
-    photo: intern,
-  },
-  {
-    name: "Arjun Verma",
-    college: "VIT Bhopal",
-    photo: intern,
-  },
-];
-
-const internsRow2 = [
-  {
-    name: "Kunal Das",
-    college: "GCE Bhubaneswar",
-    photo: intern,
-  },
-  {
-    name: "Sneha Reddy",
-    college: "Osmania University",
-    photo: intern,
-  },
-  {
-    name: "Aditya Singh",
-    college: "IIT Kharagpur",
-    photo: intern,
-  },
-  {
-    name: "Priya Nair",
-    college: "NIT Trichy",
-    photo: intern,
-  },
-];
+import { internsRow1, internsRow2 } from "../../assets/data/internData";
 
 const InternCard = ({ intern }) => {
   return (
@@ -78,9 +32,9 @@ const InternRow = ({ interns, direction }) => {
   const repeatedInterns = [...interns, ...interns];
 
   return (
-    <div className="overflow-hidden py-6">
+    <div className="overflow-hidden py-4">
       <motion.div
-        className="flex w-max gap-8"
+        className="flex w-max gap-3"
         animate={{
           x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
         }}
@@ -103,42 +57,40 @@ const InternRow = ({ interns, direction }) => {
 
 const InternSection = () => {
   return (
-    <section className="overflow-hidden bg-white px-5 py-5 sm:px-8 md:px-10 lg:px-38">
+    <section className="overflow-hidden bg-white py-16 sm:py-8">
 
-      {/* Heading */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+
+        {/* Heading */}
         <div className="mb-1">
 
-        <div>
-          <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
-            Our Growing Community
+          <div>
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-blue-700">
+              Our Growing Community
+            </p>
+
+            <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
+              Meet Our
+              <span className="pl-3 text-blue-700">
+                Interns
+              </span>
+            </h2>
+          </div>
+
+          <p className="mx-auto mt-1 text-sm leading-7 text-gray-500 sm:text-base">
+            Meet the talented students who are learning, growing, and gaining
+            practical experience with EphorX.
           </p>
 
-          <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
-            Meet Our
-            <span className="pl-3 text-blue-700">
-              Interns
-            </span>
-          </h2>
         </div>
-        
-       <p className="mx-auto mt-1 text-sm leading-7 text-gray-500 sm:text-base">
-          Meet the talented students who are learning, growing, and gaining
-          practical experience with EphorX.
-        </p>
-      
+
+        {/* First Row */}
+        <InternRow interns={internsRow1} direction="right" />
+
+        {/* Second Row */}
+        <InternRow interns={internsRow2} direction="left" />
+
       </div>
-
-      <div className="mb-0 text-center">
-      
-        
-      </div>
-
-      {/* First Row */}
-      <InternRow interns={internsRow1} direction="right" />
-
-      {/* Second Row */}
-      <InternRow interns={internsRow2} direction="left" />
-
     </section>
   );
 };

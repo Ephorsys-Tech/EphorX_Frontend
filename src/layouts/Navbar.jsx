@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Phone, Mail, Menu, X, GraduationCap } from 'lucide-react'
@@ -15,21 +16,16 @@ const LINKS = [
   { label: 'FAQ', to: '/faq' }
 ]
 
-// TODO: replace with your real contact details
 const PHONE = '+91 00000 00000'
 const EMAIL = 'info@ephorx.com'
 
 function Logo () {
   return (
-    <Link
-      to='/'
-      aria-label='EphorX Home'
-      className='flex shrink-0 items-center '
-    >
+    <Link to='/' aria-label='EphorX Home' className='shrink-0 -ml-7 lg:-ml-8'>
       <img
         src={image}
         alt='EphorX logo'
-        className='h-10 w-auto object-contain sm:h-11 lg:h-20 '
+        className='h-16 w-auto sm:h-15 lg:h-16 xl:h-18'
       />
     </Link>
   )
@@ -42,16 +38,20 @@ export default function Navbar () {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 15)
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
+
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close mobile menu with Escape
   useEffect(() => {
     if (!open) return
+
     const onKey = e => e.key === 'Escape' && setOpen(false)
+
     window.addEventListener('keydown', onKey)
+
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
@@ -66,17 +66,20 @@ export default function Navbar () {
 
   return (
     <header id='top' className='fixed inset-x-0 top-0 z-50'>
-      {/* Top info bar (desktop only, collapses on scroll) */}
+
+      {/* Top info bar */}
       <div
         className={`hidden overflow-hidden bg-[#0b2a5b] text-white transition-all duration-300 lg:block ${
           scrolled ? 'max-h-0' : 'max-h-10'
         }`}
       >
-        <div className='mx-auto flex h-10 max-w-7xl items-center justify-between px-8 text-[13px]'>
+        <div className='mx-auto flex h-10 max-w-7xl items-center justify-between px-5 text-[13px] sm:px-8 lg:px-8'>
+
           <p className='flex items-center gap-2 text-white/90'>
             <GraduationCap size={16} className='text-amber-300' />
             Admissions are open for the new batch
           </p>
+
           <div className='flex items-center gap-6 text-white/90'>
             <a
               href={`tel:${PHONE.replace(/\s/g, '')}`}
@@ -85,6 +88,7 @@ export default function Navbar () {
               <Phone size={14} />
               {PHONE}
             </a>
+
             <a
               href={`mailto:${EMAIL}`}
               className='flex items-center gap-2 transition hover:text-white'
@@ -93,6 +97,7 @@ export default function Navbar () {
               {EMAIL}
             </a>
           </div>
+
         </div>
       </div>
 
@@ -104,18 +109,21 @@ export default function Navbar () {
             : 'border-b border-slate-200'
         }`}
       >
-        <nav className='mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[72px] lg:px-8'>
+
+        {/* Same container and padding as Hero Section */}
+        <nav className='mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-2 px-5 sm:px-8 lg:h-[72px] lg:gap-3 lg:px-8'>
+
           <Logo />
 
           {/* Desktop links */}
-          <ul className='hidden items-center gap-1 lg:flex xl:gap-2'>
+          <ul className='hidden shrink-0 items-center gap-0 lg:flex xl:gap-1'>
             {LINKS.map(link => (
               <li key={link.label}>
                 <NavLink
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `group relative block px-3 py-2 text-[15px] font-semibold transition-colors xl:px-4 ${
+                    `group relative block whitespace-nowrap px-2 py-2 text-sm font-semibold transition-colors xl:px-3 xl:text-[15px] ${
                       isActive
                         ? 'text-blue-700'
                         : 'text-slate-700 hover:text-blue-700'
@@ -125,8 +133,9 @@ export default function Navbar () {
                   {({ isActive }) => (
                     <>
                       {link.label}
+
                       <span
-                        className={`absolute inset-x-3 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-4 ${
+                        className={`absolute inset-x-2 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-3 ${
                           isActive
                             ? 'scale-x-100'
                             : 'scale-x-0 group-hover:scale-x-100'
@@ -140,11 +149,11 @@ export default function Navbar () {
           </ul>
 
           {/* Desktop CTA */}
-          <div className='hidden items-center gap-3 lg:flex'>
+          <div className='hidden shrink-0 items-center lg:flex'>
             <button
               type='button'
               onClick={openContact}
-              className='flex items-center gap-2 rounded-full bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+              className='flex items-center gap-2 whitespace-nowrap rounded-full bg-blue-700 px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 xl:px-5'
             >
               <Phone size={16} />
               Contact us
@@ -152,7 +161,7 @@ export default function Navbar () {
           </div>
 
           {/* Mobile actions */}
-          <div className='flex items-center gap-2 lg:hidden'>
+          <div className='flex shrink-0 items-center gap-2 lg:hidden'>
             <button
               type='button'
               onClick={openContact}
@@ -161,6 +170,7 @@ export default function Navbar () {
             >
               <Phone size={18} />
             </button>
+
             <button
               type='button'
               onClick={() => setOpen(v => !v)}
@@ -171,6 +181,7 @@ export default function Navbar () {
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
+
         </nav>
 
         {/* Mobile menu */}
@@ -180,6 +191,7 @@ export default function Navbar () {
           }`}
         >
           <div className='overflow-hidden'>
+
             <ul className='px-4 py-3 sm:px-6'>
               {LINKS.map(link => (
                 <li key={link.label}>
@@ -203,6 +215,7 @@ export default function Navbar () {
             </ul>
 
             <div className='border-t border-slate-100 px-4 pb-5 pt-4 sm:px-6'>
+
               <button
                 type='button'
                 tabIndex={open ? 0 : -1}
@@ -212,6 +225,7 @@ export default function Navbar () {
                 <Phone size={18} />
                 Contact us
               </button>
+
               <div className='mt-4 flex flex-col gap-2 text-sm text-slate-600'>
                 <a
                   href={`tel:${PHONE.replace(/\s/g, '')}`}
@@ -221,6 +235,7 @@ export default function Navbar () {
                   <Phone size={15} className='text-blue-700' />
                   {PHONE}
                 </a>
+
                 <a
                   href={`mailto:${EMAIL}`}
                   tabIndex={open ? 0 : -1}
@@ -230,9 +245,11 @@ export default function Navbar () {
                   {EMAIL}
                 </a>
               </div>
+
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Shared Contact Modal */}
@@ -248,6 +265,7 @@ export default function Navbar () {
           onSubmit={handleContactSubmit}
         />
       </Modal>
+
     </header>
   )
 }
