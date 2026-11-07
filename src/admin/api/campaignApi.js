@@ -35,10 +35,7 @@ const handleError = (error) => {
 const campaignApi = {
   create: async (campaignData) => {
     try {
-      const response = await campaignRequest.post(
-        "/create",
-        campaignData
-      );
+      const response = await campaignRequest.post("/create", campaignData);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -48,6 +45,15 @@ const campaignApi = {
   getAll: async () => {
     try {
       const response = await campaignRequest.get("/get-all");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  },
+
+  getActive: async () => {
+    try {
+      const response = await campaignRequest.get("/active");
       return response.data;
     } catch (error) {
       handleError(error);

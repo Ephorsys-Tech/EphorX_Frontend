@@ -298,7 +298,7 @@ const CampaignManagement = () => {
 
       {/* Campaign Table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200">
-        <table className="w-full min-w-[850px] text-left">
+        <table className="w-full min-w-212.5 text-left">
           <thead className="border-b border-gray-200 bg-gray-50">
             <tr className="text-xs uppercase tracking-wider text-gray-500">
               <th className="px-5 py-4">Campaign</th>
@@ -384,13 +384,13 @@ const CampaignManagement = () => {
                       </button>
 
                       {menuOpen === campaign._id && (
-                        <div className="absolute right-8 top-14 z-20 w-40 rounded-lg border border-gray-200 bg-white py-2 text-left shadow-xl">
+                        <div className="absolute right-12 bottom-2 z-20 w-23 rounded-lg border border-gray-200 bg-white  text-left shadow-xl">
                           <button
                             onClick={() => {
                               setSelectedCampaign(campaign);
                               setMenuOpen(null);
                             }}
-                            className="flex w-full items-center gap-3 px-4 py-2 text-sm hover:bg-gray-50"
+                            className="flex w-full items-center gap-3 px-2 py-2 text-sm hover:bg-gray-50"
                           >
                             <Eye size={16} />
                             View
@@ -398,7 +398,7 @@ const CampaignManagement = () => {
 
                           <button
                             onClick={() => openEditModal(campaign)}
-                            className="flex w-full items-center gap-3 px-4 py-2 text-sm hover:bg-gray-50"
+                            className="flex w-full items-center gap-3 px-2 text-sm hover:bg-gray-50"
                           >
                             <Pencil size={16} />
                             Edit
@@ -406,7 +406,7 @@ const CampaignManagement = () => {
 
                           <button
                             onClick={() => handleDelete(campaign._id)}
-                            className="flex w-full items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                            className="flex w-full items-center gap-3 px-2 py-2 text-sm text-red-600 hover:bg-red-50"
                           >
                             <Trash2 size={16} />
                             Delete
@@ -647,7 +647,7 @@ const CampaignManagement = () => {
 
             <button
               onClick={() => setSelectedCampaign(null)}
-              className="mt-6 w-full rounded-lg bg-black py-3 text-sm font-semibold text-white hover:bg-gray-800"
+              className="mt-6 w-full rounded-lg bg-[#2563ff] py-3 text-sm font-semibold text-white hover:bg-blue-500"
             >
               Close
             </button>
