@@ -11,7 +11,7 @@ import Process from '../web/pages/Process'
 import Careers from '../web/pages/Careers'
 import PrivacyPolicy from '../components/legalPages/PrivacyPolicy'
 import TermsConditions from '../components/legalPages/TermsConditions'
-
+import Gallery from '../web/pages/Gallery'
 const PublicRoutes = (
   <Route path='/' element={<MainLayout />}>
     <Route index element={<HomePage />} />
@@ -20,7 +20,9 @@ const PublicRoutes = (
     <Route path='/contact' element={<Contact />} />
     <Route path='/about' element={<About />} />
     <Route path='/process' element={<Process />} />
-        <Route path='/careers' element={<Careers />} />
+    <Route path='/careers' element={<Careers />} />
+    <Route path='/gallery' element={<Gallery />} />
+
     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 <Route path="/terms" element={<TermsConditions />} />
 

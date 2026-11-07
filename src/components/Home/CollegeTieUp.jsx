@@ -21,9 +21,10 @@ const CollegeTieUp = () => {
   }, []);
 
   return (
-    <section className="bg-white px-5 py-10 sm:px-8 md:px-10 lg:px-38">
+    <section className="bg-white py-16 sm:py-10">
 
-      <div className="mx-auto">
+      {/* Same container as CoursesByCategory */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
 
         {/* Heading */}
         <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
@@ -86,6 +87,7 @@ const CollegeTieUp = () => {
 
         {/* Bottom CTA */}
         <div className="mt-12 flex flex-col items-center justify-center gap-3 text-center">
+
           <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
             Want to Partner With EphorX?
           </h3>
@@ -101,6 +103,7 @@ const CollegeTieUp = () => {
             Connect With Us
             <span>→</span>
           </a>
+
         </div>
 
       </div>
