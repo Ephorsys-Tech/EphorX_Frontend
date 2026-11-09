@@ -137,24 +137,26 @@ const FaqAccordion = () => {
   return (
     <section
       id="faq-questions"
-      className="relative overflow-hidden bg-white px-5 pb-7 pt-1 lg:pt-8 sm:px-8 lg:px-41 lg:pb-10"
+      className="relative overflow-hidden bg-white pb-7 pt-1 sm:pb-10 lg:pt-8"
     >
       {/* Background Decorations */}
-      <div className="pointer-events-none absolute -left-24 top-40 h-64 w-64 rounded-full bg-sky-100/60 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 top-40 h-64 w-64 rounded-full bg-blue-100/60 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
 
-      <div className="relative mx-auto ">
+      {/* Exact CoursesByCategory Alignment */}
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+
         {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
-          className="mb-6 "
+          className="mb-6"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl lg:text-4xl">
-            Frequently 
-            <span className=" text-sky-500 ml-2">
+            Frequently
+            <span className="ml-2 text-blue-700">
               Asked Questions!
             </span>
           </h2>
@@ -166,12 +168,12 @@ const FaqAccordion = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.45 }}
-          className="mx-auto mb-5 border rounded-2xl border-sky-100 "
+          className="mx-auto mb-5 rounded-2xl border border-blue-100"
         >
-          <div className="group flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 focus-within:border-sky-400 focus-within:shadow-[0_8px_30px_rgba(14,165,233,0.12)]">
+          <div className="group flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_8px_30px_rgba(29,78,216,0.12)]">
             <Search
               size={21}
-              className="shrink-0 text-gray-400 transition-colors group-focus-within:text-sky-500"
+              className="shrink-0 text-gray-400 transition-colors group-focus-within:text-blue-700"
             />
 
             <input
@@ -192,7 +194,7 @@ const FaqAccordion = () => {
                   exit={{ opacity: 0, scale: 0.8 }}
                   onClick={() => handleSearchChange("")}
                   aria-label="Clear search"
-                  className="shrink-0 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-sky-50 hover:text-sky-600"
+                  className="shrink-0 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-700"
                 >
                   <X size={18} />
                 </motion.button>
@@ -220,7 +222,7 @@ const FaqAccordion = () => {
                 className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
                     ? "border-gray-950 bg-gray-950 text-white shadow-lg shadow-gray-950/15"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800"
                 }`}
               >
                 {category}
@@ -245,7 +247,7 @@ const FaqAccordion = () => {
                 setSearchTerm("");
                 setOpenQuestion(null);
               }}
-              className="text-sm font-semibold text-sky-600 transition-colors hover:text-sky-800"
+              className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-900"
             >
               Clear filters
             </button>
@@ -272,8 +274,8 @@ const FaqAccordion = () => {
                     }}
                     className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
                       isOpen
-                        ? "border-sky-200 bg-white shadow-[0_10px_35px_rgba(14,165,233,0.09)]"
-                        : "border-gray-200 bg-white hover:border-sky-200 hover:shadow-[0_6px_24px_rgba(15,23,42,0.04)]"
+                        ? "border-blue-200 bg-white shadow-[0_10px_35px_rgba(29,78,216,0.09)]"
+                        : "border-gray-200 bg-white hover:border-blue-200 hover:shadow-[0_6px_24px_rgba(15,23,42,0.04)]"
                     }`}
                   >
                     <button
@@ -287,16 +289,14 @@ const FaqAccordion = () => {
                       <span
                         className={`mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors duration-300 ${
                           isOpen
-                            ? "bg-gray-950 text-sky-400"
-                            : "bg-sky-50 text-sky-600"
+                            ? "bg-gray-950 text-blue-400"
+                            : "bg-blue-50 text-blue-700"
                         }`}
                       >
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
                       <span className="min-w-0 flex-1">
-                       
-
                         <span className="block text-sm font-semibold leading-6 text-gray-900 sm:text-base">
                           {faq.question}
                         </span>
@@ -347,7 +347,7 @@ const FaqAccordion = () => {
                 exit={{ opacity: 0 }}
                 className="rounded-2xl border border-dashed border-gray-300 bg-gray-50/80 px-6 py-12 text-center"
               >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-100 text-sky-600">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-700">
                   <Search size={25} />
                 </div>
 
@@ -367,7 +367,7 @@ const FaqAccordion = () => {
                     setSearchTerm("");
                     setOpenQuestion(null);
                   }}
-                  className="mt-5 rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
+                  className="mt-5 rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
                 >
                   Show all questions
                 </button>
@@ -375,8 +375,6 @@ const FaqAccordion = () => {
             )}
           </AnimatePresence>
         </div>
-
-        
       </div>
     </section>
   );

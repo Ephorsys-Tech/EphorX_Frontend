@@ -46,68 +46,67 @@ const ContactForm = () => {
     setSuccess("");
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (loading) return;
+    if (loading) return;
 
-  if (
-    !formData.name.trim() ||
-    !formData.email.trim() ||
-    !formData.phone.trim() ||
-    !formData.whatsApp.trim() ||
-    !formData.message.trim()
-  ) {
-    setError("Please complete all required fields.");
-    return;
-  }
-
-  setLoading(true);
-  setSuccess("");
-  setError("");
-
-  try {
-    const payload = {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
-      whatsApp: formData.whatsApp.trim(),
-      course: formData.course.trim(),
-      subject: formData.subject.trim(),
-      message: formData.message.trim(),
-    };
-
-    const response = await contactApi.create(payload);
-
-    if (response?.success === false) {
-      throw new Error(
-        response.message || "Failed to submit your message."
-      );
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.phone.trim() ||
+      !formData.whatsApp.trim() ||
+      !formData.message.trim()
+    ) {
+      setError("Please complete all required fields.");
+      return;
     }
 
-    setSuccess(
-      response?.message || "Your message has been sent successfully!"
-    );
+    setLoading(true);
+    setSuccess("");
+    setError("");
 
-    setFormData(createInitialForm());
-  } catch (err) {
-    console.error("Contact form submission failed:", err);
+    try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        whatsApp: formData.whatsApp.trim(),
+        course: formData.course.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+      };
 
-    setError(
-      err?.response?.data?.message ||
-        err?.message ||
-        "Unable to send your message. Please try again."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      const response = await contactApi.create(payload);
 
+      if (response?.success === false) {
+        throw new Error(
+          response.message || "Failed to submit your message."
+        );
+      }
+
+      setSuccess(
+        response?.message || "Your message has been sent successfully!"
+      );
+
+      setFormData(createInitialForm());
+    } catch (err) {
+      console.error("Contact form submission failed:", err);
+
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Unable to send your message. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const inputClass =
-    "w-full rounded-xl border border-gray-200 bg-gray-50/70 px-4 py-3 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-sky-300 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100/70";
+    "w-full rounded-xl border border-gray-200 bg-gray-50/70 px-4 py-2.5 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100/70";
 
-  const labelClass = "mb-2 block text-sm font-bold text-gray-800";
+  const labelClass = "mb-1.5 block text-sm font-bold text-gray-800";
 
   const iconClass =
     "absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400";
@@ -115,35 +114,40 @@ const handleSubmit = async (e) => {
   return (
     <section
       id="ask-question-section"
-      className="relative overflow-hidden bg-white px-5 pb-6 sm:px-8 lg:px-41 lg:pb-10 lg:pt-4"
+      className="relative overflow-hidden bg-white py-6 lg:py-8"
     >
-      <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
+      {/* Background decoration */}
+      <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-blue-100/70 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-blue-50 blur-3xl" />
 
-      <div className="relative mx-auto w-full">
+      <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
+
+        {/* Section heading */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-8"
+          className="mx-auto mb-5"
         >
-         
-          <h2 className="mt-5 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-4xl">
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-gray-950 sm:text-3xl">
             Have a Question?
             <br />
-            <span className=" text-sky-500">Ask EphorX.</span>
+            <span className="text-blue-700">Ask EphorX.</span>
           </h2>
         </motion.div>
 
+        {/* Contact form card */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="grid overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_12px_40px_-18px_rgba(14,165,233,0.24)] lg:grid-cols-[0.85fr_1.15fr]"
+          className="grid overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-[0_12px_40px_-18px_rgba(29,78,216,0.24)] lg:grid-cols-[0.85fr_1.15fr]"
         >
-          <div className="relative isolate flex flex-col justify-between overflow-hidden bg-[#061521] p-6 sm:p-8 lg:p-9">
+
+          {/* Left information panel */}
+          <div className="relative isolate flex flex-col justify-between overflow-hidden bg-[#061521] p-5 sm:p-6 lg:p-7">
             <img
               src={faqImage}
               alt=""
@@ -151,20 +155,20 @@ const handleSubmit = async (e) => {
               className="absolute inset-0 -z-20 h-full w-full object-cover"
             />
 
-            <div className="pointer-events-none absolute inset-0 -z-10 bg-sky-300/30" />
-            <div className="pointer-events-none absolute -right-16 -top-16 -z-10 h-48 w-48 rounded-full bg-sky-500/30 blur-2xl" />
-            <div className="pointer-events-none absolute -bottom-20 -left-16 -z-10 h-56 w-56 rounded-full bg-blue-600/40 blur-2xl" />
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-blue-300/30" />
+            <div className="pointer-events-none absolute -right-16 -top-16 -z-10 h-48 w-48 rounded-full bg-blue-700/30 blur-2xl" />
+            <div className="pointer-events-none absolute -bottom-20 -left-16 -z-10 h-56 w-56 rounded-full bg-blue-800/40 blur-2xl" />
 
             <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-sky-400/60 bg-slate-950/50 text-sky-400 shadow-[0_0_25px_rgba(14,165,233,0.2)] backdrop-blur-sm">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-blue-400/60 bg-slate-950/50 text-blue-400 shadow-[0_0_25px_rgba(29,78,216,0.2)] backdrop-blur-sm">
                 <MessageCircleQuestion size={25} />
               </div>
 
-              <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-sky-500">
+              <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
                 Your curiosity matters
               </p>
 
-              <h3 className="mt-3 text-2xl font-black leading-tight text-white sm:text-3xl">
+              <h3 className="mt-2 text-2xl font-black leading-tight text-white sm:text-3xl">
                 Every great
                 <br />
                 journey starts
@@ -172,15 +176,15 @@ const handleSubmit = async (e) => {
                 with a <span className="text-black/50">question.</span>
               </h3>
 
-              <p className="mt-4 max-w-sm text-sm leading-6 text-slate-200">
+              <p className="mt-3 max-w-sm text-sm leading-6 text-slate-200">
                 Ask us about courses, admissions, fees or learning paths.
                 Share what's on your mind and let us guide you.
               </p>
             </div>
 
-            <div className="mt-8 border-t border-sky-500/60 pt-5">
+            <div className="mt-5 border-t border-blue-500/60 pt-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-blue-600 text-white shadow-lg shadow-sky-500/20">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-blue-700 to-blue-900 text-white shadow-lg shadow-blue-700/20">
                   <BookOpen size={19} />
                 </div>
 
@@ -194,31 +198,36 @@ const handleSubmit = async (e) => {
                 </div>
 
                 <ArrowUpRight
-                  className="ml-auto shrink-0 text-sky-400"
+                  className="ml-auto shrink-0 text-blue-400"
                   size={24}
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 sm:p-8 lg:p-9">
-            <div className="mb-6">
+          {/* Right form panel */}
+          <div className="bg-white p-5 sm:p-6 lg:p-7">
+            <div className="mb-5">
               <h3 className="text-xl font-black text-gray-950 sm:text-2xl">
                 Send us your message
               </h3>
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-1.5 text-sm text-gray-500">
                 Share your details and we'll get in touch.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <form onSubmit={handleSubmit} className="space-y-3">
+
+              {/* Name and Email */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-name" className={labelClass}>
-                    Your name <span className="text-sky-600">*</span>
+                    Your name <span className="text-blue-700">*</span>
                   </label>
+
                   <div className="relative">
                     <UserRound size={17} className={iconClass} />
+
                     <input
                       id="contact-name"
                       name="name"
@@ -236,10 +245,12 @@ const handleSubmit = async (e) => {
 
                 <div>
                   <label htmlFor="contact-email" className={labelClass}>
-                    Email address <span className="text-sky-600">*</span>
+                    Email address <span className="text-blue-700">*</span>
                   </label>
+
                   <div className="relative">
                     <Mail size={17} className={iconClass} />
+
                     <input
                       id="contact-email"
                       name="email"
@@ -256,13 +267,16 @@ const handleSubmit = async (e) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {/* Phone and WhatsApp */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-phone" className={labelClass}>
-                    Phone number <span className="text-sky-600">*</span>
+                    Phone number <span className="text-blue-700">*</span>
                   </label>
+
                   <div className="relative">
                     <Phone size={17} className={iconClass} />
+
                     <input
                       id="contact-phone"
                       name="phone"
@@ -280,10 +294,12 @@ const handleSubmit = async (e) => {
 
                 <div>
                   <label htmlFor="contact-whatsapp" className={labelClass}>
-                    WhatsApp number <span className="text-sky-600">*</span>
+                    WhatsApp number <span className="text-blue-700">*</span>
                   </label>
+
                   <div className="relative">
                     <MessageCircle size={17} className={iconClass} />
+
                     <input
                       id="contact-whatsapp"
                       name="whatsApp"
@@ -299,10 +315,12 @@ const handleSubmit = async (e) => {
                 </div>
               </div>
 
+              {/* Course */}
               <div>
                 <label htmlFor="contact-course" className={labelClass}>
                   Course
                 </label>
+
                 <input
                   id="contact-course"
                   name="course"
@@ -314,27 +332,31 @@ const handleSubmit = async (e) => {
                 />
               </div>
 
+              {/* Message */}
               <div>
                 <label htmlFor="contact-message" className={labelClass}>
-                  Your message <span className="text-sky-600">*</span>
+                  Your message <span className="text-blue-700">*</span>
                 </label>
+
                 <textarea
                   id="contact-message"
                   name="message"
                   value={formData.message ?? ""}
                   onChange={handleChange}
                   placeholder="What would you like to know?"
-                  rows={4}
+                  rows={3}
                   required
                   minLength={10}
                   maxLength={2000}
                   className={`${inputClass} resize-y`}
                 />
-                <p className="mt-2 text-right text-xs text-gray-400">
+
+                <p className="mt-1.5 text-right text-xs text-gray-400">
                   {messageLength}/2000 characters
                 </p>
               </div>
 
+              {/* Error message */}
               {error && (
                 <p
                   role="alert"
@@ -344,6 +366,7 @@ const handleSubmit = async (e) => {
                 </p>
               )}
 
+              {/* Success message */}
               {success && (
                 <p
                   role="status"
@@ -353,14 +376,16 @@ const handleSubmit = async (e) => {
                 </p>
               )}
 
+              {/* Submit button */}
               <motion.button
                 type="submit"
                 whileHover={{ scale: loading ? 1 : 1.015 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
                 disabled={loading}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-sky-500/20 transition-all duration-300 hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 text-sm font-bold text-white shadow-md shadow-blue-700/20 transition-all duration-300 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Sending..." : "Send Message"}
+
                 {!loading && (
                   <Send
                     size={17}

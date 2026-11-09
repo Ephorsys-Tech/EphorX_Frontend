@@ -1,5 +1,9 @@
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+
+import Modal from "../../ui/Modal";
+import GalleryImageModal from "../../components/modal/GalleryImageModal";
 
 // Automatically import all photos
 const inhousePhotos = Object.entries(
@@ -36,17 +40,21 @@ const layouts = [
   "col-span-1 row-span-1",
 ];
 
-const GallerySection = ({ title, subtitle, images, number }) => {
+const GallerySection = ({
+  title,
+  subtitle,
+  images,
+  onImageClick,
+}) => {
   return (
     <section className="mb-20">
-
       {/* Heading */}
+      <p className="mb-2 text-sm font-bold uppercase tracking-[3px] text-blue-700">
+        EphorX Gallery
+      </p>
+
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="mb-3 text-sm font-bold uppercase tracking-[3px] text-blue-700">
-            {number} / EphorX Gallery
-          </p>
-
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
             {title}
             <span className="ml-2 text-blue-700">.</span>
@@ -66,7 +74,6 @@ const GallerySection = ({ title, subtitle, images, number }) => {
       {/* Gallery Grid */}
       {images.length > 0 ? (
         <div className="grid grid-flow-dense auto-rows-[105px] grid-cols-2 gap-3 sm:auto-rows-[130px] sm:gap-4 md:grid-cols-4 lg:auto-rows-[150px] lg:grid-cols-6">
-
           {images.map((item, index) => (
             <motion.div
               key={item.name}
@@ -77,7 +84,8 @@ const GallerySection = ({ title, subtitle, images, number }) => {
                 duration: 0.5,
                 delay: (index % 4) * 0.08,
               }}
-              className={`group relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm ${layouts[index % layouts.length]}`}
+              onClick={() => onImageClick(item.photo)}
+              className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-gray-100 shadow-sm ${layouts[index % layouts.length]}`}
             >
               <img
                 src={item.photo}
@@ -92,47 +100,55 @@ const GallerySection = ({ title, subtitle, images, number }) => {
                 <p className="text-sm font-semibold text-white">
                   {title}
                 </p>
+
                 <p className="mt-1 text-xs text-white/70">
                   EphorX Moments
                 </p>
               </div>
             </motion.div>
           ))}
-
         </div>
       ) : (
         <p className="py-10 text-center text-gray-400">
           No photos available yet.
         </p>
       )}
-
     </section>
   );
 };
 
 const Galary = () => {
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
   return (
     <main className="overflow-hidden bg-white">
-
-      
       {/* Gallery Sections */}
-      <div className="px-5 py-16 sm:px-8 sm:py-10 lg:px-41">
-
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-8">
         <GallerySection
-          number="01"
           title="Inhouse Training"
           subtitle="Learning, building, collaborating, and growing together at EphorX."
           images={inhousePhotos}
+          onImageClick={setSelectedPhoto}
         />
 
         <GallerySection
-          number="02"
           title="College Training"
           subtitle="Taking knowledge beyond classrooms through practical learning and college collaborations."
           images={collegePhotos}
+          onImageClick={setSelectedPhoto}
         />
-
       </div>
+
+      {/* Gallery Image Modal */}
+      <Modal
+        isOpen={!!selectedPhoto}
+        onClose={() => setSelectedPhoto(null)}
+        title="Gallery Preview"
+        size="lg"
+        
+      >
+        <GalleryImageModal image={selectedPhoto} />
+      </Modal>
     </main>
   );
 };
