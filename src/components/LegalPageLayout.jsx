@@ -11,7 +11,7 @@ const LegalPageLayout = ({ title, subtitle, updated, sections, type }) => {
 
       <div className="pointer-events-none absolute right-90 top-290 h-22 w-22 rotate-75 rounded-xl bg-blue-200/40" />
 
-      <div className="pointer-events-none absolute left-99 bottom-4 h-9 w-9 rounded-full bg-blue-500" />
+      <div className="pointer-events-none absolute left-99 bottom-4 h-9 w-9 rounded-full bg-blue-300" />
 
       <div className="pointer-events-none absolute left-320 top-133 h-9 w-9 rounded-full bg-blue-300" />
       <div className="pointer-events-none absolute left-100 top-453 h-9 w-9 rounded-full bg-blue-300" />
@@ -20,12 +20,12 @@ const LegalPageLayout = ({ title, subtitle, updated, sections, type }) => {
       <div className="pointer-events-none absolute left-110 bottom-185 h-22 w-22 rotate-20 rounded-xl bg-blue-200/50" />
 
       {/* Main Content */}
-      <section className="relative z-10 px-5 pb-8 pt-25 sm:px-8 md:px-10 lg:px-41">
+      <section className="relative z-10 px-5 pb-8 pt-7 sm:px-8 md:px-10 lg:px-41">
 
         {/* Page Heading */}
         <div className="mb-7">
         
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-sky-600">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-blue-700">
             EphorX / {type}
           </p>
 
@@ -56,7 +56,7 @@ const LegalPageLayout = ({ title, subtitle, updated, sections, type }) => {
                 <a
                   key={section.id}
                   href={`#${section.id}`}
-                  className="block text-sm text-slate-600 transition hover:translate-x-1 hover:text-sky-600"
+                  className="block text-sm text-slate-600 transition hover:translate-x-1 hover:text-blue-700"
                 >
                   {String(index + 1).padStart(2, "0")}. {section.heading}
                 </a>
@@ -82,7 +82,7 @@ const LegalPageLayout = ({ title, subtitle, updated, sections, type }) => {
                   className="scroll-mt-28 border-b border-slate-200 pb-9 last:border-0"
                 >
                   <div className="mb-4 flex items-start gap-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sm font-bold text-sky-600">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sm font-bold text-blue-800">
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
@@ -104,28 +104,36 @@ const LegalPageLayout = ({ title, subtitle, updated, sections, type }) => {
           </div>
         </div>
          {/* Contact Section */}
-            <div className="mt-2 rounded-2xl bg-sky-400 p-7 sm:p-9">
-              <p className="text-sm font-semibold text-slate-900">
-                Need assistance?
-              </p>
+           <div className="relative mt-2 overflow-hidden rounded-2xl bg-blue-900 p-7 sm:p-9">
 
-              <h3 className="mt-2 text-2xl font-bold text-white">
-                We're here to help.
-              </h3>
+  {/* Decorative background */}
+  <div className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border-[35px] border-white/5" />
+  <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-blue-500/30 blur-3xl" />
+  <div className="pointer-events-none absolute right-20 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-sky-400/10 blur-2xl" />
 
-              <p className="mt-2 text-sm leading-7 text-slate-200">
-                If you have questions about this page or our services,
-                contact the EphorX team.
-              </p>
+  <div className="relative z-10">
+    <p className="text-sm font-semibold text-slate-900">
+      Need assistance?
+    </p>
 
-              <a
-                href="mailto:hello@ephorx.com"
-                className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition hover:text-white"
-              >
-                hello@ephorx.com
-                <ArrowUpRight size={16} />
-              </a>
-            </div>
+    <h3 className="mt-2 text-2xl font-bold text-white">
+      We're here to help.
+    </h3>
+
+    <p className="mt-2 text-sm leading-7 text-slate-200">
+      If you have questions about this page or our services,
+      contact the EphorX team.
+    </p>
+
+    <a
+      href="mailto:hello@ephorx.com"
+      className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-sky-400 transition hover:text-white"
+    >
+      hello@ephorx.com
+      <ArrowUpRight size={16} />
+    </a>
+  </div>
+</div>
 
       </section>
     </div>

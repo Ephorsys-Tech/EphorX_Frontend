@@ -36,11 +36,35 @@ const slides = [
 
 
 const socialLinks = [
-  { label: 'Facebook', icon: FaFacebookF, url: 'https://www.facebook.com/' },
-  { label: 'Instagram', icon: FaInstagram, url: 'https://www.instagram.com/' },
-  { label: 'LinkedIn', icon: FaLinkedinIn, url: 'https://www.linkedin.com/' },
-  { label: 'X', icon: FaXTwitter, url: 'https://x.com/' },
-  { label: 'YouTube', icon: FaYoutube, url: 'https://www.youtube.com/' }
+  {
+    label: 'Facebook',
+    icon: FaFacebookF,
+    url: 'https://www.facebook.com/',
+    hover: 'hover:bg-[#1877F2] hover:border-[#1877F2]',
+  },
+  {
+    label: 'Instagram',
+    icon: FaInstagram,
+    url: 'https://www.instagram.com/',
+    hover:  'hover:bg-gradient-to-tr hover:from-[#FEDA75] hover:via-[#FA7E1E] hover:via-[#D62976] hover:to-[#962FBF] ', },
+  {
+    label: 'LinkedIn',
+    icon: FaLinkedinIn,
+    url: 'https://www.linkedin.com/',
+    hover: 'hover:bg-[#0A66C2] hover:border-[#0A66C2]',
+  },
+  {
+    label: 'X',
+    icon: FaXTwitter,
+    url: 'https://x.com/',
+    hover: 'hover:bg-black hover:border-black',
+  },
+  {
+    label: 'YouTube',
+    icon: FaYoutube,
+    url: 'https://www.youtube.com/',
+    hover: 'hover:bg-[#FF0000] hover:border-[#FF0000]',
+  },
 ]
 
 // Reusable button
@@ -158,27 +182,28 @@ export default function HeroSection () {
           />
 
 
-          {/* Social links */}
-          <div className='mt-8 flex items-center gap-3'>
-            <span className='text-sm font-medium text-slate-500'>
-              Follow us
-            </span>
-            <div className='flex gap-2'>
-              {socialLinks.map(({ label, icon: Icon, url }) => (
-                <a
-                  key={label}
-                  href={url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  aria-label={label}
-                  title={label}
-                  className='flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600'
-                >
-                  <Icon size={15} />
-                </a>
-              ))}
-            </div>
-          </div>
+         {/* Social links */}
+<div className="mt-8 flex items-center gap-3">
+  <span className="text-sm font-medium text-slate-500">
+    Follow us
+  </span>
+
+  <div className="flex gap-2">
+    {socialLinks.map(({ label, icon: Icon, url, hover }) => (
+      <a
+        key={label}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={label}
+        title={label}
+        className={`flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-all duration-300 ${hover} hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600`}
+      >
+        <Icon size={15} />
+      </a>
+    ))}
+  </div>
+</div>
         </div>
 
         {/* Right image */}
