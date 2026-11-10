@@ -1,58 +1,46 @@
-import { useState } from "react";
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  CalendarDays,
-  Mail,
-  MessageCircle,
-  Phone,
-  UserRound,
-} from "lucide-react";
+import { useState } from 'react'
 
-import { createWebinarEnrollment } from "../../admin/api/webEnrollApi.js";
+import { createWebinarEnrollment } from '../../admin/api/webEnrollApi.js'
 
 const initialForm = {
-  name: "",
-  email: "",
-  number: "",
-  wpNumber: "",
-  profession: "",
-};
+  name: '',
+  email: '',
+  number: '',
+  wpNumber: '',
+  profession: ''
+}
 
 const inputClass =
-  "w-full min-w-0 rounded-xl border border-gray-200 bg-gray-50/70 px-4 py-3 text-sm text-gray-900 outline-none transition duration-200 placeholder:text-gray-400 hover:border-gray-300 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100";
+  'h-11 w-full min-w-0 rounded-lg border border-slate-300 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100'
 
-const labelClass =
-  "mb-2 block text-sm font-semibold text-gray-700";
+const labelClass = 'mb-2 block text-sm font-medium text-slate-700'
 
-export default function WebinarEnrollModal({
-  onClose,
-  webinar,
-  onSubmit,
-}) {
-  const [form, setForm] = useState(initialForm);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+const required = <span className='ml-0.5 text-red-500'>*</span>
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
+  const [form, setForm] = useState(initialForm)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-    setForm((prev) => ({
+  const handleChange = e => {
+    const { name, value } = e.target
+
+    setForm(prev => ({
       ...prev,
-      [name]: value,
-    }));
-  };
+      [name]: value
+    }))
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async e => {
+    e.preventDefault()
 
     if (!webinar?._id && !webinar?.webinarId) {
-      setError("Webinar ID is missing. Please try again.");
-      return;
+      setError('Webinar ID is missing. Please try again.')
+      return
     }
 
-    setLoading(true);
-    setError("");
+    setLoading(true)
+    setError('')
 
     const formData = {
       webinarId: webinar.webinarId || webinar._id,
@@ -60,231 +48,179 @@ export default function WebinarEnrollModal({
       email: form.email.trim().toLowerCase(),
       phoneNumber: form.number.trim(),
       whatsappNumber: form.wpNumber.trim(),
-      profession: form.profession,
-    };
+      profession: form.profession
+    }
 
     try {
-      const result = await createWebinarEnrollment(formData);
+      const result = await createWebinarEnrollment(formData)
 
       if (result?.alreadyEnrolled) {
-        setError("This email is already enrolled in this webinar.");
-        return;
+        setError('This email is already enrolled in this webinar.')
+        return
       }
 
       // Call the optional parent callback if provided
-      await onSubmit?.(result);
+      await onSubmit?.(result)
 
-      alert("Webinar enrollment saved successfully!");
+      alert('Webinar enrollment saved successfully!')
 
-      setForm(initialForm);
+      setForm(initialForm)
 
-      onClose?.();
+      onClose?.()
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Unable to save enrollment. Please try again."
-      );
+          'Unable to save enrollment. Please try again.'
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="w-full p-4 sm:p-6 md:p-7 -mt-5">
+    <form
+      onSubmit={handleSubmit}
+      className='w-full space-y-6 px-6 pb-6 pt-3 sm:px-8'
+    >
       {/* Webinar information */}
-      <div className="relative mb-4 overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-4 sm:p-5">
-        <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-sky-200/30 blur-2xl" />
-
-        <div className="relative flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black text-sky-400 shadow-md shadow-slate-900/10">
-            <CalendarDays size={21} />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <h3 className=" break-words text-base font-bold leading-snug text-gray-950 sm:text-lg">
-              {webinar?.title || "Register for a Webinar"}
-            </h3>
-
-            <p className="mt-1 text-xs leading-relaxed text-gray-500 sm:text-sm">
-              Fill in your details to reserve your place.
-            </p>
-          </div>
-        </div>
+      <div className='rounded-xl border border-slate-200 bg-slate-50 p-4'>
+        <p className='text-xs text-slate-500'>Registering for</p>
+        <h3 className='mt-0.5 break-words text-base font-semibold leading-snug text-slate-900'>
+          {webinar?.title || 'Webinar'}
+        </h3>
       </div>
 
-      {/* Form heading */}
-      <div className="mb-5">
-        <h4 className="text-base font-bold text-gray-900">
-          Your Details
-        </h4>
-        <p className="mt-1 text-sm leading-relaxed text-gray-500">
-          Please provide your contact information below.
-        </p>
-      </div>
+      <p className='text-sm leading-6 text-slate-600'>
+        Fill in your details to reserve your place.
+      </p>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <div className='space-y-5'>
         {/* Name and email */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="min-w-0">
-            <label htmlFor="webinar-name" className={labelClass}>
-              Full Name <span className="text-sky-600">*</span>
+        <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+          <div className='min-w-0'>
+            <label htmlFor='webinar-name' className={labelClass}>
+              Full name{required}
             </label>
-
-            <div className="relative">
-              <UserRound
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                id="webinar-name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                placeholder="Enter your full name"
-                value={form.name}
-                onChange={handleChange}
-                required
-                className={`${inputClass} pl-10`}
-              />
-            </div>
+            <input
+              id='webinar-name'
+              name='name'
+              type='text'
+              autoComplete='name'
+              placeholder='Enter your full name'
+              value={form.name}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            />
           </div>
 
-          <div className="min-w-0">
-            <label htmlFor="webinar-email" className={labelClass}>
-              Email Address <span className="text-sky-600">*</span>
+          <div className='min-w-0'>
+            <label htmlFor='webinar-email' className={labelClass}>
+              Email address{required}
             </label>
-
-            <div className="relative">
-              <Mail
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                id="webinar-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                value={form.email}
-                onChange={handleChange}
-                required
-                className={`${inputClass} pl-10`}
-              />
-            </div>
+            <input
+              id='webinar-email'
+              name='email'
+              type='email'
+              autoComplete='email'
+              placeholder='you@example.com'
+              value={form.email}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            />
           </div>
         </div>
 
         {/* Phone numbers */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="min-w-0">
-            <label htmlFor="webinar-number" className={labelClass}>
-              Phone Number <span className="text-sky-600">*</span>
+        <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+          <div className='min-w-0'>
+            <label htmlFor='webinar-number' className={labelClass}>
+              Phone number{required}
             </label>
-
-            <div className="relative">
-              <Phone
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                id="webinar-number"
-                name="number"
-                type="tel"
-                autoComplete="tel"
-                placeholder="Enter phone number"
-                value={form.number}
-                onChange={handleChange}
-                required
-                className={`${inputClass} pl-10`}
-              />
-            </div>
+            <input
+              id='webinar-number'
+              name='number'
+              type='tel'
+              inputMode='tel'
+              autoComplete='tel'
+              placeholder='Enter phone number'
+              value={form.number}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            />
           </div>
 
-          <div className="min-w-0">
-            <label htmlFor="webinar-whatsapp" className={labelClass}>
-              WhatsApp Number <span className="text-sky-600">*</span>
+          <div className='min-w-0'>
+            <label htmlFor='webinar-whatsapp' className={labelClass}>
+              WhatsApp number{required}
             </label>
-
-            <div className="relative">
-              <MessageCircle
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                id="webinar-whatsapp"
-                name="wpNumber"
-                type="tel"
-                placeholder="Enter WhatsApp number"
-                value={form.wpNumber}
-                onChange={handleChange}
-                required
-                className={`${inputClass} pl-10`}
-              />
-            </div>
+            <input
+              id='webinar-whatsapp'
+              name='wpNumber'
+              type='tel'
+              inputMode='tel'
+              placeholder='Enter WhatsApp number'
+              value={form.wpNumber}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            />
           </div>
         </div>
 
         {/* Profession */}
         <div>
-          <label htmlFor="webinar-profession" className={labelClass}>
-            Your Profession <span className="text-sky-600">*</span>
+          <label htmlFor='webinar-profession' className={labelClass}>
+            Your profession{required}
           </label>
-
-          <div className="relative">
-            <BriefcaseBusiness
-              size={17}
-              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <select
-              id="webinar-profession"
-              name="profession"
-              value={form.profession}
-              onChange={handleChange}
-              required
-              className={`${inputClass} appearance-none pl-10 ${
-                form.profession ? "" : "text-gray-400"
-              }`}
-            >
-              <option value="" disabled>
-                Select your profession
-              </option>
-              <option value="Student">Student</option>
-              <option value="Fresher">Fresher</option>
-              <option value="Working Professional">
-                Working Professional
-              </option>
-              <option value="Developer">Developer</option>
-              <option value="Business Owner">Business Owner</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Submit */}
-        <div className="border-t border-gray-100 pt-5">
-          {error && (
-            <p className="mb-3 text-sm text-red-500">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          <select
+            id='webinar-profession'
+            name='profession'
+            value={form.profession}
+            onChange={handleChange}
+            required
+            className={`${inputClass} ${
+              form.profession ? '' : 'text-slate-400'
+            }`}
           >
-            {loading ? "Submitting..." : "Submit Enrollment"}
-            <ArrowRight
-              size={17}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </button>
-
-          <p className="mt-3 text-center text-xs leading-relaxed text-gray-400">
-            Please ensure your contact details are correct.
-          </p>
+            <option value='' disabled>
+              Select your profession
+            </option>
+            <option value='Student'>Student</option>
+            <option value='Fresher'>Fresher</option>
+            <option value='Working Professional'>Working Professional</option>
+            <option value='Developer'>Developer</option>
+            <option value='Business Owner'>Business Owner</option>
+            <option value='Other'>Other</option>
+          </select>
         </div>
-      </form>
-    </div>
-  );
+      </div>
+
+      {error && (
+        <p
+          role='alert'
+          className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'
+        >
+          {error}
+        </p>
+      )}
+
+      {/* Submit */}
+      <div className='border-t border-slate-200 pt-6'>
+        <button
+          type='submit'
+          disabled={loading}
+          className='w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
+        >
+          {loading ? 'Submitting...' : 'Submit enrollment'}
+        </button>
+
+        <p className='mt-3 text-center text-xs text-slate-500'>
+          Please ensure your contact details are correct.
+        </p>
+      </div>
+    </form>
+  )
 }

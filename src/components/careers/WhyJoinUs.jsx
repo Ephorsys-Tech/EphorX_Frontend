@@ -1,230 +1,125 @@
-
-import { motion } from "framer-motion";
-import {
-  Lightbulb,
-  Users,
-  TrendingUp,
-  Rocket,
-  GraduationCap,
-  Target,
-  ArrowUpRight,
-  ArrowRight,
-} from "lucide-react";
+import { motion } from 'framer-motion'
 
 const benefits = [
   {
-    icon: Lightbulb,
-    number: "01",
-    title: "Innovation & Ideas",
+    number: '01',
+    title: 'Innovation & Ideas',
     description:
-      "Bring your ideas to life and contribute to meaningful projects.",
+      'Bring your ideas to life and contribute to meaningful projects.'
   },
   {
-    icon: GraduationCap,
-    number: "02",
-    title: "Continuous Learning",
-    description:
-      "Explore new technologies and keep improving your skills.",
+    number: '02',
+    title: 'Continuous Learning',
+    description: 'Explore new technologies and keep improving your skills.'
   },
   {
-    icon: Users,
-    number: "03",
-    title: "Collaborative Team",
-    description:
-      "Work together, exchange ideas and learn from others.",
+    number: '03',
+    title: 'Collaborative Team',
+    description: 'Work together, exchange ideas and learn from others.'
   },
   {
-    icon: TrendingUp,
-    number: "04",
-    title: "Professional Growth",
-    description:
-      "Take on new challenges and develop your career.",
+    number: '04',
+    title: 'Professional Growth',
+    description: 'Take on new challenges and develop your career.'
   },
   {
-    icon: Rocket,
-    number: "05",
-    title: "Real-world Experience",
-    description:
-      "Get opportunities to work on practical projects.",
+    number: '05',
+    title: 'Real-world Experience',
+    description: 'Get opportunities to work on practical projects.'
   },
   {
-    icon: Target,
-    number: "06",
-    title: "Meaningful Work",
-    description:
-      "Contribute your skills towards useful solutions.",
-  },
-];
+    number: '06',
+    title: 'Meaningful Work',
+    description: 'Contribute your skills towards useful solutions.'
+  }
+]
 
 const WhyJoinUs = () => {
-  // Duplicate cards for seamless automatic scrolling
-  const scrollingBenefits = [...benefits, ...benefits];
+  const scrollToPositions = () =>
+    document.getElementById('open-positions')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
 
   return (
     <section
-      id="why-join-us"
-      className="relative overflow-hidden bg-white pt-8 pb-10 sm:pt-10 sm:pb-13"
+      id='why-join-us'
+      className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10 sm:pb-20'
     >
-      {/* Heading and Description */}
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      {/* Background design */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+      >
+        <div className='absolute -top-10 left-[16%] h-[60%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[46%] h-[60%] w-14 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -bottom-24 -left-20 h-72 w-72 rounded-full border border-white/70 bg-gradient-to-tr from-sky-200/40 to-white/10' />
+        <div className='absolute left-[6%] top-1/2 h-10 w-10 rounded-full bg-blue-200/40' />
+      </div>
 
+      <div className='mx-auto grid max-w-7xl items-start gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14'>
+        {/* Left content */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative"
+          transition={{ duration: 0.5 }}
+          className='min-w-0 lg:sticky lg:top-32'
         >
 
-          <h2 className="text-3xl font-black leading-tight text-slate-950 sm:text-4xl lg:text-5xl">
-            Your Next Chapter
-            Starts Here.
-            <span className="mt-2 block text-3xl text-blue-700">
-              A Place to Grow
-            </span>
-          </h2>
+          <h1 className='mt-5 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl'>
+            Your Next Chapter Starts Here.{' '}
+            <span className='text-blue-700'>A Place to Grow.</span>
+          </h1>
 
-          <p className="mt-5 max-w-[900px] text-sm leading-8 text-slate-600 sm:text-base">
+          <p className='mt-5 text-base leading-7 text-slate-600'>
             A great career is built through learning, collaboration and
             opportunities. At EphorX, we aim to create an environment where
-            people can share ideas, develop their abilities and contribute
-            to meaningful work. Whether you're beginning your professional journey or bringing
-            valuable experience, we believe that curiosity and dedication
-            make a difference.
+            people can share ideas, develop their abilities and contribute to
+            meaningful work. Whether you&rsquo;re beginning your professional
+            journey or bringing valuable experience, we believe that curiosity
+            and dedication make a difference.
           </p>
 
           <button
-            type="button"
-            onClick={() =>
-              document.getElementById("open-positions")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="group inline-flex items-center gap-3 rounded-xl py-3 text-sm font-bold text-black transition-all duration-300 hover:text-sky-400"
+            type='button'
+            onClick={scrollToPositions}
+            className='mt-7 inline-flex items-center rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
           >
-            Explore Open Positions
-            <ArrowRight
-              size={18}
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45"
-            />
+            Explore open positions
           </button>
-
         </motion.div>
-      </div>
 
-      {/* Automatically Scrolling Benefit Cards */}
-      <div className="relative mx-auto mt-3 max-w-7xl px-5 sm:px-9">
+        {/* Benefits */}
+        <div className='grid gap-5 sm:grid-cols-2'>
+          {benefits.map((item, index) => (
+            <motion.div
+              key={item.number}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.4, delay: (index % 2) * 0.08 }}
+              className='group rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10'
+            >
+              <p className='text-sm font-semibold text-blue-700'>
+                {item.number}
+              </p>
 
-        {/* Left fade */}
-        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-5 bg-gradient-to-r from-white/60 to-transparent sm:w-24" />
+              <h3 className='mt-3 text-lg font-semibold text-slate-900'>
+                {item.title}
+              </h3>
+              <p className='mt-2 text-sm leading-6 text-slate-600'>
+                {item.description}
+              </p>
 
-        {/* Right fade */}
-        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-5 bg-gradient-to-l from-white/60 to-transparent sm:w-24" />
-
-        <div className="group overflow-hidden">
-          <div className="career-scroll-track flex w-max gap-5 px-5 py-5 sm:px-8">
-
-            {scrollingBenefits.map((item, index) => {
-              const Icon = item.icon;
-              const isBlue = index % benefits.length % 2 === 1;
-
-              return (
-                <motion.div
-                  key={`${item.number}-${index}`}
-                  whileHover={{ y: -8 }}
-                  transition={{ duration: 0.3 }}
-                  className={`group/card relative flex min-h-[230px] w-[270px] shrink-0 flex-col overflow-hidden rounded-2xl border p-6 shadow-sm transition-all duration-500 hover:border-slate-950 hover:bg-[#071927] hover:shadow-xl sm:w-[300px] ${
-                    isBlue
-                      ? "border-blue-300 bg-blue-700"
-                      : "border-slate-200 bg-white"
-                  }`}
-                >
-
-                  {/* Card top */}
-                  <div className="relative flex items-center justify-between">
-
-                    {/* Icon */}
-                    <div
-                      className={`relative mt-1 flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover/card:bg-blue-600 group-hover/card:text-white ${
-                        isBlue
-                          ? "bg-white/20 text-white"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      <Icon size={24} strokeWidth={1.8} />
-                    </div>
-
-                    <ArrowUpRight
-                      size={19}
-                      className={`transition-all duration-300 group-hover/card:rotate-45 ${
-                        isBlue
-                          ? "text-white group-hover/card:text-blue-600"
-                          : "text-slate-400 group-hover/card:text-blue-600"
-                      }`}
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative mt-auto pt-5">
-                    <h3
-                      className={`text-lg font-extrabold transition-colors duration-300 ${
-                        isBlue
-                          ? "text-white group-hover/card:text-white"
-                          : "text-slate-950 group-hover/card:text-white"
-                      }`}
-                    >
-                      {item.title}
-                    </h3>
-
-                    <p
-                      className={`mt-2 text-sm leading-6 transition-colors duration-300 ${
-                        isBlue
-                          ? "text-sky-50 group-hover/card:text-slate-300"
-                          : "text-slate-500 group-hover/card:text-slate-300"
-                      }`}
-                    >
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Bottom decorative line */}
-                  <div className="absolute bottom-0 left-0 h-1 w-0 bg-blue-700 transition-all duration-500 group-hover/card:w-full" />
-
-                </motion.div>
-              );
-            })}
-
-          </div>
+              <div className='mt-5 h-0.5 w-8 rounded-full bg-blue-600 transition-all duration-300 group-hover:w-16' />
+            </motion.div>
+          ))}
         </div>
       </div>
-
-      {/* Scrolling animation */}
-      <style>{`
-        @keyframes career-scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-
-        .career-scroll-track {
-          animation: career-scroll 35s linear infinite;
-        }
-
-        .group:hover .career-scroll-track {
-          animation-play-state: paused;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .career-scroll-track {
-            animation: none;
-          }
-        }
-      `}</style>
     </section>
-  );
-};
+  )
+}
 
-export default WhyJoinUs;
+export default WhyJoinUs

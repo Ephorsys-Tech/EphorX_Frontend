@@ -1,383 +1,338 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  ChevronDown,
-  Search,
-  X,
-} from "lucide-react";
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const faqData = [
   {
     id: 1,
-    category: "General",
-    question: "What is EphorX?",
+    category: 'General',
+    question: 'What is EphorX?',
     answer:
-      "EphorX is an educational and IT training company focused on helping students develop practical, industry-relevant technical skills.",
+      'EphorX is an educational and IT training company focused on helping students develop practical, industry-relevant technical skills.'
   },
   {
     id: 2,
-    category: "General",
-    question: "Who can join EphorX courses?",
+    category: 'General',
+    question: 'Who can join EphorX courses?',
     answer:
-      "College Students, freshers, graduates, and working professionals who want to learn new technical skills can explore our courses.",
+      'College students, freshers, graduates, and working professionals who want to learn new technical skills can explore our courses.'
   },
   {
     id: 3,
-    category: "Courses",
-    question: "What courses are available at EphorX?",
+    category: 'Courses',
+    question: 'What courses are available at EphorX?',
     answer:
-      "EphorX offers learning opportunities in Web Development, MERN Stack Development, Python Programming,, Data Analytics,Artificial Intelligence and Machine Learning,Node.js,React.js and other technology-related fields.",
+      'EphorX offers learning opportunities in Web Development, MERN Stack Development, Python Programming, Data Analytics, Artificial Intelligence and Machine Learning, Node.js, React.js and other technology-related fields.'
   },
   {
     id: 4,
-    category: "Courses",
-    question: "Do I need prior programming knowledge?",
+    category: 'Courses',
+    question: 'Do I need prior programming knowledge?',
     answer:
-      "Not necessarily. Beginners can start with foundational concepts and gradually develop their programming skills.",
+      'Not necessarily. Beginners can start with foundational concepts and gradually develop their programming skills.'
   },
   {
     id: 5,
-    category: "Courses",
-    question: "Will I work on real-world projects?",
+    category: 'Courses',
+    question: 'Will I work on real-world projects?',
     answer:
-      "Practical exercises and project-based learning can help you apply concepts and understand how technical skills are used in real-world situations.",
+      'Practical exercises and project-based learning can help you apply concepts and understand how technical skills are used in real-world situations.'
   },
   {
     id: 6,
-    category: "Admissions",
-    question: "How can I enroll in a course?",
+    category: 'Admissions',
+    question: 'How can I enroll in a course?',
     answer:
-      "You can contact the EphorX team through the website to enquire about available courses, admission procedures, and upcoming batches.",
+      'You can contact the EphorX team through the website to enquire about available courses, admission procedures, and upcoming batches.'
   },
   {
     id: 7,
-    category: "Admissions",
-    question: "Can I get information about upcoming batches?",
+    category: 'Admissions',
+    question: 'Can I get information about upcoming batches?',
     answer:
-      "Yes. Contact the team to enquire about upcoming batches, course schedules, and available learning options.",
+      'Yes. Contact the team to enquire about upcoming batches, course schedules, and available learning options.'
   },
   {
     id: 8,
-    category: "Fees",
-    question: "How can I know the course fees?",
+    category: 'Fees',
+    question: 'How can I know the course fees?',
     answer:
-      "Course fees may vary depending on the selected program. Contact the EphorX team for the latest fee details.",
+      'Course fees may vary depending on the selected program. Contact the EphorX team for the latest fee details.'
   },
   {
     id: 9,
-    category: "Fees",
-    question: "Are installment payment options available?",
+    category: 'Fees',
+    question: 'Are installment payment options available?',
     answer:
-      "Please contact the EphorX team to confirm the available payment methods and whether installment options are offered for your selected course.",
+      'Please contact the EphorX team to confirm the available payment methods and whether installment options are offered for your selected course.'
   },
   {
     id: 10,
-    category: "Learning",
-    question: "How are the courses taught?",
+    category: 'Learning',
+    question: 'How are the courses taught?',
     answer:
-      "The learning process can include concept explanations, practical exercises, coding practice, and project-based activities, depending on the course.",
+      'The learning process can include concept explanations, practical exercises, coding practice, and project-based activities, depending on the course.'
   },
   {
     id: 11,
-    category: "Career",
-    question: "Will these courses help me prepare for a job?",
+    category: 'Career',
+    question: 'Will these courses help me prepare for a job?',
     answer:
-      "Learning technical concepts, practising projects, and strengthening problem-solving skills can help you prepare for technical roles. Career outcomes depend on your skills, practice, and preparation.",
+      'Learning technical concepts, practising projects, and strengthening problem-solving skills can help you prepare for technical roles. Career outcomes depend on your skills, practice, and preparation.'
   },
   {
     id: 12,
-    category: "Career",
-    question: "Can beginners prepare for a technical career?",
+    category: 'Career',
+    question: 'Can beginners prepare for a technical career?',
     answer:
-      "Yes. Beginners can build their foundation step by step through consistent practice, projects, and continued learning.",
-  },
-];
+      'Yes. Beginners can build their foundation step by step through consistent practice, projects, and continued learning.'
+  }
+]
 
 const categories = [
-  "All Questions",
-  "General",
-  "Courses",
-  "Admissions",
-  "Fees",
-  "Learning",
-  "Career",
-];
+  'All Questions',
+  'General',
+  'Courses',
+  'Admissions',
+  'Fees',
+  'Learning',
+  'Career'
+]
 
 const FaqAccordion = () => {
-  const [activeCategory, setActiveCategory] = useState("All Questions");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [openQuestion, setOpenQuestion] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All Questions')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [openQuestion, setOpenQuestion] = useState(null)
 
-  const normalizedSearch = searchTerm.trim().toLowerCase();
+  const normalizedSearch = searchTerm.trim().toLowerCase()
 
-  const filteredFaqs = faqData.filter((faq) => {
+  const filteredFaqs = faqData.filter(faq => {
     const matchesCategory =
-      activeCategory === "All Questions" ||
-      faq.category === activeCategory;
+      activeCategory === 'All Questions' || faq.category === activeCategory
 
     const matchesSearch =
       !normalizedSearch ||
       faq.question.toLowerCase().includes(normalizedSearch) ||
       faq.answer.toLowerCase().includes(normalizedSearch) ||
-      faq.category.toLowerCase().includes(normalizedSearch);
+      faq.category.toLowerCase().includes(normalizedSearch)
 
-    return matchesCategory && matchesSearch;
-  });
+    return matchesCategory && matchesSearch
+  })
 
-  const handleCategoryChange = (category) => {
-    setActiveCategory(category);
-    setOpenQuestion(null);
-  };
+  const handleCategoryChange = category => {
+    setActiveCategory(category)
+    setOpenQuestion(null)
+  }
 
-  const handleSearchChange = (value) => {
-    setSearchTerm(value);
-    setOpenQuestion(null);
-  };
+  const handleSearchChange = value => {
+    setSearchTerm(value)
+    setOpenQuestion(null)
+  }
+
+  const resetFilters = () => {
+    setActiveCategory('All Questions')
+    setSearchTerm('')
+    setOpenQuestion(null)
+  }
 
   return (
     <section
-      id="faq-questions"
-      className="relative overflow-hidden bg-white pb-7 pt-1 sm:pb-10 lg:pt-8"
+      id='faq-questions'
+      className='relative isolate scroll-mt-28 overflow-hidden bg-gradient-to-b from-white via-blue-50/50 to-sky-50 py-16 sm:py-20'
     >
-      {/* Background Decorations */}
-      <div className="pointer-events-none absolute -left-24 top-40 h-64 w-64 rounded-full bg-blue-100/60 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
+      {/* Background design */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+      >
+        <div className='absolute -top-10 left-[18%] h-[130%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[64%] h-[130%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+        <div className='absolute -left-24 top-20 h-72 w-72 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -bottom-28 -right-20 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-tl from-blue-200/50 to-sky-100/10' />
+      </div>
 
-      {/* Exact CoursesByCategory Alignment */}
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-
-        {/* Section Heading */}
+      <div className='mx-auto max-w-4xl px-5 sm:px-8'>
+        {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
-          className="mb-6"
+          className='text-center'
         >
-          <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl lg:text-4xl">
-            Frequently
-            <span className="ml-2 text-blue-700">
-              Asked Questions!
-            </span>
+          <h2 className='text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl'>
+            Frequently <span className='text-blue-700'>Asked Questions</span>
           </h2>
+          <p className='mt-3 text-base leading-7 text-slate-600'>
+            Search for an answer or browse by topic.
+          </p>
         </motion.div>
 
-        {/* Search Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.45 }}
-          className="mx-auto mb-5 rounded-2xl border border-blue-100"
+        {/* Search */}
+        <div className='relative mt-8'>
+          <input
+            type='text'
+            value={searchTerm}
+            onChange={e => handleSearchChange(e.target.value)}
+            placeholder='Search your question'
+            aria-label='Search frequently asked questions'
+            className='w-full rounded-full border border-slate-300 bg-white py-3 pl-6 pr-20 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 sm:text-base'
+          />
+          {searchTerm && (
+            <button
+              type='button'
+              onClick={() => handleSearchChange('')}
+              aria-label='Clear search'
+              className='absolute right-5 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500 transition hover:text-blue-700'
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {/* Category filters */}
+        <div
+          className='mt-5 flex flex-wrap justify-center gap-2'
+          role='tablist'
+          aria-label='Filter questions by category'
         >
-          <div className="group flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3.5 shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_8px_30px_rgba(29,78,216,0.12)]">
-            <Search
-              size={21}
-              className="shrink-0 text-gray-400 transition-colors group-focus-within:text-blue-700"
-            />
-
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search your question..."
-              aria-label="Search frequently asked questions"
-              className="w-full bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400 sm:text-base"
-            />
-
-            <AnimatePresence>
-              {searchTerm && (
-                <motion.button
-                  type="button"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  onClick={() => handleSearchChange("")}
-                  aria-label="Clear search"
-                  className="shrink-0 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <X size={18} />
-                </motion.button>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>
-
-        {/* Category Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.45, delay: 0.05 }}
-          className="mb-9 flex flex-wrap gap-2"
-        >
-          {categories.map((category) => {
-            const isActive = activeCategory === category;
+          {categories.map(category => {
+            const isActive = activeCategory === category
 
             return (
               <button
                 key={category}
-                type="button"
+                type='button'
+                role='tab'
+                aria-selected={isActive}
                 onClick={() => handleCategoryChange(category)}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                className={`rounded-full border px-4 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
                   isActive
-                    ? "border-gray-950 bg-gray-950 text-white shadow-lg shadow-gray-950/15"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800"
+                    ? 'border-blue-700 bg-blue-700 text-white'
+                    : 'border-slate-300 bg-white text-slate-700 hover:border-blue-700 hover:text-blue-700'
                 }`}
               >
                 {category}
               </button>
-            );
+            )
           })}
-        </motion.div>
+        </div>
 
-        {/* Results Count */}
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <p className="text-sm font-medium text-gray-500">
-            {filteredFaqs.length === 1
-              ? "Showing 0 question"
-              : `Showing ${filteredFaqs.length} questions`}
+        {/* Results count */}
+        <div className='mb-4 mt-8 flex items-center justify-between gap-3'>
+          <p className='text-sm text-slate-600'>
+            Showing{' '}
+            <span className='font-semibold text-slate-900'>
+              {filteredFaqs.length}
+            </span>{' '}
+            {filteredFaqs.length === 1 ? 'question' : 'questions'}
           </p>
 
-          {(activeCategory !== "All Questions" || searchTerm) && (
+          {(activeCategory !== 'All Questions' || searchTerm) && (
             <button
-              type="button"
-              onClick={() => {
-                setActiveCategory("All Questions");
-                setSearchTerm("");
-                setOpenQuestion(null);
-              }}
-              className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-900"
+              type='button'
+              onClick={resetFilters}
+              className='text-sm font-semibold text-blue-700 transition hover:text-blue-900'
             >
               Clear filters
             </button>
           )}
         </div>
 
-        {/* FAQ Accordion */}
-        <div className="space-y-3">
-          <AnimatePresence mode="popLayout">
-            {filteredFaqs.length > 0 ? (
-              filteredFaqs.map((faq, index) => {
-                const isOpen = openQuestion === faq.id;
+        {/* Accordion */}
+        <div className='space-y-3'>
+          {filteredFaqs.length > 0 ? (
+            filteredFaqs.map((faq, index) => {
+              const isOpen = openQuestion === faq.id
 
-                return (
-                  <motion.div
-                    key={faq.id}
-                    layout
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{
-                      duration: 0.25,
-                      delay: Math.min(index * 0.035, 0.2),
-                    }}
-                    className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
-                      isOpen
-                        ? "border-blue-200 bg-white shadow-[0_10px_35px_rgba(29,78,216,0.09)]"
-                        : "border-gray-200 bg-white hover:border-blue-200 hover:shadow-[0_6px_24px_rgba(15,23,42,0.04)]"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setOpenQuestion(isOpen ? null : faq.id)
-                      }
-                      aria-expanded={isOpen}
-                      className="flex w-full items-center gap-4 px-5 py-5 text-left sm:px-6"
-                    >
-                      <span
-                        className={`mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors duration-300 ${
-                          isOpen
-                            ? "bg-gray-950 text-blue-400"
-                            : "bg-blue-50 text-blue-700"
-                        }`}
-                      >
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-sm font-semibold leading-6 text-gray-900 sm:text-base">
-                          {faq.question}
-                        </span>
-                      </span>
-
-                      <span
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
-                          isOpen
-                            ? "rotate-180 bg-gray-950 text-white"
-                            : "bg-gray-100 text-gray-500"
-                        }`}
-                      >
-                        <ChevronDown size={18} />
-                      </span>
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{
-                            height: {
-                              duration: 0.3,
-                              ease: "easeInOut",
-                            },
-                            opacity: { duration: 0.2 },
-                          }}
-                          className="overflow-hidden"
-                        >
-                          <div className="ml-[4.5rem] mr-5 border-t border-gray-100 pb-5 pt-4 sm:ml-[5rem] sm:mr-6">
-                            <p className="text-sm leading-7 text-gray-600 sm:text-base">
-                              {faq.answer}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })
-            ) : (
-              <motion.div
-                key="empty-state"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="rounded-2xl border border-dashed border-gray-300 bg-gray-50/80 px-6 py-12 text-center"
-              >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-700">
-                  <Search size={25} />
-                </div>
-
-                <h3 className="text-lg font-bold text-gray-900">
-                  No questions found
-                </h3>
-
-                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                  We couldn't find any questions matching your search.
-                  Try another keyword or select a different category.
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveCategory("All Questions");
-                    setSearchTerm("");
-                    setOpenQuestion(null);
-                  }}
-                  className="mt-5 rounded-xl bg-gray-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+              return (
+                <div
+                  key={faq.id}
+                  className={`overflow-hidden rounded-xl border bg-white transition duration-300 ${
+                    isOpen
+                      ? 'border-blue-600 shadow-lg shadow-blue-900/5'
+                      : 'border-slate-200 hover:border-blue-300'
+                  }`}
                 >
-                  Show all questions
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <button
+                    type='button'
+                    onClick={() => setOpenQuestion(isOpen ? null : faq.id)}
+                    aria-expanded={isOpen}
+                    className='flex w-full items-center gap-4 px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 sm:px-6'
+                  >
+                    <span
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors duration-300 ${
+                        isOpen
+                          ? 'bg-blue-700 text-white'
+                          : 'bg-blue-50 text-blue-700'
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <span className='min-w-0 flex-1 text-[15px] font-semibold leading-6 text-slate-900 sm:text-base'>
+                      {faq.question}
+                    </span>
+
+                    <span
+                      aria-hidden='true'
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-lg leading-none transition-colors duration-300 ${
+                        isOpen
+                          ? 'border-blue-700 bg-blue-700 text-white'
+                          : 'border-slate-300 text-slate-500'
+                      }`}
+                    >
+                      {isOpen ? '\u2212' : '+'}
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                          height: { duration: 0.3, ease: 'easeInOut' },
+                          opacity: { duration: 0.2 }
+                        }}
+                        className='overflow-hidden'
+                      >
+                        <div className='mx-5 border-t border-slate-100 pb-5 pt-4 sm:mx-6 sm:pl-[3.25rem]'>
+                          <p className='text-sm leading-7 text-slate-600 sm:text-base'>
+                            {faq.answer}
+                          </p>
+                          <span className='mt-3 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700'>
+                            {faq.category}
+                          </span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })
+          ) : (
+            <div className='rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center'>
+              <h3 className='text-lg font-semibold text-slate-900'>
+                No questions found
+              </h3>
+              <p className='mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600'>
+                We couldn&rsquo;t find any questions matching your search. Try
+                another keyword or select a different category.
+              </p>
+              <button
+                type='button'
+                onClick={resetFilters}
+                className='mt-5 rounded-full bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800'
+              >
+                Show all questions
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default FaqAccordion;
+export default FaqAccordion

@@ -1,63 +1,56 @@
-import { motion } from "framer-motion";
-import { ArrowUpRight, CircleHelp, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const ContactCTA = () => {
   return (
-    <section className="bg-white pb-10 pt-6 sm:pb-16 lg:pb-8">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section className='bg-white py-16 sm:py-20'>
+      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
-          className="relative isolate overflow-hidden rounded-2xl bg-blue-700 p-5 sm:rounded-[2rem] sm:p-8 md:p-10 lg:p-14"
+          transition={{ duration: 0.5 }}
+          className='relative isolate overflow-hidden rounded-2xl bg-[#0b2a5b] px-6 py-12 text-white sm:px-12 sm:py-14'
         >
-          <div className="pointer-events-none absolute -right-16 -top-24 -z-10 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-1/3 -z-10 h-64 w-64 rounded-full bg-blue-900/20 blur-3xl" />
+          {/* Background design */}
+          <div
+            aria-hidden='true'
+            className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+          >
+            <div className='absolute -top-10 left-[18%] h-[140%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/[0.07] to-transparent' />
+            <div className='absolute -top-10 left-[62%] h-[140%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent' />
+            <div className='absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-br from-blue-500/25 to-transparent' />
+            <div className='absolute -bottom-28 -left-20 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-tr from-sky-400/15 to-transparent' />
+          </div>
 
-          <div className="relative flex min-w-0 flex-col justify-between gap-6 sm:gap-8 lg:flex-row lg:items-center">
-            <div className="flex min-w-0 items-start gap-3 sm:gap-5">
-              <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-950 text-blue-400 sm:flex">
-                <CircleHelp size={27} />
-              </div>
+          <div className='flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center'>
+            <div className='max-w-2xl'>
+              <p className='text-sm font-semibold uppercase tracking-wider text-sky-300'>
+                Need more information?
+              </p>
 
-              <div className="min-w-0 flex-1">
-                <div className="mb-3 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-white sm:tracking-[0.18em]">
-                  <MessageCircle size={15} className="shrink-0" />
-                  <span>Need More Information?</span>
-                </div>
+              <h2 className='mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl'>
+                Still Have Questions?{' '}
+                <span className='text-sky-300'>We&rsquo;ve Got You.</span>
+              </h2>
 
-                <h2 className="text-2xl font-black leading-tight text-white sm:text-3xl lg:text-4xl">
-                  Still Have Questions?
-                  <br className="hidden sm:block" />
-                  <span className="text-blue-200"> We've Got You.</span>
-                </h2>
-
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-blue-100 sm:text-base sm:leading-7">
-                  Browse our frequently asked questions for helpful information
-                  about courses, admissions, fees and learning at EphorX.
-                </p>
-              </div>
+              <p className='mt-4 text-base leading-7 text-blue-100/90'>
+                Browse our frequently asked questions for helpful information
+                about courses, admissions, fees and learning at EphorX.
+              </p>
             </div>
 
             <Link
-              to="/faq"
-              className="group inline-flex w-full shrink-0 items-center justify-center gap-3 self-start rounded-xl bg-gray-950 px-5 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:bg-white hover:text-blue-800 sm:w-auto sm:px-6 sm:py-4 lg:self-center"
+              to='/faq'
+              className='inline-flex shrink-0 items-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-blue-800 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
             >
-              Visit FAQ Page
-              <ArrowUpRight
-                size={18}
-                className="shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
+              Visit FAQ page
             </Link>
           </div>
-
-          <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ContactCTA;
+export default ContactCTA

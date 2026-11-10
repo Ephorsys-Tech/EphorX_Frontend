@@ -1,54 +1,48 @@
-
-import { motion } from "framer-motion";
-import { ArrowRight, Mail, Send } from "lucide-react";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const CareerCTA = () => {
   return (
-    <section className="bg-white py-1 sm:py-9">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section className='bg-white pb-16 sm:pb-20'>
+      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-blue-600 to-slate-900 px-6 py-10 text-center sm:px-12 lg:py-8"
+          transition={{ duration: 0.5 }}
+          className='relative isolate overflow-hidden rounded-2xl bg-[#0b2a5b] px-6 py-12 text-center text-white sm:px-12 sm:py-14'
         >
-          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full border border-blue-300/20" />
-          <div className="pointer-events-none absolute -bottom-32 -left-20 h-72 w-72 rounded-full border border-blue-300/20" />
-
-          <div className="relative mx-auto">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-300/40 bg-white/10 text-white">
-              <Send size={25} />
-            </div>
-
-            <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
-              Don't See the Right{" "}
-              <span className="text-sky-300">Role?</span>
-            </h2>
-
-            <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-blue-100 sm:text-base">
-              We are always interested in connecting with talented and
-              passionate people. Reach out to our team to discuss potential
-              opportunities.
-            </p>
-
-            <Link
-              to="/contact"
-              className="group mt-8 inline-flex items-center gap-3 rounded-xl bg-white px-7 py-3.5 text-sm font-bold text-blue-700 transition-all duration-300 hover:bg-sky-100"
-            >
-              <Mail size={18} />
-              Contact Us
-              <ArrowRight
-                size={18}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
+          {/* Background design */}
+          <div
+            aria-hidden='true'
+            className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
+          >
+            <div className='absolute -top-10 left-[18%] h-[140%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/[0.07] to-transparent' />
+            <div className='absolute -top-10 left-[62%] h-[140%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent' />
+            <div className='absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-br from-blue-500/25 to-transparent' />
+            <div className='absolute -bottom-28 -left-20 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-tr from-sky-400/15 to-transparent' />
           </div>
+
+          <h2 className='text-3xl font-bold tracking-tight sm:text-4xl'>
+            Don&rsquo;t See the Right{' '}
+            <span className='text-sky-300'>Role?</span>
+          </h2>
+
+          <p className='mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-100/90'>
+            We are always interested in connecting with talented and passionate
+            people. Reach out to our team to discuss potential opportunities.
+          </p>
+
+          <Link
+            to='/contact'
+            className='mt-8 inline-flex items-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-blue-800 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
+          >
+            Contact us
+          </Link>
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default CareerCTA;
+export default CareerCTA
