@@ -157,7 +157,7 @@ const BookDemoModal = ({ onClose }) => {
       ) : (
         <div className="px-9 py-2">
           <div className="mb-2">
-            <p className="text-sm leading-6 text-sky-500">
+            <p className="text-sm leading-6 text-blue-700 font-semibold">
               Interested in learning with EphorX? Share your details
               and we'll help you get started with a free demo session.
             </p>
@@ -361,7 +361,7 @@ const BookDemoModal = ({ onClose }) => {
             <button
               type="submit"
               disabled={loading || coursesLoading || courses.length === 0}
-              className="w-full rounded-xl bg-[#156fb4] px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Submitting..." : "Book My Free Demo"}
             </button>

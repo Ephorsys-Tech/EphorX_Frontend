@@ -17,7 +17,7 @@ const FloatingContactButtons = () => {
           type="button"
           onClick={() => setDemoOpen(true)}
           aria-label="Book a Demo"
-          className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-[#071927] text-white shadow-lg shadow-slate-900/20 transition-all duration-300 hover:-translate-y-1 hover:bg-sky-600"
+          className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-[#071927] text-white shadow-lg shadow-slate-900/20 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700"
         >
           <CalendarDays
             size={20}
@@ -33,11 +33,11 @@ const FloatingContactButtons = () => {
         <a
           href={`tel:${phoneNumber}`}
           aria-label="Call Us"
-          className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-sky-500 text-white shadow-lg shadow-sky-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-sky-600"
+          className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-blue-700 text-white shadow-lg shadow-sky-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600"
         >
           <Phone size={20} strokeWidth={2.2} />
 
-          <span className="absolute right-14 whitespace-nowrap rounded-md bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+          <span className="absolute right-14 whitespace-nowrap rounded-md bg-blue-700 px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
             Call Us
           </span>
         </a>
