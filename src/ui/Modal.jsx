@@ -88,7 +88,7 @@ const Modal = ({
             {/* Reusable header */}
             {showHeader && (
               <div
-                className={`flex shrink-0 items-center justify-between border-b px-5 py-4 sm:px-6 ${currentTheme.header}`}
+                className={`flex shrink-0 items-center justify-between border-b px-5 py-3 sm:px-6 ${currentTheme.header}`}
               >
                 <h2 className="text-lg font-bold tracking-tight sm:text-xl">
                   {title}

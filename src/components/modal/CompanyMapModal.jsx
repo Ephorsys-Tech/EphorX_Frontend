@@ -19,7 +19,7 @@ const CompanyMapModal = () => {
         </span>
 
         <div>
-          <h3 className="text-lg font-extrabold text-slate-950">
+          <h3 className="text-lg font-extrabold text-blue-700">
             Visit Our Company
           </h3>
 
@@ -47,7 +47,7 @@ const CompanyMapModal = () => {
         href={directionsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-400 hover:text-slate-950"
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-sky-400 hover:text-slate-950"
       >
         Get Directions
         <ExternalLink size={17} />

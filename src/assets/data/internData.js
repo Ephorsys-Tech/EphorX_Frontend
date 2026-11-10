@@ -90,7 +90,7 @@ export const internsRow2 = [
   },
   {
     name: "Bivash Ranjan Swain",
-    college: "GIFT Autonomous,Bhubaneswar",
+    college: "Gandhi Institute of Excellent Technocrats, Bhubaneswar ",
     photo: bivash,
   },
    {
@@ -105,7 +105,7 @@ export const internsRow2 = [
   },
   {
     name: "Raj Ratan",
-    college: "GIFT Autonomous,Bhubaneswar",
+    college: "GITA AUTONOMOUS COLLEGE Bhubaneswar",
     photo: raj,
   },
   {

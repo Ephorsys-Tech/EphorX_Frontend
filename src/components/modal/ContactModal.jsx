@@ -276,7 +276,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
             whileHover={{ scale: loading ? 1 : 1.015 }}
             whileTap={{ scale: loading ? 1 : 0.98 }}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Sending..." : "Send Message"}
             <Send size={16} />

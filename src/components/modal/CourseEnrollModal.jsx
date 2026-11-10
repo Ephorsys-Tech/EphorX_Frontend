@@ -284,7 +284,7 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
             <button
               type="submit"
               disabled={loading}
-              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Submitting..." : "Submit Enrollment"}
 
