@@ -1,359 +1,273 @@
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  Star,
-  Quote,
-  ArrowUpRight,
-  GraduationCap,
-  MessageCircle,
-} from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Star, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Review data
 const reviews = [
   {
-    name: "Priya Das",
-    role: "MERN Stack Student",
-    initials: "PD",
-    color: "from-sky-400 to-blue-600",
+    name: 'Priya Das',
+    role: 'MERN Stack Student',
+    initials: 'PD',
     rating: 5,
-    text: "The practical sessions made web development much easier to understand. I loved building projects instead of only learning theory.",
-    course: "Full Stack Development",
+    text: 'The practical sessions made web development much easier to understand. I loved building projects instead of only learning theory.',
+    course: 'Full Stack Development'
   },
   {
-    name: "Rahul Mohanty",
-    role: "Frontend Developer",
-    initials: "RM",
-    color: "from-indigo-400 to-sky-600",
+    name: 'Rahul Mohanty',
+    role: 'Frontend Developer',
+    initials: 'RM',
     rating: 5,
-    text: "The learning path was clear, the mentors were supportive, and the projects helped me become more confident with React.",
-    course: "Frontend Development",
+    text: 'The learning path was clear, the mentors were supportive, and the projects helped me become more confident with React.',
+    course: 'Frontend Development'
   },
   {
-    name: "Sneha Patel",
-    role: "UI/UX Learner",
-    initials: "SP",
-    color: "from-cyan-400 to-blue-600",
+    name: 'Sneha Patel',
+    role: 'UI/UX Learner',
+    initials: 'SP',
     rating: 5,
-    text: "I loved the balance between design concepts and practical work. It helped me think more carefully about user experience.",
-    course: "UI/UX Design",
+    text: 'I loved the balance between design concepts and practical work. It helped me think more carefully about user experience.',
+    course: 'UI/UX Design'
   },
   {
-    name: "Amit Kumar",
-    role: "Python Student",
-    initials: "AK",
-    color: "from-blue-500 to-indigo-600",
+    name: 'Amit Kumar',
+    role: 'Python Student',
+    initials: 'AK',
     rating: 5,
-    text: "Complex concepts felt manageable because they were explained step by step. The hands-on exercises were my favorite part.",
-    course: "Python Programming",
+    text: 'Complex concepts felt manageable because they were explained step by step. The hands-on exercises were my favorite part.',
+    course: 'Python Programming'
   },
   {
-    name: "Anjali Sahoo",
-    role: "Web Development Student",
-    initials: "AS",
-    color: "from-sky-500 to-cyan-600",
+    name: 'Anjali Sahoo',
+    role: 'Web Development Student',
+    initials: 'AS',
     rating: 5,
-    text: "I enjoyed the supportive environment and project-based learning. The experience helped me focus on developing real skills.",
-    course: "Web Development",
+    text: 'I enjoyed the supportive environment and project-based learning. The experience helped me focus on developing real skills.',
+    course: 'Web Development'
   },
   {
-    name: "Karan Singh",
-    role: "Java Learner",
-    initials: "KS",
-    color: "from-violet-500 to-blue-600",
+    name: 'Karan Singh',
+    role: 'Java Learner',
+    initials: 'KS',
     rating: 5,
-    text: "The structured lessons helped me build a stronger foundation. I now feel more comfortable solving problems on my own.",
-    course: "Java Programming",
-  },
-];
+    text: 'The structured lessons helped me build a stronger foundation. I now feel more comfortable solving problems on my own.',
+    course: 'Java Programming'
+  }
+]
 
-// Animated stars
-function Stars({ rating = 5 }) {
+// TODO: replace with your real rating
+const AVERAGE_RATING = '4.9'
+
+function Stars ({ rating = 5, size = 16 }) {
   return (
-    <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <motion.span
+    <div
+      className='flex gap-0.5'
+      role='img'
+      aria-label={`${rating} out of 5 stars`}
+    >
+      {[1, 2, 3, 4, 5].map(star => (
+        <Star
           key={star}
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 8, 0] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            delay: star * 0.15,
-          }}
-        >
-          <Star
-            size={14}
-            className={
-              star <= rating
-                ? "fill-sky-400 text-sky-400"
-                : "text-gray-300"
-            }
-          />
-        </motion.span>
+          size={size}
+          className={
+            star <= rating
+              ? 'fill-amber-400 text-amber-400'
+              : 'fill-slate-200 text-slate-200'
+          }
+        />
       ))}
     </div>
-  );
+  )
 }
 
-// Single review card
-function ReviewCard({ review }) {
+function ReviewCard ({ review, index }) {
   return (
     <motion.article
-      whileHover={{ y: -9, scale: 1.015 }}
-      className="group relative flex min-h-[270px] w-[310px] shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:border-sky-300 hover:shadow-xl sm:w-[350px]"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.06 }}
+      className='flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/5'
     >
-      <motion.div
-        className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-sky-100 blur-2xl"
-        animate={{ scale: [0.8, 1.25, 0.8], opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 5, repeat: Infinity }}
-      />
+      <Stars rating={review.rating} />
 
-      <div className="relative flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div
-            className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${review.color} font-bold text-white`}
-          >
-            {review.initials}
-          </div>
-
-          <div>
-            <h3 className="font-bold text-gray-950">{review.name}</h3>
-            <p className="text-xs text-gray-500">{review.role}</p>
-          </div>
-        </div>
-
-        <Quote className="text-sky-300 transition-all group-hover:rotate-12 group-hover:text-sky-500" />
-      </div>
-
-      <div className="relative mt-5 flex items-center justify-between gap-2">
-        <Stars rating={review.rating} />
-        <span className="rounded-full bg-sky-50 px-2 py-1 text-[9px] font-bold text-sky-700">
-          STUDENT REVIEW
-        </span>
-      </div>
-
-      <p className="relative mt-4 flex-1 text-sm leading-6 text-gray-600">
-        “{review.text}”
+      <p className='mt-4 flex-1 text-base leading-7 text-slate-700'>
+        &ldquo;{review.text}&rdquo;
       </p>
 
-      <div className="relative mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-        <span className="text-xs font-semibold text-gray-500">
+      <div className='mt-6 flex items-center gap-3 border-t border-slate-100 pt-5'>
+        <div
+          aria-hidden='true'
+          className='flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-700 text-sm font-bold text-white'
+        >
+          {review.initials}
+        </div>
+
+        <div className='min-w-0 flex-1'>
+          <h3 className='truncate text-sm font-semibold text-slate-900'>
+            {review.name}
+          </h3>
+          <p className='truncate text-xs text-slate-500'>{review.role}</p>
+        </div>
+
+        <span className='hidden shrink-0 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 sm:inline'>
           {review.course}
         </span>
-
-        <motion.span
-          animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ArrowUpRight
-            size={18}
-            className="text-sky-500 group-hover:text-black"
-          />
-        </motion.span>
       </div>
     </motion.article>
-  );
+  )
 }
 
-// Continuously moving review row
-function ReviewRow({ items, reverse = false, paused }) {
-  const repeatedReviews = [...items, ...items, ...items, ...items];
+export default function ReviewsSection () {
+  const scrollRef = useRef(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const updateArrows = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 4)
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+  }, [])
+
+  useEffect(() => {
+    updateArrows()
+    window.addEventListener('resize', updateArrows)
+    return () => window.removeEventListener('resize', updateArrows)
+  }, [updateArrows])
+
+  const scrollByAmount = direction => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: 'smooth' })
+  }
+
+  const arrowClass =
+    'flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 transition hover:border-blue-700 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-300 disabled:hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
 
   return (
-    <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-[#f8fbff] to-transparent sm:w-16" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-[#f8fbff] to-transparent sm:w-16" />
-
-      <motion.div
-        className="flex w-max gap-5 py-3"
-        animate={
-          paused
-            ? {}
-            : { x: reverse ? ["0%", "-50%"] : ["-50%", "0%"] }
-        }
-        transition={{
-          duration: reverse ? 32 : 28,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+    <section className='relative isolate overflow-hidden bg-gradient-to-b from-white via-blue-50/60 to-sky-50 py-16 sm:py-20'>
+      {/* Background design: soft bubbles and streaks */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
       >
-        {repeatedReviews.map((review, index) => (
-          <ReviewCard key={`${review.initials}-${index}`} review={review} />
-        ))}
-      </motion.div>
-    </div>
-  );
-}
+        <div className='absolute -top-10 left-[16%] h-[130%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[58%] h-[130%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+        <div className='absolute -left-24 -top-24 h-72 w-72 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -bottom-28 -right-20 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-tl from-blue-200/50 to-sky-100/10' />
+        <div className='absolute right-[10%] top-14 h-24 w-24 rounded-full border border-white/70 bg-sky-200/40' />
+        <div className='absolute bottom-24 left-[7%] h-6 w-6 rounded-full bg-blue-300/40' />
+      </div>
 
-// Main reviews section
-export default function ReviewsSection() {
-  const [paused, setPaused] = useState(false);
-
-  return (
-    <section className="relative isolate overflow-hidden bg-[#f8fbff] py-12 sm:py-16">
-      {/* Animated background */}
-      <motion.div
-        className="pointer-events-none absolute -left-32 top-20 -z-10 h-80 w-80 rounded-full bg-sky-200/50 blur-[100px]"
-        animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-        transition={{ duration: 12, repeat: Infinity }}
-      />
-
-      <motion.div
-        className="pointer-events-none absolute -right-32 bottom-0 -z-10 h-96 w-96 rounded-full bg-blue-100 blur-[110px]"
-        animate={{ x: [0, -60, 0], y: [0, -35, 0] }}
-        transition={{ duration: 14, repeat: Infinity }}
-      />
-
-      <div className="mx-auto px-4 sm:px-6 lg:px-40">
+      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto mb-12 max-w-3xl text-center"
-        >
-         
-
-          <h2 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-4xl">
-            Real learning.{" "}
-            <span className="relative inline-block text-sky-500">
-              Real growth.
-              <motion.span
-                className="absolute -bottom-2 left-0 h-1 rounded-full bg-sky-400"
-                animate={{ width: ["20%", "100%", "20%"] }}
-                transition={{ duration: 3.5, repeat: Infinity }}
-              />
-            </span>
+        <div className='mx-auto mb-12 max-w-2xl text-center'>
+          <h2 className='text-3xl font-bold tracking-tight text-[#0b2a5b] sm:text-4xl lg:text-5xl'>
+            Real learning. Real growth.
           </h2>
-        </motion.div>
+          <p className='mt-4 text-base leading-7 text-slate-600'>
+            Hear from students who built practical skills and confidence with
+            EphorX.
+          </p>
+        </div>
 
         {/* Rating overview */}
-        <div className="mx-auto mb-12 grid gap-4 sm:grid-cols-3">
-          <div className="relative flex items-center gap-4 overflow-hidden rounded-2xl bg-[#080b12] p-5 text-white">
-            <motion.div
-              className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-sky-500/30 blur-2xl"
-              animate={{ scale: [0.8, 1.5, 0.8] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
-
-            <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-full border-2 border-sky-400/40">
-              <motion.div
-                className="absolute inset-1 rounded-full border-2 border-t-sky-400 border-r-sky-400 border-b-transparent border-l-transparent"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-              />
-              <div className="text-center">
-                <p className="text-2xl font-black">4.9</p>
-                <p className="text-[9px] text-sky-300">OUT OF 5</p>
-              </div>
-            </div>
-
-            <div className="relative">
+        <div className='mx-auto mb-12 grid max-w-4xl divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white sm:grid-cols-3 sm:divide-x sm:divide-y-0'>
+          <div className='flex items-center gap-4 p-5'>
+            <p className='text-4xl font-bold text-blue-800'>{AVERAGE_RATING}</p>
+            <div>
               <Stars />
-              <p className="mt-2 text-xs text-gray-300">
-                Learning with confidence
+              <p className='mt-1 text-xs text-slate-500'>
+                Average student rating
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-2xl border border-sky-200 bg-white p-5">
-            <GraduationCap size={28} className="text-sky-500" />
-            <div>
-              <p className="font-extrabold text-gray-950">Project-led</p>
-              <p className="mt-1 text-xs text-gray-500">Learn by doing</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 rounded-2xl border border-sky-200 bg-white p-5">
-            <MessageCircle size={26} className="text-sky-500" />
-            <div>
-              <p className="font-extrabold text-gray-950">Student-first</p>
-              <p className="mt-1 text-xs text-gray-500">Support that matters</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Review slider heading and pause button */}
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-sky-700">
-              From our learning community
+          <div className='p-5'>
+            <p className='font-semibold text-slate-900'>Project-led learning</p>
+            <p className='mt-1 text-sm text-slate-600'>
+              Build real projects as you learn.
             </p>
-            <h3 className="mt-1 text-xl font-extrabold text-gray-950 sm:text-2xl">
-              Voices that inspire
-            </h3>
           </div>
 
-          <button
-            onClick={() => setPaused(!paused)}
-            className="rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-700 hover:border-sky-400 hover:text-sky-600"
-          >
-            {paused ? "Resume" : "Pause"}
-          </button>
+          <div className='p-5'>
+            <p className='font-semibold text-slate-900'>
+              Student-first support
+            </p>
+            <p className='mt-1 text-sm text-slate-600'>
+              Mentors who guide you at every step.
+            </p>
+          </div>
         </div>
 
-        {/* Two continuously moving review rows */}
+        {/* Reviews heading and arrows */}
+        <div className='mb-6 flex items-center justify-between gap-4'>
+          <h3 className='text-xl font-semibold text-slate-900 sm:text-2xl'>
+            What our students say
+          </h3>
+
+          <div className='flex gap-2'>
+            <button
+              type='button'
+              onClick={() => scrollByAmount(-1)}
+              disabled={!canScrollLeft}
+              aria-label='Previous reviews'
+              className={arrowClass}
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type='button'
+              onClick={() => scrollByAmount(1)}
+              disabled={!canScrollRight}
+              aria-label='Next reviews'
+              className={arrowClass}
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Review cards */}
         <div
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={() => setPaused(true)}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setPaused(false);
-            }
-          }}
+          ref={scrollRef}
+          onScroll={updateArrows}
+          className='-mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
         >
-          <div className="mb-3">
-            <ReviewRow items={reviews.slice(0, 3)} paused={paused} />
-          </div>
-
-          <ReviewRow
-            items={reviews.slice(3, 6)}
-            reverse
-            paused={paused}
-          />
+          {reviews.map((review, index) => (
+            <div
+              key={review.name}
+              className='w-[85%] shrink-0 snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]'
+            >
+              <ReviewCard review={review} index={index} />
+            </div>
+          ))}
         </div>
 
-        {/* Bottom call to action */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.6 }}
-          className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl border border-sky-100 bg-white/90 p-6 shadow-lg sm:flex-row sm:px-8"
-        >
-          <div className="flex items-center gap-4">
-            <motion.div
-              animate={{ rotate: [0, -8, 8, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-black text-white"
-            >
-              <Star size={22} />
-            </motion.div>
-
-            <div>
-              <h3 className="font-extrabold text-gray-950">
-                Your journey could be next.
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Find a learning path that matches your goals.
-              </p>
-            </div>
+        {/* Call to action */}
+        <div className='mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl bg-[#0b2a5b] p-6 text-white sm:flex-row sm:items-center sm:px-8'>
+          <div>
+            <h3 className='text-lg font-semibold'>
+              Your journey could be next.
+            </h3>
+            <p className='mt-1 text-sm text-blue-100/90'>
+              Find a learning path that matches your goals.
+            </p>
           </div>
 
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-            <Link
-              to="/Course"
-              className="inline-flex items-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-sky-500"
-            >
-              Explore courses
-              <ArrowUpRight size={17} />
-            </Link>
-          </motion.div>
-        </motion.div>
+          <Link
+            to='/Courses'
+            className='group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-blue-800 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
+          >
+            Explore courses
+            <ArrowRight
+              size={16}
+              className='transition-transform duration-300 group-hover:translate-x-1'
+            />
+          </Link>
+        </div>
       </div>
     </section>
-  );
+  )
 }

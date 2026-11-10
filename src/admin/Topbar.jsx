@@ -1,9 +1,12 @@
 import { Menu, User, Maximize, Minimize } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
+import logo from "../assets/Logo.png"
+
 const TopBar = ({ setSidebarOpen }) => {
   const dropdownRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false);
 
   // Static admin details (replace when needed)
   const admin = {
@@ -62,19 +65,23 @@ const TopBar = ({ setSidebarOpen }) => {
   return (
     <header className='relative z-10 bg-white border-b border-slate-200 px-6 h-15 flex items-center justify-between shrink-0'>
       {/* Left */}
-      <div className='flex items-center gap-3'>
+      <div className="flex items-center">
         <button
-          type='button'
-          className='lg:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition'
+          type="button"
+          className="lg:hidden flex h-9 w-9 shrink-0 items-center justify-center
+               rounded-lg border border-slate-200 text-slate-500
+               transition hover:bg-slate-50"
           onClick={() => setSidebarOpen(true)}
-          aria-label='Open sidebar'
+          aria-label="Open sidebar"
         >
           <Menu size={18} />
         </button>
 
-        <span className='text-[15px] font-medium tracking-widest text-slate-800'>
-          SAVERA
-        </span>
+        <img
+          src={logo}
+          alt="EphorX logo"
+          className="block h-15 w-auto object-contain"
+        />
       </div>
 
       {/* Right */}

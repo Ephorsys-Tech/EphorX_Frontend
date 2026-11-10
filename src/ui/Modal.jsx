@@ -37,6 +37,7 @@ const Modal = ({
   children,
   size = 'md',
   theme = 'white',
+  showHeader = true,
   showCloseButton = true,
   closeOnBackdrop = true,
 }) => {
@@ -64,7 +65,7 @@ const Modal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-slate-950/50 p-3 backdrop-blur-sm sm:p-6"
+          className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-slate-950/50 p-3 backdrop-blur-sm sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -76,9 +77,8 @@ const Modal = ({
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            className={`my-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-2xl shadow-2xl shadow-slate-950/15 ring-1 ring-black/5 sm:rounded-3xl ${
-              modalSizes[size] || modalSizes.md
-            } ${currentTheme.panel}`}
+            className={`my-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-2xl shadow-2xl shadow-slate-950/15 ring-1 ring-black/5 sm:rounded-3xl ${modalSizes[size] || modalSizes.md
+              } ${currentTheme.panel}`}
             initial={{ opacity: 0, y: 18, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -86,24 +86,26 @@ const Modal = ({
             onClick={(event) => event.stopPropagation()}
           >
             {/* Reusable header */}
-            <div
-              className={`flex shrink-0 items-center justify-between border-b px-5 py-4 sm:px-6 ${currentTheme.header}`}
-            >
-              <h2 className="text-lg font-bold tracking-tight sm:text-xl">
-                {title}
-              </h2>
+            {showHeader && (
+              <div
+                className={`flex shrink-0 items-center justify-between border-b px-5 py-3 sm:px-6 ${currentTheme.header}`}
+              >
+                <h2 className="text-lg font-bold tracking-tight sm:text-xl">
+                  {title}
+                </h2>
 
-              {showCloseButton && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  aria-label="Close modal"
-                  className={`rounded-xl p-2 transition-colors duration-200 ${currentTheme.close}`}
-                >
-                  <X size={20} />
-                </button>
-              )}
-            </div>
+                {showCloseButton && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    aria-label="Close modal"
+                    className={`rounded-xl p-2 transition-colors duration-200 ${currentTheme.close}`}
+                  >
+                    <X size={20} />
+                  </button>
+                )}
+              </div>
+            )}
 
             {/* Reusable body */}
             <div className="min-h-0 flex-1 overflow-y-auto">
