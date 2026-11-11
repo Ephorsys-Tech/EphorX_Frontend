@@ -1,9 +1,9 @@
 
 import axios from "axios";
 
-const API_BASE_URL =
-  "http://localhost:5500/api/auth/admin/courses";
+import { AUTH_API } from "../../config/api";
 
+const API_BASE_URL = `${AUTH_API}/admin/courses`;
 // Create a shared Axios instance.
 const courseRequest = axios.create({
   baseURL: API_BASE_URL,

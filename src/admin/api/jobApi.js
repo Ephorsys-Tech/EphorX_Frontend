@@ -1,8 +1,9 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:5500/api/auth/job";
+import { AUTH_API } from "../../config/api";
 
+const API_URL = `${AUTH_API}/job`;
 // Get all jobs
 export const getAllJobs = async () => {
   const response = await axios.get(`${API_URL}/get-all-job`);

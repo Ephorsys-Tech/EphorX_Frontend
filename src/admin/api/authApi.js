@@ -1,5 +1,6 @@
-const API_URL = "http://localhost:5500/api/auth/admin";
+import { AUTH_API } from "../../config/api";
 
+const API_URL = `${AUTH_API}/admin`;
 async function postRequest(endpoint, body) {
   const response = await fetch(`${API_URL}/${endpoint}`, {
     method: "POST",
