@@ -35,11 +35,11 @@ import DemoSessions from '../admin/pages/demoSession/DemoSessions'
 import AddDemoSession from '../admin/pages/demoSession/AddDemoSession'
 import ViewDemoSession from '../admin/pages/demoSession/ViewDemoSession'
 import EditDemoSession from '../admin/pages/demoSession/EditDemoSession'
-import ViewSyllabusLead from '../admin/pages/syllabusLead/viewSyllabusLead'
 import SyllabusLeads from '../admin/pages/syllabusLead/SyllabusLead'
 import EditSyllabusLead from '../admin/pages/syllabusLead/EditSyllabusLead'
 import CollegeTieUp from '../admin/pages/CollegeTieUp'
 import CampaignManagement from '../admin/pages/Campaign'
+import VSyllabusLead from '../admin/pages/syllabusLead/VSyllabusLead'
 
 const AdminRoutes = (
   <Route path='/admin'>
@@ -91,7 +91,7 @@ const AdminRoutes = (
         <Route path='edit-demo/:id' element={<EditDemoSession/>}/>
 
         <Route path='syllabus-lead' element={<SyllabusLeads/>}/>
-        <Route path='view-lead/:id' element={<ViewSyllabusLead/>}/>
+        <Route path='view-lead/:id' element={<VSyllabusLead/>}/>
         <Route path='edit-lead/:id' element={<EditSyllabusLead/>}/>
 
         <Route path='college-tie-ups' element={<CollegeTieUp/>}/>
