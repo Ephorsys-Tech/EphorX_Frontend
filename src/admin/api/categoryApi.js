@@ -1,6 +1,7 @@
 
-const BASE_URL = "http://localhost:5500/api/auth/category";
+import { AUTH_API } from "../../config/api";
 
+const BASE_URL = `${AUTH_API}/category`;
 async function request(url, options = {}) {
   const token = localStorage.getItem("token");
 

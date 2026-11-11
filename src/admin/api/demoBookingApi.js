@@ -1,8 +1,9 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:5500/api/auth/book-demo";
+import { AUTH_API } from "../../config/api";
 
+const API_URL = `${AUTH_API}/book-demo`;
 
 export const getAllDemoBookings = async () => {
     const response = await axios.get(`${API_URL}/get-all-demo`);

@@ -1,8 +1,9 @@
 
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5500/api/auth/college-tie-up";
+import { AUTH_API } from "../../config/api";
 
+const API_BASE_URL = `${AUTH_API}/college-tie-up`;
 const collegeTieUpRequest = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,

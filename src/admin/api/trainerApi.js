@@ -1,5 +1,7 @@
 
-const API_URL = "http://localhost:5500/api/auth/trainer";
+import { AUTH_API } from "../../config/api";
+
+const API_URL = `${AUTH_API}/trainer`;
 
 const handleResponse = async (response) => {
   const result = await response.json();
