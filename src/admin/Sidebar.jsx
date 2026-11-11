@@ -3,9 +3,7 @@ import {
   LayoutDashboard,
   Package,
   X,
-  ShoppingBag,
   Users,
-  Images,
   LogOut,
   Phone,
   Cast,
@@ -19,7 +17,7 @@ import {
   Ad,
 } from "lucide-react";
 
-import logo from '../assets/Logolight.png'
+import logo from '../assets/LogoLight.png'
 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
