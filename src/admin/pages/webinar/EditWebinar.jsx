@@ -390,7 +390,7 @@ const EditWebinar = () => {
                                 required
                             >
                                 <option value="live">Live</option>
-                                <option value="pre-recorded">Pre-recorded</option>
+                                {/*<option value="pre-recorded">Pre-recorded</option> */}
                             </select>
                         </div>
 
