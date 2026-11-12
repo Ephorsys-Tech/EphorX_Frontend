@@ -176,7 +176,7 @@ export default function Navbar () {
               onClick={() => setOpen(v => !v)}
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
-              className='flex h-10 w-10 items-center justify-center rounded-full bg-[#0b2a5b] text-white transition hover:bg-[#0f3a7d]'
+              className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-800 text-white transition hover:bg-[#0f3a7d]'
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
