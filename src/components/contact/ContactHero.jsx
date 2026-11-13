@@ -17,7 +17,7 @@ const steps = [
 
 const ContactHero = () => {
   return (
-    <section className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10'>
+    <section className='relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-12 pt-8 sm:pt-10'>
       {/* Background design */}
       <div
         aria-hidden='true'

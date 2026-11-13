@@ -121,7 +121,7 @@ const OpenPositions = () => {
   };
 
   return (
-    <section id="open-positions" className="scroll-mt-28 bg-white py-16 sm:py-20">
+    <section id="open-positions" className="scroll-mt-28 bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Heading and search */}
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
