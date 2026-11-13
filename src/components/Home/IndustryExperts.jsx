@@ -181,7 +181,7 @@ export default function IndustryExperts ({
   return (
     <section
       id='industry-experts'
-      className='relative overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/70 to-white py-16 sm:py-20'
+      className='relative overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/70 to-white py-16 sm:py-16'
     >
       {/* Background design: bubbles and soft diagonal streaks */}
       <div

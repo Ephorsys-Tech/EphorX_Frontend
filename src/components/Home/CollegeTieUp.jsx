@@ -21,7 +21,7 @@ const CollegeTieUp = () => {
   }, []);
 
   return (
-    <section className="bg-white py-16 sm:py-10">
+    <section className="bg-white py-16 sm:py-13">
 
       {/* Same container as CoursesByCategory */}
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

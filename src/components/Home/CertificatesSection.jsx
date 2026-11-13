@@ -54,7 +54,7 @@ const CertificatesSection = () => {
     <>
       <section
         id='certificates'
-        className='relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-20'
+        className='relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-13'
       >
         {/* Background design: bubbles and soft diagonal streaks */}
         <div
