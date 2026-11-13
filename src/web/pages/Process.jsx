@@ -60,28 +60,30 @@ const steps = [
   }
 ]
 
-function StepCard ({ step, isLast }) {
+function StepCard ({ step, isHighlighted }) {
   return (
     <div
       className={`rounded-2xl border p-5 transition duration-300 sm:p-6 ${
-        isLast
+        isHighlighted
           ? 'border-[#0b2a5b] bg-[#0b2a5b] text-white shadow-xl shadow-blue-950/20'
           : 'border-slate-200 bg-white text-slate-900 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/10'
       }`}
     >
       <p
         className={`text-xs font-semibold uppercase tracking-wider ${
-          isLast ? 'text-sky-300' : 'text-blue-700'
+          isHighlighted ? 'text-sky-300' : 'text-blue-700'
         }`}
       >
         Step {step.number}
       </p>
 
-      <h3 className='mt-2 text-xl font-bold leading-snug'>{step.title}</h3>
+      <h3 className='mt-2 text-xl font-bold leading-snug'>
+        {step.title}
+      </h3>
 
       <p
         className={`mt-2 text-sm leading-6 ${
-          isLast ? 'text-blue-100/90' : 'text-slate-600'
+          isHighlighted ? 'text-blue-100/90' : 'text-slate-600'
         }`}
       >
         {step.description}
@@ -89,7 +91,9 @@ function StepCard ({ step, isLast }) {
 
       <span
         className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-          isLast ? 'bg-white/15 text-white' : 'bg-blue-50 text-blue-700'
+          isHighlighted
+            ? 'bg-white/15 text-white'
+            : 'bg-blue-50 text-blue-700'
         }`}
       >
         {step.highlight}
@@ -100,17 +104,17 @@ function StepCard ({ step, isLast }) {
 
 function Process () {
   return (
-    <section className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10'>
+    <section className='relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10'>
       {/* Background design */}
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
       >
-        <div className='absolute -top-10 left-[14%] h-[40%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
-        <div className='absolute -top-10 left-[60%] h-[40%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
-        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
-        <div className='absolute -left-20 top-[45%] h-64 w-64 rounded-full border border-white/70 bg-gradient-to-tr from-sky-200/40 to-white/10' />
-        <div className='absolute -bottom-24 right-[8%] h-72 w-72 rounded-full border border-white/70 bg-gradient-to-tl from-blue-200/40 to-white/10' />
+        <div className='absolute -top-10 left-[14%] h-[40%] w-24 skew-x-[-28deg] bg-linear-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[60%] h-[40%] w-28 skew-x-[-28deg] bg-linear-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-linear-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -left-20 top-[45%] h-64 w-64 rounded-full border border-white/70 bg-linear-to-tr from-sky-200/40 to-white/10' />
+        <div className='absolute -bottom-24 right-[8%] h-72 w-72 rounded-full border border-white/70 bg-linear-to-tl from-blue-200/40 to-white/10' />
       </div>
 
       <div className='mx-auto max-w-5xl px-5 sm:px-8'>
@@ -125,15 +129,16 @@ function Process () {
         </div>
 
         {/* Timeline */}
-        <ol className='relative mt-14 space-y-8 sm:mt-16'>
+        <ol className='relative mt-14 space-y-3 sm:mt-16'>
           {/* Vertical line */}
           <div
             aria-hidden='true'
-            className='absolute bottom-5 left-5 top-5 w-px bg-gradient-to-b from-blue-300 via-blue-200 to-blue-300 md:left-1/2 md:-translate-x-1/2'
+            className='absolute bottom-5 left-5 top-5 w-px bg-linear-to-b from-blue-300 via-blue-200 to-blue-300 md:left-1/2 md:-translate-x-1/2'
           />
 
           {steps.map((step, index) => {
-            const isLast = index === steps.length - 1
+            // Highlight cards 02, 04, 06 and 08
+            const isHighlighted = index % 2 === 1
             const onLeft = index % 2 === 0
 
             return (
@@ -148,14 +153,17 @@ function Process () {
                 {/* Number marker on the line */}
                 <span
                   className={`absolute left-0 top-5 z-10 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ring-4 ring-white md:left-1/2 md:-translate-x-1/2 ${
-                    isLast ? 'bg-[#0b2a5b]' : 'bg-blue-700'
+                    isHighlighted ? 'bg-[#0b2a5b]' : 'bg-blue-700'
                   }`}
                 >
                   {step.number}
                 </span>
 
                 <div className={onLeft ? 'md:col-start-1' : 'md:col-start-2'}>
-                  <StepCard step={step} isLast={isLast} />
+                  <StepCard
+                    step={step}
+                    isHighlighted={isHighlighted}
+                  />
                 </div>
               </motion.li>
             )

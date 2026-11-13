@@ -30,16 +30,16 @@ const content = [
 
 const MissionVision = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-20">
+    <section className="relative isolate overflow-hidden bg-[#0b2a5b] py-12 text-white sm:py-10">
       {/* Background design */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="absolute -top-10 left-[14%] h-[130%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/[0.07] to-transparent" />
-        <div className="absolute -top-10 left-[44%] h-[130%] w-14 -skew-x-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent" />
-        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/10 bg-gradient-to-br from-blue-500/25 to-transparent" />
-        <div className="absolute -bottom-28 -left-20 h-96 w-96 rounded-full border border-white/10 bg-gradient-to-tr from-sky-400/15 to-transparent" />
+        <div className="absolute -top-10 left-[14%] h-[130%] w-28 skew-x-[-28deg] bg-linear-to-b from-white/[0.07] to-transparent" />
+        <div className="absolute -top-10 left-[44%] h-[130%] w-14 skew-x-[-28deg] bg-linear-to-b from-white/6 to-transparent" />
+        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/10 bg-linear-to-br from-blue-500/25 to-transparent" />
+        <div className="absolute -bottom-28 -left-20 h-96 w-96 rounded-full border border-white/10 bg-linear-to-tr from-sky-400/15 to-transparent" />
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

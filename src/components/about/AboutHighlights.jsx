@@ -39,7 +39,7 @@ const highlights = [
 
 const AboutHighlights = () => {
   return (
-    <section className='bg-white py-16 sm:py-20'>
+    <section className='bg-blue-900 text-white py-12 sm:py-15'>
       <div className='mx-auto grid max-w-7xl items-start gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14'>
         {/* Left content */}
         <motion.div
@@ -54,18 +54,18 @@ const AboutHighlights = () => {
             What we work toward
           </span>
 
-          <h2 className='mt-5 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl'>
+          <h2 className='mt-5 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl'>
             Build Skills.{' '}
-            <span className='text-blue-700'>Create Possibilities.</span>
+            <span className='text-sky-300'>Create Possibilities.</span>
           </h2>
 
-          <p className='mt-5 text-base leading-7 text-slate-600'>
+          <p className='mt-5 text-base leading-7 text-white'>
             Education is about more than completing a course. It is about
             developing the knowledge, practical experience, and mindset to
             continue learning in a world that never stops changing.
           </p>
 
-          <p className='mt-4 text-base leading-7 text-slate-600'>
+          <p className='mt-4 text-base leading-7 text-white'>
             At EphorX, our focus is on helping learners take meaningful steps
             toward their personal and professional goals.
           </p>
