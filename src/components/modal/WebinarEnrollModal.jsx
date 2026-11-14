@@ -181,7 +181,7 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
             value={form.profession}
             onChange={handleChange}
             required
-            className={`${inputClass} ${
+            className={`cursor-pointer ${inputClass} ${
               form.profession ? '' : 'text-slate-400'
             }`}
           >
@@ -212,7 +212,7 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
         <button
           type='submit'
           disabled={loading}
-          className='w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
+          className='cursor-pointer w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
         >
           {loading ? 'Submitting...' : 'Submit enrollment'}
         </button>

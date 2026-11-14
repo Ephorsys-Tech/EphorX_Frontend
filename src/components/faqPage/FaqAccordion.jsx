@@ -205,7 +205,7 @@ const FaqAccordion = () => {
                 role='tab'
                 aria-selected={isActive}
                 onClick={() => handleCategoryChange(category)}
-                className={`rounded-full border px-4 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                className={`cursor-pointer rounded-full border px-4 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
                   isActive
                     ? 'border-blue-700 bg-blue-700 text-white'
                     : 'border-slate-300 bg-white text-slate-700 hover:border-blue-700 hover:text-blue-700'
@@ -257,7 +257,7 @@ const FaqAccordion = () => {
                     type='button'
                     onClick={() => setOpenQuestion(isOpen ? null : faq.id)}
                     aria-expanded={isOpen}
-                    className='flex w-full items-center gap-4 px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 sm:px-6'
+                    className='cursor-pointer flex w-full items-center gap-4 px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 sm:px-6'
                   >
                     <span
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors duration-300 ${

@@ -301,7 +301,7 @@ const ContactForm = () => {
               <button
                 type='submit'
                 disabled={loading}
-                className='w-full rounded-lg bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
+                className=' cursor-pointer w-full rounded-lg bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
               >
                 {loading ? 'Sending...' : 'Send message'}
               </button>

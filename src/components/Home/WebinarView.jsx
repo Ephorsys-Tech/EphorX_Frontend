@@ -336,7 +336,7 @@ export default function WebinarView () {
               <button
                 type='button'
                 onClick={() => setSelectedWebinar(details)}
-                className='mt-5 w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                className='cursor-pointer mt-5 w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
               >
                 Enroll now
               </button>

@@ -85,7 +85,7 @@ const WhyJoinUs = () => {
           <button
             type='button'
             onClick={scrollToPositions}
-            className='mt-7 inline-flex items-center rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+            className='cursor-pointer mt-7 inline-flex items-center rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
           >
             Explore open positions
           </button>

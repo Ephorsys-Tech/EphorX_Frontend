@@ -24,7 +24,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
 
         {/* Expert identity */}
         <div className="absolute bottom-5 left-5 right-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-sky-300">
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-700">
             Industry Expert
           </p>
 
@@ -32,7 +32,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
             {expert.name}
           </h3>
 
-          <p className="mt-1 text-sm text-white/80">
+          <p className="mt-1 text-sm text-white/70">
             {expert.role}
           </p>
         </div>
@@ -40,7 +40,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
 
       {/* Expert information */}
       <div className="p-5 sm:p-8">
-        <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-2 text-xs font-bold text-sky-700">
+        <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-2 text-xs font-bold text-blue-700">
           <BriefcaseBusiness size={15} />
           {expert.field}
         </span>
@@ -55,7 +55,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
 
         {/* Experience information */}
         <div className="mt-6 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-sky-300">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-blue-600">
             <GraduationCap size={24} />
           </span>
 
@@ -64,7 +64,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
               Professional Experience
             </p>
 
-            <p className="mt-1 text-lg font-extrabold text-slate-950">
+            <p className="mt-1 text-lg font-extrabold text-blue-900">
               {expert.experience}
             </p>
           </div>
@@ -74,7 +74,7 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-sky-400 hover:text-slate-950"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-blue-600 cursor-pointer hover:text-slate-950"
         >
           Close Details
           <X size={16} />

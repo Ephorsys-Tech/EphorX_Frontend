@@ -32,32 +32,32 @@ const socialLinks = [
     label: 'Facebook',
     icon: FaFacebookF,
     url: 'https://www.facebook.com/',
-    hover: 'hover:bg-[#1877F2] hover:border-[#1877F2]',
+    hover: 'bg-[#1877F2] hover:border-[#1877F2]',
   },
   {
     label: 'Instagram',
     icon: FaInstagram,
     url: 'https://www.instagram.com/',
     hover:
-      'hover:bg-gradient-to-tr hover:from-[#FEDA75] hover:via-[#FA7E1E] hover:via-[#D62976] hover:to-[#962FBF]',
+      'bg-gradient-to-tr from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF]',
   },
   {
     label: 'LinkedIn',
     icon: FaLinkedinIn,
     url: 'https://www.linkedin.com/',
-    hover: 'hover:bg-[#0A66C2] hover:border-[#0A66C2]',
+    hover: 'bg-[#0A66C2] hover:border-[#0A66C2]',
   },
   {
     label: 'X',
     icon: FaXTwitter,
     url: 'https://x.com/',
-    hover: 'hover:bg-black hover:border-black',
+    hover: 'bg-black hover:border-black',
   },
   {
     label: 'YouTube',
     icon: FaYoutube,
     url: 'https://www.youtube.com/',
-    hover: 'hover:bg-[#FF0000] hover:border-[#FF0000]',
+    hover: 'bg-[#FF0000] hover:border-[#FF0000]',
   },
 ]
 
@@ -121,7 +121,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600 transition-all duration-300 hover:text-white ${hover} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-300  text-slate-100 transition-all duration-300 hover:text-white ${hover} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2`}
                 >
                   <Icon size={16} />
                 </a>
@@ -166,7 +166,7 @@ export default function Footer() {
               </Link>
             </div>
 
-            <button onClick={() => navigate("/gallery")} className='bg-blue-700 text-white px-3 py-2 mt-4 rounded-2xl'>Gallery</button>
+            <button onClick={() => navigate("/gallery")} className='bg-blue-700 text-white px-3 py-2 mt-4 rounded-2xl cursor-pointer'>Gallery</button>
           </div>
 
 
@@ -195,7 +195,7 @@ export default function Footer() {
               <button
                 type='button'
                 onClick={() => setMapOpen(true)}
-                className={`${contactRow} text-left`}
+                className={`${contactRow} text-left cursor-pointer`}
               >
                 <span className={contactIcon}>
                   <MapPin size={16} />
@@ -241,7 +241,7 @@ export default function Footer() {
               type='button'
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               aria-label='Back to top'
-              className='flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
+              className='cursor-pointer flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
             >
               <ArrowUp size={16} />
             </button>
