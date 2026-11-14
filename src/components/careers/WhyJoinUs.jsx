@@ -44,17 +44,17 @@ const WhyJoinUs = () => {
   return (
     <section
       id='why-join-us'
-      className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10 sm:pb-20'
+      className='relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-16 pt-8 sm:pt-10 sm:pb-15'
     >
       {/* Background design */}
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
       >
-        <div className='absolute -top-10 left-[16%] h-[60%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
-        <div className='absolute -top-10 left-[46%] h-[60%] w-14 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
-        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
-        <div className='absolute -bottom-24 -left-20 h-72 w-72 rounded-full border border-white/70 bg-gradient-to-tr from-sky-200/40 to-white/10' />
+        <div className='absolute -top-10 left-[16%] h-[60%] w-24 skew-x-[-28deg] bg-linear-to-b from-white/70 to-white/0' />
+        <div className='absolute -top-10 left-[46%] h-[60%] w-14 skew-x-[-28deg] bg-linear-to-b from-white/60 to-white/0' />
+        <div className='absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/70 bg-linear-to-br from-blue-200/50 to-sky-100/10' />
+        <div className='absolute -bottom-24 -left-20 h-72 w-72 rounded-full border border-white/70 bg-linear-to-tr from-sky-200/40 to-white/10' />
         <div className='absolute left-[6%] top-1/2 h-10 w-10 rounded-full bg-blue-200/40' />
       </div>
 
@@ -85,7 +85,7 @@ const WhyJoinUs = () => {
           <button
             type='button'
             onClick={scrollToPositions}
-            className='mt-7 inline-flex items-center rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+            className='cursor-pointer mt-7 inline-flex items-center rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
           >
             Explore open positions
           </button>

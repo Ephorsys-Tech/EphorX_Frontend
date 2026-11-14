@@ -121,7 +121,7 @@ const OpenPositions = () => {
   };
 
   return (
-    <section id="open-positions" className="scroll-mt-28 bg-white py-16 sm:py-20">
+    <section id="open-positions" className="scroll-mt-28 bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Heading and search */}
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
@@ -227,7 +227,7 @@ const OpenPositions = () => {
                     <button
                       type="button"
                       onClick={() => openModal(job, "details")}
-                      className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                      className="cursor-pointer rounded-lg border border-slate-300 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                     >
                       View details
                     </button>
@@ -235,7 +235,7 @@ const OpenPositions = () => {
                     <button
                       type="button"
                       onClick={() => openModal(job, "apply")}
-                      className="rounded-lg bg-blue-700 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                      className="cursor-pointer rounded-lg bg-blue-700 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                     >
                       Apply now
                     </button>

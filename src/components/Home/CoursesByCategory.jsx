@@ -115,7 +115,6 @@ export default function CoursesByCategory ({
   highlight = 'Category',
   description = 'Discover your next skill with expert-led courses designed to help you learn, grow, and move forward.',
   buttonText = 'Explore all courses',
-  buttonTo = '/Courses',
   showButton = true,
   columns = 3,
   fullWidth = false
@@ -189,7 +188,7 @@ export default function CoursesByCategory ({
     courses.filter(c => String(c.categoryId) === String(categoryId)).length
 
   return (
-    <section className={`bg-white py-16 sm:py-20 ${fullWidth ? 'w-full' : ''}`}>
+    <section className={`bg-white py-16 sm:py-14 ${fullWidth ? 'w-full' : ''}`}>
       <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         {/* Section heading */}
         <div className='mb-10 flex flex-col justify-between gap-5 sm:mb-12 md:flex-row md:items-end'>
@@ -206,7 +205,7 @@ export default function CoursesByCategory ({
 
           {showButton && (
             <Link
-              to={buttonTo}
+              to='/Courses'
               className='group inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
             >
               {buttonText}

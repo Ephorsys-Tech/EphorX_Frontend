@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const ContactCTA = () => {
   return (
-    <section className='bg-white py-16 sm:py-20'>
+    <section className='bg-white py-16 sm:py-17'>
       <div className='mx-auto max-w-7xl px-5 sm:px-8'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,10 +17,10 @@ const ContactCTA = () => {
             aria-hidden='true'
             className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
           >
-            <div className='absolute -top-10 left-[18%] h-[140%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/[0.07] to-transparent' />
-            <div className='absolute -top-10 left-[62%] h-[140%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent' />
-            <div className='absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-br from-blue-500/25 to-transparent' />
-            <div className='absolute -bottom-28 -left-20 h-72 w-72 rounded-full border border-white/10 bg-gradient-to-tr from-sky-400/15 to-transparent' />
+            <div className='absolute -top-10 left-[18%] h-[140%] w-24 skew-x-[-28deg] bg-linear-to-b from-white/[0.07] to-transparent' />
+            <div className='absolute -top-10 left-[62%] h-[140%] w-28 skew-x-[-28deg] bg-linear-to-b from-white/6 to-transparent' />
+            <div className='absolute -right-20 -top-24 h-72 w-72 rounded-full border border-white/10 bg-linear-to-br from-blue-500/25 to-transparent' />
+            <div className='absolute -bottom-28 -left-20 h-72 w-72 rounded-full border border-white/10 bg-linear-to-tr from-sky-400/15 to-transparent' />
           </div>
 
           <div className='flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center'>

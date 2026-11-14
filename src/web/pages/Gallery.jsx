@@ -48,11 +48,8 @@ const GallerySection = ({
 }) => {
   return (
     <section className="mb-20">
-      {/* Heading */}
-      <p className="mb-2 text-sm font-bold uppercase tracking-[3px] text-blue-700">
-        EphorX Gallery
-      </p>
 
+      {/* Section Heading */}
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
@@ -102,7 +99,7 @@ const GallerySection = ({
                 </p>
 
                 <p className="mt-1 text-xs text-white/70">
-                  EphorX Moments
+                  Ephorsys Moments
                 </p>
               </div>
             </motion.div>
@@ -122,11 +119,18 @@ const Galary = () => {
 
   return (
     <main className="overflow-hidden bg-white">
+
       {/* Gallery Sections */}
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-8">
+
+        {/* Main Gallery Heading - Only Once */}
+        <p className="mb-3 text-sm font-bold uppercase tracking-[3px] text-blue-700">
+          EphorX Gallery
+        </p>
+
         <GallerySection
           title="Inhouse Training"
-          subtitle="Learning, building, collaborating, and growing together at EphorX."
+          subtitle="Learning, building, collaborating, and growing together at Ephorsys."
           images={inhousePhotos}
           onImageClick={setSelectedPhoto}
         />
@@ -145,10 +149,10 @@ const Galary = () => {
         onClose={() => setSelectedPhoto(null)}
         title="Gallery Preview"
         size="lg"
-        
       >
         <GalleryImageModal image={selectedPhoto} />
       </Modal>
+
     </main>
   );
 };

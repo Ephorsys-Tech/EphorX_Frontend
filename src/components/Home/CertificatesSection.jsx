@@ -48,13 +48,13 @@ const CertificatesSection = () => {
   }
 
   const arrowClass =
-    'flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
+    'flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b] cursor-pointer'
 
   return (
     <>
       <section
         id='certificates'
-        className='relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-20'
+        className='relative isolate overflow-hidden bg-[#0b2a5b] py-16 text-white sm:py-13'
       >
         {/* Background design: bubbles and soft diagonal streaks */}
         <div
@@ -147,7 +147,7 @@ const CertificatesSection = () => {
                   <button
                     type='button'
                     onClick={() => setSelectedCertificate(certificate)}
-                    className='mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                    className='cursor-pointer mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
                   >
                     View certificate
                     <ArrowRight size={16} />

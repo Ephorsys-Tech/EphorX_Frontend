@@ -153,7 +153,7 @@ export default function Navbar () {
             <button
               type='button'
               onClick={openContact}
-              className='flex items-center gap-2 whitespace-nowrap rounded-full bg-blue-700 px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 xl:px-5'
+              className='cursor-pointer flex items-center gap-2 whitespace-nowrap rounded-full bg-blue-700 px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 xl:px-5'
             >
               <Phone size={16} />
               Contact us
@@ -176,7 +176,7 @@ export default function Navbar () {
               onClick={() => setOpen(v => !v)}
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
-              className='flex h-10 w-10 items-center justify-center rounded-full bg-[#0b2a5b] text-white transition hover:bg-[#0f3a7d]'
+              className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white transition hover:bg-[#0f3a7d]'
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>

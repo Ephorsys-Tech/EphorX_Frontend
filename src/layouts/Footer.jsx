@@ -32,42 +32,42 @@ const socialLinks = [
     label: 'Facebook',
     icon: FaFacebookF,
     url: 'https://www.facebook.com/',
-    hover: 'hover:bg-[#1877F2] hover:border-[#1877F2]',
+    hover: 'bg-[#1877F2] hover:border-[#1877F2]',
   },
   {
     label: 'Instagram',
     icon: FaInstagram,
     url: 'https://www.instagram.com/',
     hover:
-      'hover:bg-gradient-to-tr hover:from-[#FEDA75] hover:via-[#FA7E1E] hover:via-[#D62976] hover:to-[#962FBF]',
+      'bg-gradient-to-tr from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF]',
   },
   {
     label: 'LinkedIn',
     icon: FaLinkedinIn,
     url: 'https://www.linkedin.com/',
-    hover: 'hover:bg-[#0A66C2] hover:border-[#0A66C2]',
+    hover: 'bg-[#0A66C2] hover:border-[#0A66C2]',
   },
   {
     label: 'X',
     icon: FaXTwitter,
     url: 'https://x.com/',
-    hover: 'hover:bg-black hover:border-black',
+    hover: 'bg-black hover:border-black',
   },
   {
     label: 'YouTube',
     icon: FaYoutube,
     url: 'https://www.youtube.com/',
-    hover: 'hover:bg-[#FF0000] hover:border-[#FF0000]',
+    hover: 'bg-[#FF0000] hover:border-[#FF0000]',
   },
 ]
 
-function FooterHeading ({ children }) {
+function FooterHeading({ children }) {
   return (
     <h3 className='mb-5 text-base font-semibold text-[#0b2a5b]'>{children}</h3>
   )
 }
 
-function FooterLink ({ to, children }) {
+function FooterLink({ to, children }) {
   return (
     <Link
       to={to}
@@ -78,7 +78,7 @@ function FooterLink ({ to, children }) {
   )
 }
 
-export default function Footer () {
+export default function Footer() {
   const year = new Date().getFullYear()
   const [mapOpen, setMapOpen] = useState(false)
 
@@ -91,38 +91,42 @@ export default function Footer () {
   return (
     <footer className='border-t border-slate-200 bg-slate-50 text-slate-700'>
       <div className='mx-auto max-w-7xl px-5 sm:px-8'>
-        <div className='grid grid-cols-1 gap-x-10 gap-y-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr] lg:py-16'>
+        <div className='grid grid-cols-1 gap-x-10 gap-y-12 py-4 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr] lg:py-16'>
           {/* Brand */}
           <div>
-            <Link to='/' aria-label='EphorX Home' className='inline-block'>
-              <img
-                src={image}
-                alt='EphorX logo'
-                className='h-11 w-auto object-contain'
-              />
-            </Link>
+        <Link
+  to='/'
+  aria-label='EphorX Home'
+  className='inline-block -ml-7 lg:-ml-8'
+>
+  <img
+    src={image}
+    alt='EphorX logo'
+    className='h-17 w-auto object-contain'
+  />
+</Link>
 
-            <p className='mt-5 max-w-sm text-sm leading-7 text-slate-600'>
+            <p className='-mt-2 max-w-sm text-sm leading-7 text-slate-600'>
               Empowering learners with practical technology education, hands-on
               projects, and skills to grow with confidence in a changing digital
               world.
             </p>
 
-           <div className="mt-6 flex flex-wrap gap-2.5">
-  {socialLinks.map(({ label, icon: Icon, url, hover }) => (
-    <a
-      key={label}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      title={label}
-      className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600 transition-all duration-300 hover:text-white ${hover} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2`}
-    >
-      <Icon size={16} />
-    </a>
-  ))}
-</div>
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              {socialLinks.map(({ label, icon: Icon, url, hover }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-300  text-slate-100 transition-all duration-300 hover:text-white ${hover} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2`}
+                >
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Explore */}
@@ -139,32 +143,32 @@ export default function Footer () {
 
           {/* both */}
           <div>
-                {/* Top courses */}
-          <div>
-            <FooterHeading>Top Courses</FooterHeading>
-            <div className='flex flex-col'>
-              {courses.map(course => (
-                <FooterLink key={course} to='/Courses'>
-                  {course}
-                </FooterLink>
-              ))}
+            {/* Top courses */}
+            <div>
+              <FooterHeading>Top Courses</FooterHeading>
+              <div className='flex flex-col'>
+                {courses.map(course => (
+                  <FooterLink key={course} to='/Courses'>
+                    {course}
+                  </FooterLink>
+                ))}
+              </div>
+
+              <Link
+                to='/Courses'
+                className='group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 transition-colors hover:text-blue-900'
+              >
+                Explore all courses
+                <ArrowRight
+                  size={15}
+                  className='transition-transform duration-300 group-hover:translate-x-1'
+                />
+              </Link>
             </div>
 
-            <Link
-              to='/Courses'
-              className='group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 transition-colors hover:text-blue-900'
-            >
-              Explore all courses
-              <ArrowRight
-                size={15}
-                className='transition-transform duration-300 group-hover:translate-x-1'
-              />
-            </Link>
+            <button onClick={() => navigate("/gallery")} className='bg-blue-700 text-white px-3 py-2 mt-4 rounded-2xl cursor-pointer'>Gallery</button>
           </div>
 
-          <button onClick={() => navigate("/gallery")} className='bg-blue-800 text-white px-3 py-2 mt-4 rounded-2xl'>Gallery</button>
-          </div>
-        
 
           {/* Contact */}
           <div>
@@ -191,7 +195,7 @@ export default function Footer () {
               <button
                 type='button'
                 onClick={() => setMapOpen(true)}
-                className={`${contactRow} text-left`}
+                className={`${contactRow} text-left cursor-pointer`}
               >
                 <span className={contactIcon}>
                   <MapPin size={16} />
@@ -237,7 +241,7 @@ export default function Footer () {
               type='button'
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               aria-label='Back to top'
-              className='flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
+              className='cursor-pointer flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
             >
               <ArrowUp size={16} />
             </button>

@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
@@ -83,9 +84,6 @@ export default function WebinarsSection({
   title = 'Live Webinars',
   highlight = 'By Industry Experts',
   description = 'Learn directly from experienced professionals, explore new technologies, and gain insights you can put into practice.',
-  buttonText = 'Explore all webinars',
-  buttonTo = '/webinars',
-  showButton = true
 }) {
   const [webinars, setWebinars] = useState([])
   const [loading, setLoading] = useState(true)
@@ -117,7 +115,7 @@ export default function WebinarsSection({
   }, [])
 
   return (
-    <section className="bg-slate-50 py-16 sm:py-20">
+    <section className="bg-slate-50 py-16 sm:py-12">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
 
         {/* Heading */}
@@ -134,20 +132,6 @@ export default function WebinarsSection({
               </p>
             )}
           </div>
-
-          {showButton && (
-            <Link
-              to={buttonTo}
-              className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-blue-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-            >
-              {buttonText}
-
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
-          )}
         </div>
 
         {/* Loading */}
@@ -168,7 +152,7 @@ export default function WebinarsSection({
 
         {/* Webinar Cards */}
         {!loading && !error && webinars.length > 0 && (
-          <div className="-mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
             {webinars.map((webinar, index) => (
               <div
                 key={webinar._id ?? webinar.id ?? `${webinar.title}-${index}`}

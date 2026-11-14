@@ -17,7 +17,7 @@ const steps = [
 
 const ContactHero = () => {
   return (
-    <section className='relative isolate overflow-hidden bg-gradient-to-b from-sky-50 via-blue-50/40 to-white pb-20 pt-8 sm:pt-10'>
+    <section className='relative isolate overflow-hidden bg-linear-to-b from-sky-50 via-blue-50/40 to-white pb-12 pt-8 sm:pt-10'>
       {/* Background design */}
       <div
         aria-hidden='true'
@@ -61,14 +61,14 @@ const ContactHero = () => {
                   .getElementById('ask-question-section')
                   ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }
-              className='rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+              className='cursor-pointer rounded-full bg-blue-700 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/25 transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
             >
               Contact our team
             </button>
 
             <Link
               to='/faq'
-              className='rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+              className='cursor-pointer rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
             >
               Explore FAQs
             </Link>

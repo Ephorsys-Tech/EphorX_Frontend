@@ -8,6 +8,8 @@ import { courseApi } from '../../admin/api/courseApi.js'
 import Modal from '../../ui/Modal.jsx'
 import SyllabusRequestModal from '../../components/modal/SyllabusRequestModal.jsx'
 import { createSyllabusLead } from '../../admin/api/syllabusLeadApi.js'
+import CollegeTieUp from '../../components/Home/CollegeTieUp.jsx'
+import InternSection from '../../components/Home/InternSection.jsx'
 
 const getDiscountPercent = course => {
   const original = Number(course?.Originalprice)
@@ -238,7 +240,7 @@ const Courses = () => {
               role='tab'
               aria-selected={activeCategory === category}
               onClick={() => setActiveCategory(category)}
-              className={`${pillBase} ${
+              className={` cursor-pointer ${pillBase} ${
                 activeCategory === category ? pillActive : pillIdle
               }`}
             >
@@ -356,7 +358,7 @@ const Courses = () => {
                           <button
                             type='button'
                             onClick={() => setSelectedSyllabusCourse(course)}
-                            className='inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-medium text-slate-700 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                            className='cursor-pointer inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-medium text-slate-700 transition hover:border-blue-700 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
                           >
                             <FileText size={14} />
                             Syllabus
@@ -365,7 +367,7 @@ const Courses = () => {
                           <button
                             type='button'
                             onClick={() => openCourseDetails(course)}
-                            className='group/btn inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-blue-700 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                            className='cursor-pointer group/btn inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-blue-700 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
                           >
                             Explore
                             <ArrowRight
@@ -397,6 +399,9 @@ const Courses = () => {
           onClose={() => setSelectedSyllabusCourse(null)}
         />
       </Modal>
+
+      <CollegeTieUp />
+      <InternSection />
     </section>
   )
 }
