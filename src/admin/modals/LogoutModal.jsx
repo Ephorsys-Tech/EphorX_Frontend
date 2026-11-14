@@ -26,7 +26,7 @@ const LogoutModal = ({ onClose }) => {
 
       // Close modal and redirect
       onClose()
-      navigate('/login', { replace: true })
+      navigate('/admin', { replace: true })
     } catch (err) {
       console.error('Logout Error:', err)
 
