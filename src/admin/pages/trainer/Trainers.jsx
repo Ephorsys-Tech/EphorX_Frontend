@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Search,
   Plus,
   MoreHorizontal,
   Eye,
   Pencil,
-  Trash2,
-  RefreshCw,
   X,
+  Trash,
+  Edit,
 } from "lucide-react";
 import { deleteTrainer, getAllTrainers } from "../../api/trainerApi";
+import RefreshButton from "../../../common/components/RefreshButton";
+import Button from "../../../common/components/Button";
 
 const Trainer = () => {
   const navigate = useNavigate();
@@ -77,17 +79,17 @@ const Trainer = () => {
     }
   };
 
- const handleAction = (action, trainer) => {
-  setActiveMenu(null);
+  const handleAction = (action, trainer) => {
+    setActiveMenu(null);
 
-  if (action === "view") {
-    navigate(`/admin/view-trainer/${trainer._id}`);
-  } else if (action === "edit") {
-    navigate(`/admin/edit-trainer/${trainer._id}`);
-  } else if (action === "delete") {
-    handleDelete(trainer);
-  }
-};
+    if (action === "view") {
+      navigate(`/admin/view-trainer/${trainer._id}`);
+    } else if (action === "edit") {
+      navigate(`/admin/edit-trainer/${trainer._id}`);
+    } else if (action === "delete") {
+      handleDelete(trainer);
+    }
+  };
 
 
   return (
@@ -104,14 +106,12 @@ const Trainer = () => {
           </p>
         </div>
 
-        <button
-          type="button"
+        <Button
+          text=" Add Trainer"
+          icon={Plus}
           onClick={() => navigate("/admin/add-trainer")}
-          className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200 sm:self-auto"
-        >
-          <Plus size={18} />
-          Add Trainer
-        </button>
+        />
+
       </div>
 
       {/* Trainers Table Container */}
@@ -146,19 +146,10 @@ const Trainer = () => {
           </div>
 
           {/* Refresh Button */}
-          <button
-            type="button"
+          <RefreshButton
             onClick={fetchTrainers}
-            disabled={loading}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border bg-indigo-600 px-4 py-3 text-sm font-medium text-white transition  disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <RefreshCw
-              size={16}
-              className={loading ? "animate-spin" : ""}
-            />
-            Refresh
-          </button>
-
+            loading={loading}
+          />
           {/* Trainer Count */}
           <p className="whitespace-nowrap text-sm font-medium text-slate-600 sm:ml-2">
             {trainers.length} Trainers
@@ -226,7 +217,7 @@ const Trainer = () => {
               <button
                 type="button"
                 onClick={() => navigate("/admin/trainers/add")}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
               >
                 <Plus size={16} />
                 Add Trainer
@@ -355,7 +346,7 @@ const Trainer = () => {
                               }
                               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
                             >
-                              <Trash2 size={16} />
+                              <Trash size={16} />
                               Delete
                             </button>
                           </div>

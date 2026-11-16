@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { createJob } from "../../api/jobApi";
+import Button from "../../../common/components/Button";
 
 export default function AddJob() {
   const navigate = useNavigate();
@@ -175,7 +176,7 @@ export default function AddJob() {
 
       setError(
         err?.response?.data?.message ||
-          "Failed to create job. Please try again."
+        "Failed to create job. Please try again."
       );
     } finally {
       setLoading(false);
@@ -394,14 +395,14 @@ export default function AddJob() {
                 </p>
               </div>
 
-              <button
+              <Button
+                text="Add Responsibility"
+                icon={Plus}
                 type="button"
+                variant="outline"
+                size="md"
                 onClick={addResponsibility}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
-              >
-                <Plus size={17} />
-                Add Responsibility
-              </button>
+              />
             </div>
 
             <div className="space-y-3">

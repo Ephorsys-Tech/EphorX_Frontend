@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2, Mail, BookOpen, User } from "lucide-react";
+import { Eye, Pencil, Trash2, Mail, BookOpen, User, Edit } from "lucide-react";
 
 const DemoBookingCard = ({
   booking,
@@ -61,7 +61,7 @@ const DemoBookingCard = ({
 
         <button
           onClick={() => onView(booking)}
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-300 p-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
         >
           <Eye size={16} />
           View
@@ -69,15 +69,14 @@ const DemoBookingCard = ({
 
         <button
           onClick={() => onEdit(booking)}
-           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 p-1.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
-        >
-          <Pencil size={16} />
+           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100">
+          <Edit size={16} />
           Edit
         </button>
 
         <button
           onClick={() => onDelete(booking)}
-         className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 p-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100"
+          className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
         >
           <Trash2 size={16} />
           Delete

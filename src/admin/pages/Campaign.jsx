@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 
 import campaignApi from "../api/campaignApi";
+// import RefreshButton from "../../common/components/RefreshButton";
+import Button from "../../common/components/Button";
 
 const getCampaignList = (response) => {
   const result =
@@ -255,39 +257,60 @@ const CampaignManagement = () => {
           </p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#2563ff] px-3 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
-        >
-          <Plus size={18} />
-          Create Campaign
-        </button>
+        <Button
+  text="Create Campaign"
+  icon={Plus}
+  onClick={openCreateModal}
+/>
       </div>
 
       {/* Search and Count */}
-      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="relative w-full sm:max-w-sm">
-          <Search
-            size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
 
-          <input
-            type="text"
-            placeholder="Search campaigns..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 py-3 pl-10 pr-4 text-sm outline-none focus:border-black"
-          />
-        </div>
 
-        <p className="text-sm text-gray-500">
-          Total campaigns:{" "}
-          <span className="font-semibold text-black">
-            {campaigns.length}
-          </span>
-        </p>
+    <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    {/* Search input */}
+    <div className="relative w-full sm:max-w-md">
+      <Search
+        size={18}
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      />
+
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search campaigns..."
+        className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+      />
+
+      {search && (
+        <button
+          onClick={() => setSearch("")}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
+          <X size={16} />
+        </button>
+      )}
+    </div>
+
+    {/* Right-side actions */}
+    <div className="flex items-center justify-end gap-4">
+      {/* <RefreshButton
+        // onClick={() => fetchCampaigns(true)}
+        // loading={refreshing}
+      /> */}
+
+      <div className="rounded-lg bg-indigo-50 px-5 py-3 text-sm">
+        <span className="text-gray-600">Total Campaigns: </span>
+        <span className="font-semibold text-indigo-600">
+          {campaigns.length}
+        </span>
       </div>
+    </div>
+  </div>
+</div>
+
 
       {/* Error */}
       {error && !showModal && (

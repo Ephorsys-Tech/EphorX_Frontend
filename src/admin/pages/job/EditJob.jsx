@@ -19,6 +19,7 @@ import {
   getJobById,
   updateJob,
 } from "../../api/jobApi";
+import Button from "../../../common/components/Button";
 
 const initialFormData = {
   title: "",
@@ -72,12 +73,12 @@ export default function EditJob() {
           jobDescription: job.jobDescription || "",
           responsibilities:
             Array.isArray(job.responsibilities) &&
-            job.responsibilities.length > 0
+              job.responsibilities.length > 0
               ? job.responsibilities
               : [""],
           requirements:
             Array.isArray(job.requirements) &&
-            job.requirements.length > 0
+              job.requirements.length > 0
               ? job.requirements
               : [""],
         });
@@ -86,8 +87,8 @@ export default function EditJob() {
 
         setError(
           err?.response?.data?.message ||
-            err.message ||
-            "Failed to load job details."
+          err.message ||
+          "Failed to load job details."
         );
       } finally {
         setLoading(false);
@@ -216,7 +217,7 @@ export default function EditJob() {
 
       setError(
         err?.response?.data?.message ||
-          "Failed to update job. Please try again."
+        "Failed to update job. Please try again."
       );
     } finally {
       setSaving(false);
@@ -472,14 +473,13 @@ export default function EditJob() {
                 </p>
               </div>
 
-              <button
+              <Button
+                text="Add Requirement"
                 type="button"
                 onClick={addRequirement}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-100"
-              >
-                <Plus size={17} />
-                Add Requirement
-              </button>
+                icon={Plus} />
+
+
             </div>
 
             <div className="space-y-3">

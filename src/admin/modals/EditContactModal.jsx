@@ -8,8 +8,10 @@ import {
   GraduationCap,
   BookOpen,
   Save,
+  SavePen,
 } from "lucide-react";
 import contactApi from "../api/contactApi";
+import Button from "../../common/components/Button";
 
 export default function EditContactModal({
   contact,
@@ -137,8 +139,8 @@ export default function EditContactModal({
 
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Unable to update contact. Please try again."
+        err?.message ||
+        "Unable to update contact. Please try again."
       );
     } finally {
       setLoading(false);
@@ -271,7 +273,7 @@ export default function EditContactModal({
                           : field.name === "name"
                             ? 100
                             : field.name === "course" ||
-                                field.name === "subject"
+                              field.name === "subject"
                               ? 200
                               : 20
                       }
@@ -331,14 +333,15 @@ export default function EditContactModal({
               Cancel
             </button>
 
-            <button
+
+            <Button
+              text={loading ? "Saving..." : "Save Changes"}
               type="submit"
               disabled={loading}
-              className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Save size={17} />
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
+              variant="primary"
+              size="md"
+              icon={Save}
+            />
           </div>
         </form>
       </div>

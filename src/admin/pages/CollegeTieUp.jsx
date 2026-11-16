@@ -1,7 +1,17 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import collegeTieUpApi from "../api/collegeTieUpApi.js";
-import { Cross, Eye, MoreVertical, Pencil, RefreshCcw, RefreshCw, Search, Trash2, X } from "lucide-react";
+import {
+    Eye,
+    MoreVertical,
+    Pencil,
+    Plus,
+    Search,
+    Trash2,
+    X,
+} from "lucide-react";
+import RefreshButton from "../../common/components/RefreshButton.jsx";
+import Button from "../../common/components/Button.jsx";
 
 const CollegeTieUp = () => {
     const [colleges, setColleges] = useState([]);
@@ -171,6 +181,7 @@ const CollegeTieUp = () => {
         try {
             await collegeTieUpApi.delete(college._id);
             setNotice("College deleted successfully.");
+
             setColleges((current) =>
                 current.filter((item) => item._id !== college._id)
             );
@@ -184,79 +195,96 @@ const CollegeTieUp = () => {
             className="min-h-screen bg-[#f7f9fc] px-4 text-[#141d35] sm:px-6 lg:px-8"
             onClick={() => activeMenu && setActiveMenu(null)}
         >
-            {/* Page heading */}
+            {/* Page Heading */}
             <div className="mb-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
                 <div>
                     <h1 className="text-lg font-bold tracking-tight sm:text-4xl">
                         College Tie-Ups
                     </h1>
-                    <p className="mt-2 text-[#718096] ">
+
+                    <p className="mt-2 text-[#718096]">
                         Manage, view, edit and delete your partner colleges.
                     </p>
                 </div>
 
-                <button
-                    type="button"
+                <Button
+                    text="Add New College"
+                    icon={Plus}
                     onClick={openCreate}
-                    className="flex items-center justify-center gap-1 rounded-xl bg-[#2563ff] px-3 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700"
-                >
-                    <span className="leading-none">＋</span>
-                    Add New College
-                </button>
+                />
             </div>
 
-            {/* Search and refresh */}
-            <div className="mb-8 rounded-2xl border border-[#e0e5ed] bg-white p-5 shadow-sm sm:p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex w-full items-center gap-3 rounded-xl border border-[#d0d7e2] px-4 sm:max-w-2xl">
-                        <span className=" text-[#9aa6b8]"><Search size={14} /></span>
+            {/* Search, Refresh and College Count */}
+            <div className="mb-8 rounded-2xl border border-[#e0e5ed] bg-white p-3 shadow-sm sm:p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                    {/* Search Input */}
+                    <div className="relative w-full flex-1 sm:max-w-md">
+                        <Search
+                            size={18}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9aa6b8]"
+                        />
+
                         <input
                             type="search"
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
                             placeholder="Search colleges..."
-                            className="w-full bg-transparent py-2 outline-none placeholder:text-[#9aa6b8]"
+                            aria-label="Search colleges"
+                            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                         />
+
+                        {search && (
+                            <button
+                                type="button"
+                                onClick={() => setSearch("")}
+                                aria-label="Clear search"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+                            >
+                                <X size={17} />
+                            </button>
+                        )}
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={fetchColleges}
-                        disabled={loading}
-                        className=" flex items-center rounded-xl border border-[#d0d7e2] px-4 py-2 font-semibold text-[#344054] transition hover:bg-gray-50 disabled:opacity-50"
-                    >
-                        <RefreshCw size={14} /> &nbsp; Refresh
-                    </button>
-                </div>
+                    {/* Right-side Actions */}
+                    <div className="flex items-center justify-end gap-4">
 
-                <div className="border-t border-[#edf0f5] pt-5 text-sm text-[#718096]">
-                    Showing{" "}
-                    <span className="font-semibold text-[#141d35]">
-                        {filteredColleges.length}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-semibold text-[#141d35]">
-                        {colleges.length}
-                    </span>{" "}
-                    colleges
+                        <RefreshButton
+                            onClick={fetchColleges}
+                            loading={loading}
+                        />
+
+                        {/* College Count */}
+                        <div className="flex shrink-0 items-center justify-center gap-2 rounded-lg bg-indigo-50 px-5 py-3 whitespace-nowrap">
+                            <span className="text-sm font-medium text-gray-600">
+                                Total Colleges:
+                            </span>
+
+                            <span className="text-lg font-bold text-indigo-700">
+                                {colleges.length}
+                            </span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            {/* Success / error notice */}
+            {/* Success / Error Notice */}
             {notice && (
                 <div className="mb-6 flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50 px-5 py-3 text-sm text-blue-800">
                     <span>{notice}</span>
+
                     <button
                         type="button"
                         onClick={() => setNotice("")}
                         className="ml-4 text-xl"
                     >
-                    <X size={12}/>
+                        <X size={14} />
                     </button>
                 </div>
             )}
 
-            {/* College cards */}
+            {/* College Cards */}
             {loading ? (
                 <div className="rounded-2xl border border-[#e0e5ed] bg-white p-12 text-center text-[#718096] shadow-sm">
                     Loading colleges...
@@ -266,6 +294,7 @@ const CollegeTieUp = () => {
                     <h3 className="text-lg font-semibold text-[#141d35]">
                         No colleges found
                     </h3>
+
                     <p className="mt-2 text-sm text-[#718096]">
                         {search
                             ? "Try searching with another college name."
@@ -277,7 +306,7 @@ const CollegeTieUp = () => {
                     {filteredColleges.map((college) => (
                         <article
                             key={college._id}
-                            className="rounded-2xl border border-[#e0e5ed] bg-white py-3 px-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                            className="rounded-2xl border border-[#e0e5ed] bg-white px-2 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                         >
                             <div className="flex items-start justify-between gap-3">
                                 <div className="flex min-w-0 items-center gap-4">
@@ -289,7 +318,9 @@ const CollegeTieUp = () => {
                                                 className="h-full w-full object-contain p-2"
                                             />
                                         ) : (
-                                            <span className="text-xl text-blue-600">🏛</span>
+                                            <span className="text-xl text-blue-600">
+                                                🏛
+                                            </span>
                                         )}
                                     </div>
 
@@ -297,12 +328,14 @@ const CollegeTieUp = () => {
                                         <h2 className="wrap-break-word text-xl font-bold leading-7 text-[#141d35]">
                                             {college.collegeName}
                                         </h2>
+
                                         <p className="mt-1 text-sm text-[#718096]">
                                             College Partner
                                         </p>
                                     </div>
                                 </div>
-                                {/* Three-dot action menu */}
+
+                                {/* Three-dot Action Menu */}
                                 <div className="relative shrink-0">
                                     <button
                                         type="button"
@@ -311,7 +344,9 @@ const CollegeTieUp = () => {
                                         onClick={(event) => {
                                             event.stopPropagation();
                                             setActiveMenu(
-                                                activeMenu === college._id ? null : college._id
+                                                activeMenu === college._id
+                                                    ? null
+                                                    : college._id
                                             );
                                         }}
                                         className="flex h-9 w-9 items-center justify-center rounded-full text-[#718096] transition hover:bg-[#f0f4fa] hover:text-[#141d35]"
@@ -322,7 +357,7 @@ const CollegeTieUp = () => {
                                     {activeMenu === college._id && (
                                         <div
                                             onClick={(event) => event.stopPropagation()}
-                                            className="absolute top-0 right-5 z-50 w-28 overflow-hidden rounded-xl border border-[#e0e5ed] bg-white py-1 shadow-xl"
+                                            className="absolute right-5 top-0 z-50 w-28 overflow-hidden rounded-xl border border-[#e0e5ed] bg-white py-1 shadow-xl"
                                         >
                                             {/* View */}
                                             <button
@@ -338,7 +373,7 @@ const CollegeTieUp = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => openEdit(college)}
-                                                className="flex w-full items-center gap-3 px-4  text-left text-sm text-[#344054] transition hover:bg-[#f5f7fb]"
+                                                className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#344054] transition hover:bg-[#f5f7fb]"
                                             >
                                                 <Pencil size={15} />
                                                 <span>Edit</span>
@@ -356,14 +391,13 @@ const CollegeTieUp = () => {
                                         </div>
                                     )}
                                 </div>
-
                             </div>
                         </article>
                     ))}
                 </div>
             )}
 
-            {/* Add / Edit / View modal */}
+            {/* Add / Edit / View Modal */}
             {modal && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#101828]/50 p-4"
@@ -378,6 +412,7 @@ const CollegeTieUp = () => {
                                 <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
                                     College Management
                                 </p>
+
                                 <h2 className="mt-2 text-2xl font-bold text-[#141d35]">
                                     {modal === "create"
                                         ? "Add New College"
@@ -393,7 +428,7 @@ const CollegeTieUp = () => {
                                 className="rounded-lg px-2 text-2xl text-[#718096] hover:bg-gray-100"
                                 aria-label="Close modal"
                             >
-                                <X size={12}/>
+                                <X size={16} />
                             </button>
                         </div>
 
@@ -409,14 +444,20 @@ const CollegeTieUp = () => {
 
                                 <div className="space-y-4">
                                     <div>
-                                        <p className="text-sm text-[#8a96a8]">College Name</p>
+                                        <p className="text-sm text-[#8a96a8]">
+                                            College Name
+                                        </p>
+
                                         <p className="mt-1 font-semibold text-[#141d35]">
                                             {selectedCollege?.collegeName}
                                         </p>
                                     </div>
 
                                     <div>
-                                        <p className="text-sm text-[#8a96a8]">College ID</p>
+                                        <p className="text-sm text-[#8a96a8]">
+                                            College ID
+                                        </p>
+
                                         <p className="mt-1 break-all text-sm text-[#596579]">
                                             {selectedCollege?._id}
                                         </p>
@@ -436,10 +477,13 @@ const CollegeTieUp = () => {
                                 <label className="mb-2 block text-sm font-semibold text-[#344054]">
                                     College Name
                                 </label>
+
                                 <input
                                     type="text"
                                     value={collegeName}
-                                    onChange={(event) => setCollegeName(event.target.value)}
+                                    onChange={(event) =>
+                                        setCollegeName(event.target.value)
+                                    }
                                     placeholder="Enter college name"
                                     className="mb-5 w-full rounded-xl border border-[#d0d7e2] px-4 py-3.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                                 />
@@ -459,16 +503,23 @@ const CollegeTieUp = () => {
                                 >
                                     {imagePreview || selectedCollege?.collegeLogo ? (
                                         <img
-                                            src={imagePreview || selectedCollege?.collegeLogo}
+                                            src={
+                                                imagePreview ||
+                                                selectedCollege?.collegeLogo
+                                            }
                                             alt="College logo preview"
                                             className="h-28 max-w-full object-contain"
                                         />
                                     ) : (
                                         <>
-                                            <span className="text-3xl text-blue-600">＋</span>
+                                            <span className="text-3xl text-blue-600">
+                                                ＋
+                                            </span>
+
                                             <span className="mt-2 text-sm font-semibold text-[#344054]">
                                                 Choose college logo
                                             </span>
+
                                             <span className="mt-1 text-xs text-[#8a96a8]">
                                                 JPEG, PNG or WebP · Maximum 5 MB
                                             </span>

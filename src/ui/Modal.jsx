@@ -1,114 +1,76 @@
 
-import { useEffect } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { X } from 'lucide-react'
-import { createPortal } from 'react-dom'
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 
-const modalSizes = {
-  sm: 'max-w-sm',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl',
-  full: 'max-w-6xl',
-}
+const sizeClasses = {
+  sm: "max-w-md",
+  md: "max-w-2xl",
+  lg: "max-w-4xl",
+  xl: "max-w-6xl",
+  full: "max-w-[95vw]",
+};
 
-const modalThemes = {
-  white: {
-    panel: 'bg-white text-gray-900',
-    header: 'border-gray-100',
-    close: 'text-gray-500 hover:bg-gray-100 hover:text-black',
-  },
-  sky: {
-    panel: 'bg-sky-50 text-slate-900',
-    header: 'border-sky-100',
-    close: 'text-slate-500 hover:bg-sky-100 hover:text-sky-700',
-  },
-  black: {
-    panel: 'bg-gray-950 text-white',
-    header: 'border-gray-800',
-    close: 'text-gray-400 hover:bg-gray-800 hover:text-white',
-  },
-}
-
-const Modal = ({
+export default function Modal({
   isOpen,
   onClose,
   title,
   children,
-  size = 'md',
-  theme = 'white',
-  showHeader = true,
+  size = "md",
   showCloseButton = true,
-  closeOnBackdrop = true,
-}) => {
-  const currentTheme = modalThemes[theme] || modalThemes.white
-
+}) {
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) return;
 
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') onClose?.()
-    }
-
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    document.addEventListener('keydown', handleKeyDown)
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isOpen, onClose])
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
 
   return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-slate-950/50 p-3 backdrop-blur-sm sm:p-6"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-3 sm:p-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={() => {
-            if (closeOnBackdrop) onClose?.()
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              onClose();
+            }
           }}
         >
           <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label={title}
-            className={`my-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-2xl shadow-2xl shadow-slate-950/15 ring-1 ring-black/5 sm:rounded-3xl ${modalSizes[size] || modalSizes.md
-              } ${currentTheme.panel}`}
-            initial={{ opacity: 0, y: 18, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.42, ease: 'easeInOut' }}
-            onClick={(event) => event.stopPropagation()}
+            className={`flex w-full ${sizeClasses[size] || sizeClasses.md} max-h-[90vh] flex-col overflow-hidden rounded-xl bg-white shadow-2xl`}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.2 }}
           >
-            {/* Reusable header */}
-            {showHeader && (
-              <div
-                className={`flex shrink-0 items-center justify-between border-b px-5 py-3 sm:px-6 ${currentTheme.header}`}
-              >
-                <h2 className="text-lg font-bold tracking-tight sm:text-xl">
-                  {title}
-                </h2>
+            {/* Fixed header */}
+            <div className="flex shrink-0 items-center justify-between border-b border-gray-200 px-5 py-4">
+              <h2 className="text-lg font-bold text-gray-900">
+                {title}
+              </h2>
 
-                {showCloseButton && (
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    aria-label="Close modal"
-                    className={`rounded-xl p-2 transition-colors duration-200 ${currentTheme.close}`}
-                  >
-                    <X size={20} />
-                  </button>
-                )}
-              </div>
-            )}
+              {showCloseButton && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+                >
+                  <X size={20} />
+                </button>
+              )}
+            </div>
 
-            {/* Reusable body */}
-            <div className="min-h-0 flex-1 overflow-y-auto">
+            {/* Only this section scrolls */}
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5">
               {children}
             </div>
           </motion.div>
@@ -116,7 +78,5 @@ const Modal = ({
       )}
     </AnimatePresence>,
     document.body
-  )
+  );
 }
-
-export default Modal

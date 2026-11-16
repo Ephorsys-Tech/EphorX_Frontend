@@ -13,6 +13,7 @@ import {
   FileText,
 } from "lucide-react";
 import { createTrainer } from "../../api/trainerApi";
+import Button from "../../../common/components/Button";
 
 const AddTrainer = () => {
   const navigate = useNavigate();
@@ -143,13 +144,13 @@ const AddTrainer = () => {
     "mb-2 block text-sm font-semibold text-slate-700";
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <div className="min-h-screen w-full  bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-none">
         {/* Page Header */}
         <div className="mb-8">
           <button
             type="button"
-            onClick={() => navigate("/admin/trainers/add-trainer")}
+            onClick={() => navigate("/admin/trainers")}
             className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-indigo-600"
           >
             <ArrowLeft size={17} />
@@ -165,7 +166,7 @@ const AddTrainer = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="w-full max-w-none">
           <div className="space-y-6">
             {/* Profile Information */}
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -467,14 +468,12 @@ const AddTrainer = () => {
                 Cancel
               </button>
 
-              <button
+              <Button
+              text= {loading ? "Saving Trainer..." : "Save Trainer"}
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <Save size={17} />
-                {loading ? "Saving Trainer..." : "Save Trainer"}
-              </button>
+                icon={Save}
+             />
             </div>
           </div>
         </form>

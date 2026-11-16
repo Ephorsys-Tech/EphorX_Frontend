@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -71,7 +72,8 @@ const ViewDemoSession = () => {
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                     {label}
                 </p>
-                <p className="mt-1 break-words text-sm font-semibold text-gray-800">
+
+                <p className="mt-1 wrap-break-word text-sm font-semibold text-gray-800">
                     {value || "Not provided"}
                 </p>
             </div>
@@ -80,7 +82,7 @@ const ViewDemoSession = () => {
 
     if (loading) {
         return (
-            <div className="p-6 text-center text-gray-500">
+            <div className="w-full p-6 text-center text-gray-500">
                 Loading demo session...
             </div>
         );
@@ -88,7 +90,7 @@ const ViewDemoSession = () => {
 
     if (error) {
         return (
-            <div className="p-6">
+            <div className="w-full p-6">
                 <div className="rounded-lg bg-red-50 p-4 text-sm text-red-600">
                     {error}
                 </div>
@@ -107,7 +109,8 @@ const ViewDemoSession = () => {
     if (!booking) return null;
 
     return (
-        <div className="p-4 md:p-6">
+        <div className="min-h-screen w-full p-4 md:p-6">
+
             {/* Header */}
             <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
@@ -123,6 +126,7 @@ const ViewDemoSession = () => {
                         <h1 className="text-2xl font-bold text-gray-800">
                             View Demo Request
                         </h1>
+
                         <p className="text-sm text-gray-500">
                             View complete demo booking details.
                         </p>
@@ -140,13 +144,16 @@ const ViewDemoSession = () => {
                 </button>
             </div>
 
-            {/* Details Card */}
-            <div className="max-w-4xl rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7">
+            {/* Full Width Details Card */}
+            <div className="w-full max-w-none rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7 lg:p-9">
+
+                {/* Booking Header */}
                 <div className="mb-6 flex flex-col gap-3 border-b border-gray-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 className="text-xl font-bold text-gray-800">
                             {booking.fullName}
                         </h2>
+
                         <p className="mt-1 text-sm text-gray-500">
                             {booking.courseName}
                         </p>
@@ -157,6 +164,7 @@ const ViewDemoSession = () => {
                     </span>
                 </div>
 
+                {/* Personal Information */}
                 <h3 className="mb-4 text-sm font-semibold text-gray-700">
                     Personal Information
                 </h3>
@@ -193,6 +201,7 @@ const ViewDemoSession = () => {
                     />
                 </div>
 
+                {/* Course Information */}
                 <h3 className="mb-4 mt-8 text-sm font-semibold text-gray-700">
                     Course Information
                 </h3>
@@ -211,6 +220,7 @@ const ViewDemoSession = () => {
                     />
                 </div>
 
+                {/* Booking Information */}
                 <h3 className="mb-4 mt-8 text-sm font-semibold text-gray-700">
                     Booking Information
                 </h3>

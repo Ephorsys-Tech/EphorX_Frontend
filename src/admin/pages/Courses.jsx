@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -13,8 +14,14 @@ import {
   Image as ImageIcon,
   FileText,
 } from "lucide-react";
+
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
+import RefreshButton from "../../common/components/RefreshButton";
+
+import AddCourseModal from "../modals/AddCourseModal";
+import EditCourseModal from "../modals/EditCourseModal";
+import Button from "../../common/components/Button";
 
 const getId = (value) => {
   if (!value) return "";
@@ -42,7 +49,6 @@ const getResponseArray = (response, keys = []) => {
   return [];
 };
 
-// Match the backend Course model
 const getCourseImage = (course) => {
   return course?.imageUrl || "";
 };
@@ -63,9 +69,16 @@ export default function Course() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   const [deletingCourse, setDeletingCourse] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Add and Edit modal states
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+
+  // Fetch courses and categories
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -93,8 +106,8 @@ export default function Course() {
 
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Failed to load courses. Please try again."
+        err?.message ||
+        "Failed to load courses. Please try again."
       );
     } finally {
       setLoading(false);
@@ -105,6 +118,7 @@ export default function Course() {
     fetchData();
   }, [fetchData, location.key]);
 
+  // Category name
   const getCategoryName = useCallback(
     (course) => {
       const category = course?.categoryId || course?.category;
@@ -134,14 +148,17 @@ export default function Course() {
     [categories]
   );
 
+  // Search and category filtering
   const filteredCourses = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
 
     return courses.filter((course) => {
       const title = String(course?.title || "").toLowerCase();
+
       const description = String(
         course?.description || ""
       ).toLowerCase();
+
       const categoryName = getCategoryName(course).toLowerCase();
 
       const matchesSearch =
@@ -162,6 +179,51 @@ export default function Course() {
     });
   }, [courses, searchTerm, selectedCategory, getCategoryName]);
 
+  // Open Add modal
+  const handleAdd = () => {
+    setError("");
+    setIsAddModalOpen(true);
+  };
+
+  // Close Add modal
+  const handleCloseAdd = () => {
+    setIsAddModalOpen(false);
+  };
+
+  // Called after successful course creation
+  const handleCourseCreated = () => {
+    setIsAddModalOpen(false);
+    fetchData();
+  };
+
+  // Open Edit modal
+  const handleEdit = (course) => {
+    const courseId = getId(course);
+
+    if (!courseId) {
+      setError("Unable to edit this course. Course ID is missing.");
+      return;
+    }
+
+    setError("");
+    setSelectedCourseId(courseId);
+    setIsEditModalOpen(true);
+  };
+
+  // Close Edit modal
+  const handleCloseEdit = () => {
+    setIsEditModalOpen(false);
+    setSelectedCourseId(null);
+  };
+
+  // Called after successful course update
+  const handleCourseUpdated = () => {
+    setIsEditModalOpen(false);
+    setSelectedCourseId(null);
+    fetchData();
+  };
+
+  // Delete course
   const handleDelete = async () => {
     if (!deletingCourse?._id) return;
 
@@ -183,25 +245,23 @@ export default function Course() {
 
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Failed to delete course. Please try again."
+        err?.message ||
+        "Failed to delete course. Please try again."
       );
     } finally {
       setDeleting(false);
     }
   };
 
+  // View course
   const handleView = (course) => {
-    navigate(`/admin/view-course/${course._id}`);
-  };
-
-  const handleEdit = (course) => {
-    navigate(`/admin/edit-course/${course._id}`);
+    navigate(`/admin/view-course/${getId(course)}`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
+
         {/* Page header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -214,14 +274,11 @@ export default function Course() {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => navigate("/admin/add-course")}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-          >
-            <Plus size={18} />
-            Add Course
-          </button>
+          <Button
+            text="Add Course"
+            icon={Plus}
+            onClick={handleAdd}
+          />
         </div>
 
         {/* Error message */}
@@ -282,18 +339,10 @@ export default function Course() {
                 ))}
               </select>
 
-              <button
-                type="button"
+              <RefreshButton
                 onClick={fetchData}
-                disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <RefreshCw
-                  size={16}
-                  className={loading ? "animate-spin" : ""}
-                />
-                Refresh
-              </button>
+                loading={loading}
+              />
             </div>
           </div>
         </div>
@@ -348,7 +397,7 @@ export default function Course() {
             {courses.length === 0 ? (
               <button
                 type="button"
-                onClick={() => navigate("/admin/add-course")}
+                onClick={handleAdd}
                 className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
               >
                 <Plus size={17} />
@@ -492,12 +541,11 @@ export default function Course() {
                       <button
                         type="button"
                         onClick={() => setDeletingCourse(course)}
-                        aria-label={`Delete ${
-                          course.title || "course"
-                        }`}
-                        className="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
+                        aria-label={`Delete ${course.title || "course"}`}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
                       >
                         <Trash2 size={16} />
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -507,6 +555,21 @@ export default function Course() {
           </div>
         )}
       </div>
+
+      {/* Add Course Modal */}
+      <AddCourseModal
+        isOpen={isAddModalOpen}
+        onClose={handleCloseAdd}
+        onCreated={handleCourseCreated}
+      />
+
+      {/* Edit Course Modal */}
+      <EditCourseModal
+        isOpen={isEditModalOpen}
+        courseId={selectedCourseId}
+        onClose={handleCloseEdit}
+        onUpdated={handleCourseUpdated}
+      />
 
       {/* Delete confirmation modal */}
       {deletingCourse && (

@@ -44,7 +44,7 @@ const AddDemoSession = () => {
 
       setError(
         err.response?.data?.message ||
-          "Failed to create demo session. Please try again."
+        "Failed to create demo session. Please try again."
       );
     } finally {
       setLoading(false);
@@ -200,14 +200,14 @@ const AddDemoSession = () => {
             Cancel
           </button>
 
-          <button
+          <Button
+            text={loading ? "Saving..." : "Save Demo Session"}
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Save size={18} />
-            {loading ? "Saving..." : "Save Demo Session"}
-          </button>
+            variant="primary"
+            size="md"
+            icon={Save}
+          />
         </div>
       </form>
     </div>

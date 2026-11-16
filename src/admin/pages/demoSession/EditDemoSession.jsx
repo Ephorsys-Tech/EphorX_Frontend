@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Save } from "lucide-react";
@@ -6,6 +7,7 @@ import {
     getDemoBookingById,
     updateDemoBooking,
 } from "../../api/demoBookingApi";
+import Button from "../../../common/components/Button";
 
 const EditDemoSession = () => {
     const { id } = useParams();
@@ -79,43 +81,43 @@ const EditDemoSession = () => {
     };
 
     const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+        e.preventDefault();
+        setError("");
 
-  try {
-    setSaving(true);
+        try {
+            setSaving(true);
 
-    console.log("Sending Update Data:", formData);
+            await updateDemoBooking(id, formData);
 
-    await updateDemoBooking(id, formData);
+            alert("Demo session updated successfully!");
+            navigate("/admin/book-demo");
+        } catch (err) {
+            console.error("Update demo session error:", err);
 
-    alert("Demo session updated successfully!");
-    navigate("/admin/book-demo");
-  } catch (err) {
-    console.error("Update demo session error:", err);
-
-    setError(
-      err.response?.data?.message ||
-        "Failed to update demo session."
-    );
-  } finally {
-    setSaving(false);
-  }
-};
+            setError(
+                err.response?.data?.message ||
+                "Failed to update demo session."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
 
     const inputClass =
         "w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
 
     if (loading) {
         return (
-            <div className="p-6 text-center text-gray-500">
+            <div className="w-full p-6 text-center text-gray-500">
                 Loading demo session...
             </div>
         );
     }
 
     return (
-        <div className="px-4 md:px-6">
+        <div className="min-h-screen w-full px-4 py-4 md:px-6 md:py-6">
+
+            {/* Back Button */}
             <div>
                 <button
                     onClick={() => navigate("/admin/book-demo")}
@@ -125,19 +127,22 @@ const EditDemoSession = () => {
                     Back to Demo Sessions
                 </button>
 
-                <div>
+                {/* Page Heading */}
+                <div className="mb-1">
                     <h1 className="text-2xl font-bold text-gray-800">
                         Edit Demo Session
                     </h1>
+
                     <p className="text-sm text-gray-500">
                         Update the demo session booking details.
                     </p>
                 </div>
             </div>
 
+            {/* Full Width Form */}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-4xl rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7"
+                className="w-full max-w-none rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7 lg:p-9"
             >
                 {error && (
                     <div className="mb-5 rounded-lg bg-red-50 p-3 text-sm text-red-600">
@@ -145,11 +150,15 @@ const EditDemoSession = () => {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                {/* Form Fields */}
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-7">
+
+                    {/* Full Name */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Full Name *
                         </label>
+
                         <input
                             type="text"
                             name="fullName"
@@ -160,10 +169,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* Email */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Email *
                         </label>
+
                         <input
                             type="email"
                             name="email"
@@ -174,10 +185,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* Phone Number */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Phone Number *
                         </label>
+
                         <input
                             type="tel"
                             name="phoneNumber"
@@ -188,10 +201,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* WhatsApp Number */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             WhatsApp Number *
                         </label>
+
                         <input
                             type="tel"
                             name="whatsappNumber"
@@ -202,10 +217,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* Qualification */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Qualification *
                         </label>
+
                         <input
                             type="text"
                             name="qualification"
@@ -216,10 +233,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* Course ID */}
                     <div>
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Course ID *
                         </label>
+
                         <input
                             type="text"
                             name="courseId"
@@ -230,10 +249,12 @@ const EditDemoSession = () => {
                         />
                     </div>
 
+                    {/* Course Name */}
                     <div className="md:col-span-2">
                         <label className="mb-2 block text-sm font-medium text-gray-700">
                             Course Name *
                         </label>
+
                         <input
                             type="text"
                             name="courseName"
@@ -245,7 +266,9 @@ const EditDemoSession = () => {
                     </div>
                 </div>
 
+                {/* Action Buttons */}
                 <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
                     <button
                         type="button"
                         onClick={() => navigate("/admin/book-demo")}
@@ -254,14 +277,12 @@ const EditDemoSession = () => {
                         Cancel
                     </button>
 
-                    <button
+                    <Button
+                        text={saving ? "Updating..." : "Update Demo Session"}
                         type="submit"
                         disabled={saving}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <Save size={18} />
-                        {saving ? "Updating..." : "Update Demo Session"}
-                    </button>
+                        icon={Save}
+                    />
                 </div>
             </form>
         </div>

@@ -17,6 +17,7 @@ import {
   getJobApplicationById,
   updateJobApplication,
 } from "../../api/jobApplicationApi.js";
+import Button from "../../../common/components/Button.jsx";
 
 export default function EditJobApplication() {
   const { id } = useParams();
@@ -356,14 +357,12 @@ export default function EditJobApplication() {
             Cancel
           </button>
 
-          <button
+          <Button
+          text={saving ? "Saving..." : "Update Application"}
             type="submit"
             disabled={saving}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Save size={17} />
-            {saving ? "Saving..." : "Update Application"}
-          </button>
+            icon={Save}
+          />
         </div>
       </form>
     </div>

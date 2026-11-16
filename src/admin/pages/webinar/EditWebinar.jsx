@@ -18,6 +18,7 @@ import {
     getWebinarById,
     updateWebinar,
 } from "../../api/webinarApi";
+import Button from "../../../common/components/Button";
 
 const initialForm = {
     title: "",
@@ -687,18 +688,12 @@ const EditWebinar = () => {
                         Cancel
                     </button>
 
-                    <button
+                    <Button
+                    text={saving ? "Saving Changes..." : "Save Changes"}
                         type="submit"
                         disabled={saving}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        {saving ? (
-                            <RefreshCw size={17} className="animate-spin" />
-                        ) : (
-                            <Save size={17} />
-                        )}
-                        {saving ? "Saving Changes..." : "Save Changes"}
-                    </button>
+                        icon={Save}
+                    />
                 </div>
             </form>
         </div>

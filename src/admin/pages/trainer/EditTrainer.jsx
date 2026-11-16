@@ -6,6 +6,7 @@ import {
     getTrainerById,
     updateTrainer,
 } from "../../api/trainerApi";
+import Button from "../../../common/components/Button";
 
 const initialForm = {
     name: "",
@@ -167,8 +168,8 @@ const EditTrainer = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 px-4 py-1 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-4xl">
+        <div className="min-h-screen w-full bg-gray-50 px-4 py-1 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-none">
                 {/* Header */}
                 <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -421,23 +422,13 @@ const EditTrainer = () => {
                             Cancel
                         </button>
 
-                        <button
+                        <Button
+                        text={saving ?"Saving Changes...":"Save"}
                             type="submit"
                             disabled={saving}
-                            className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {saving ? (
-                                <>
-                                    <LoaderCircle size={17} className="animate-spin" />
-                                    Saving Changes...
-                                </>
-                            ) : (
-                                <>
-                                    <Save size={17} />
-                                    Save Changes
-                                </>
-                            )}
-                        </button>
+                            icon={Save}
+                        />
+                             
                     </div>
                 </form>
             </div>

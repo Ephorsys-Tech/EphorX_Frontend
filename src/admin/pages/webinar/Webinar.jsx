@@ -21,6 +21,8 @@ import {
   getAllWebinars,
   deleteWebinar,
 } from "../../api/webinarApi"
+import RefreshButton from "../../../common/components/RefreshButton";
+import Button from "../../../common/components/Button";
 
 const Webinar = () => {
   const navigate = useNavigate();
@@ -226,18 +228,10 @@ const Webinar = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
+          <RefreshButton
             onClick={fetchWebinars}
-            disabled={loading}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:opacity-50"
-          >
-            <RefreshCw
-              size={16}
-              className={loading ? "animate-spin" : ""}
-            />
-            Refresh
-          </button>
+            loading={loading}
+          />
 
           <button
             type="button"
@@ -400,14 +394,13 @@ const Webinar = () => {
             </p>
 
             {webinars.length === 0 ? (
-              <button
-                type="button"
+
+              <Button
+                text="Add Webinar"
+                icon={Plus}
                 onClick={() => navigate("/admin/add-webinar")}
-                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
-              >
-                <Plus size={17} />
-                Add Webinar
-              </button>
+              />
+
             ) : (
               <button
                 type="button"
@@ -419,7 +412,7 @@ const Webinar = () => {
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-hidden">
             <table className="w-full min-w-262.5 border-collapse text-left">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/80">
@@ -541,11 +534,10 @@ const Webinar = () => {
                     {/* Type */}
                     <td className="px-5 py-4">
                       <span
-                        className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
-                          webinar.type === "live"
-                            ? "bg-purple-100 text-purple-700"
-                            : "bg-indigo-100 text-indigo-700"
-                        }`}
+                        className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${webinar.type === "live"
+                          ? "bg-purple-100 text-purple-700"
+                          : "bg-indigo-100 text-indigo-700"
+                          }`}
                       >
                         {formatLabel(webinar.type)}
                       </span>

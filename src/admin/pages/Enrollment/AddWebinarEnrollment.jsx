@@ -217,23 +217,14 @@ const AddWebinarEnrollment = ({
                             Cancel
                         </button>
 
-                        <button
+                        <Button
+                            text="Add Participant"
+                            icon={Plus}
                             type="submit"
+                            loading={loading}
                             disabled={loading}
-                            className="flex items-center gap-2 rounded-xl bg-[#4935F5] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3826DB] disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {loading ? (
-                                <>
-                                    <LoaderCircle size={18} className="animate-spin" />
-                                    Adding...
-                                </>
-                            ) : (
-                                <>
-                                    <Plus size={18} />
-                                    Add Participant
-                                </>
-                            )}
-                        </button>
+                        />
+
                     </div>
                 </form>
             </div>

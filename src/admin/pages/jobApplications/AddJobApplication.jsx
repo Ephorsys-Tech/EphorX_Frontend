@@ -16,6 +16,7 @@ import {
 
 import axios from "axios";
 import { createJobApplication } from "../../api/jobApplicationApi";
+import Button from "../../../common/components/Button";
 
 const JOB_API_URL = "http://localhost:5500/api/auth/job";
 
@@ -401,23 +402,12 @@ export default function AddJobApplication() {
             Cancel
           </button>
 
-          <button
+          <Button
+            text={saving?"Saving...":" Add Application"}
             type="submit"
             disabled={saving || loadingJobs || jobs.length === 0}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {saving ? (
-              <>
-                <LoaderCircle size={17} className="animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save size={17} />
-                Add Application
-              </>
-            )}
-          </button>
+            icon={Save}
+          />
         </div>
       </form>
     </div>

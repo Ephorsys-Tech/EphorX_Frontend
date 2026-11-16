@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,22 @@ import {
 } from "../../api/jobApi.js";
 
 import JobCard from "../../components/JobCard.jsx";
+import RefreshButton from "../../../common/components/RefreshButton.jsx";
+import Button from "../../../common/components/Button.jsx";
+
+// Normalize different possible API response structures
+const normalizeJobs = (response) => {
+  const possibleResponses = [
+    response,
+    response?.jobs,
+    response?.data?.jobs,
+    response?.data,
+    response?.data?.data?.jobs,
+    response?.results,
+  ];
+
+  return possibleResponses.find(Array.isArray) ?? null;
+};
 
 export default function Job() {
   const navigate = useNavigate();
@@ -25,50 +42,26 @@ export default function Job() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
 
   const [deletingJob, setDeletingJob] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
-  // Normalize the API response
-  const normalizeJobs = (response) => {
-    if (Array.isArray(response)) {
-      return response;
-    }
-
-    if (Array.isArray(response?.jobs)) {
-      return response.jobs;
-    }
-
-    if (Array.isArray(response?.data?.jobs)) {
-      return response.data.jobs;
-    }
-
-    if (Array.isArray(response?.data)) {
-      return response.data;
-    }
-
-    if (Array.isArray(response?.results)) {
-      return response.results;
-    }
-
-    return [];
-  };
-
-  // Fetch all jobs
-  const fetchJobs = useCallback(async (isRefresh = false) => {
+  // Fetch jobs - initial load and refresh both show loading UI
+  const fetchJobs = useCallback(async () => {
     try {
-      if (isRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
-
+      setLoading(true);
       setError("");
 
       const response = await getAllJobs();
+
+      console.log("Jobs API response:", response);
+
       const jobsData = normalizeJobs(response);
+
+      if (jobsData === null) {
+        throw new Error("Unexpected jobs API response format.");
+      }
 
       setJobs(jobsData);
     } catch (err) {
@@ -76,14 +69,15 @@ export default function Job() {
 
       setError(
         err?.response?.data?.message ||
-          "Failed to load jobs. Please try again."
+        err?.message ||
+        "Failed to load jobs. Please try again."
       );
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
+  // Initial fetch
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
@@ -107,12 +101,12 @@ export default function Job() {
     });
   }, [jobs, searchTerm]);
 
-  // Navigate to View Job page
+  // View job
   const handleView = (job) => {
     navigate(`/admin/view-job/${job._id}`);
   };
 
-  // Navigate to Edit Job page
+  // Edit job
   const handleEdit = (job) => {
     navigate(`/admin/edit-job/${job._id}`);
   };
@@ -139,7 +133,8 @@ export default function Job() {
 
       setError(
         err?.response?.data?.message ||
-          "Failed to delete job. Please try again."
+        err?.message ||
+        "Failed to delete job. Please try again."
       );
     } finally {
       setDeleting(false);
@@ -162,14 +157,11 @@ export default function Job() {
             </p>
           </div>
 
-          <button
-            type="button"
+          <Button
+            text="Add Jobs"
+            icon={Plus}
             onClick={() => navigate("/admin/add-job")}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-          >
-            <Plus size={18} />
-            Add New Job
-          </button>
+          />
         </div>
 
         {/* Error Message */}
@@ -195,9 +187,9 @@ export default function Job() {
           </div>
         )}
 
-        {/* Search and Refresh Section */}
-        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Search, Refresh and Total Jobs */}
+        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
             {/* Search */}
             <div className="relative w-full sm:max-w-md">
@@ -211,14 +203,14 @@ export default function Job() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search jobs..."
-                className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
                   aria-label="Clear search"
                 >
                   <X size={17} />
@@ -226,35 +218,23 @@ export default function Job() {
               )}
             </div>
 
-            {/* Refresh */}
-            <button
-              type="button"
-              onClick={() => fetchJobs(true)}
-              disabled={refreshing}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <RefreshCw
-                size={17}
-                className={refreshing ? "animate-spin" : ""}
+            {/* Refresh and Total Jobs */}
+            <div className="flex items-center justify-end gap-4">
+              <RefreshButton
+                onClick={fetchJobs}
+                loading={loading}
               />
 
-              {refreshing ? "Refreshing..." : "Refresh"}
-            </button>
-          </div>
+              <div className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-50 px-5 py-3">
+                <span className="text-sm font-medium text-gray-600">
+                  Total Jobs:
+                </span>
 
-          {/* Job Count */}
-          <div className="mt-4 border-t border-gray-100 pt-4">
-            <p className="text-sm text-gray-500">
-              Showing{" "}
-              <span className="font-semibold text-gray-900">
-                {filteredJobs.length}
-              </span>{" "}
-              of{" "}
-              <span className="font-semibold text-gray-900">
-                {jobs.length}
-              </span>{" "}
-              jobs
-            </p>
+                <span className="text-lg font-bold text-indigo-700">
+                  {jobs.length}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -283,7 +263,9 @@ export default function Job() {
             </div>
 
             <h2 className="mt-5 text-lg font-semibold text-gray-900">
-              {searchTerm ? "No matching jobs found" : "No jobs available"}
+              {searchTerm
+                ? "No matching jobs found"
+                : "No jobs available"}
             </h2>
 
             <p className="mt-2 max-w-md text-sm text-gray-500">
@@ -314,7 +296,7 @@ export default function Job() {
 
         ) : (
 
-          /* Jobs Grid - Reusable JobCard */
+          /* Jobs Grid */
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {filteredJobs.map((job) => (
               <JobCard

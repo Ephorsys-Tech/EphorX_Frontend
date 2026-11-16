@@ -13,6 +13,7 @@ import {
 import contactApi from "../api/contactApi.js";
 import ContactDetailsModal from "../modals/ContactDetailsModal.jsx";
 import EditContactModal from "../modals/EditContactModal.jsx";
+import RefreshButton from "../../common/components/RefreshButton.jsx";
 
 export default function Contacts() {
     const [contacts, setContacts] = useState([]);
@@ -132,19 +133,6 @@ export default function Contacts() {
                             View and manage messages submitted through your website.
                         </p>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={loadContacts}
-                        disabled={loading}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <RefreshCw
-                            size={17}
-                            className={loading ? "animate-spin" : ""}
-                        />
-                        {loading ? "Refreshing..." : "Refresh Messages"}
-                    </button>
                 </div>
 
                 {/* Error message */}
@@ -165,27 +153,55 @@ export default function Contacts() {
                 )}
 
                 {/* Search */}
-                <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex w-full items-center gap-3 rounded-lg border border-slate-200 px-4 transition focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 sm:max-w-xl">
-                        <Search size={19} className="shrink-0 text-slate-400" />
+<div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    {/* Search Input */}
+    <div className="relative w-full flex-1 sm:max-w-md">
+      <Search
+        size={19}
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      />
 
-                        <input
-                            type="search"
-                            placeholder="Search name, email or message..."
-                            value={search}
-                            onChange={(event) => setSearch(event.target.value)}
-                            aria-label="Search contact messages"
-                            className="h-12 w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-                        />
+      <input
+        type="text"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Search name, email or message..."
+        aria-label="Search contact messages"
+        className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+      />
 
+      {search && (
+        <button
+          type="button"
+          onClick={() => setSearch("")}
+          aria-label="Clear search"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+        >
+          <X size={18} />
+        </button>
+      )}
+    </div>
 
-                    </div>
+    {/* Right-side Actions */}
+    <div className="flex items-center justify-end gap-4">
+      <RefreshButton
+        onClick={loadContacts}
+        loading={loading}
+      />
 
-                    <span className="text-sm text-slate-500 sm:text-right">
-                        {filteredContacts.length}{" "}
-                        {filteredContacts.length === 1 ? "message" : "messages"}
-                    </span>
-                </div>
+      <div className="flex items-center justify-center gap-2 rounded-lg bg-indigo-50 px-5 py-3 whitespace-nowrap">
+        <span className="text-sm font-medium text-gray-600">
+          Total Messages:
+        </span>
+        <span className="text-lg font-bold text-indigo-700">
+          {filteredContacts.length}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
 
                 {/* Contact messages */}
                 {loading ? (

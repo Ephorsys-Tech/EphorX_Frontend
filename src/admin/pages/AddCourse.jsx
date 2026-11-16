@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { categoryApi } from "../api/categoryApi";
 import courseApi from "../api/courseApi";
+import Button from "../../common/components/Button";
 
 export default function AddCourse() {
   const navigate = useNavigate();
@@ -237,7 +238,7 @@ export default function AddCourse() {
 
         <form
           onSubmit={handleSubmit}
-          className="w-full min-w-0 space-y-6 rounded-2xl border
+          className="w-full max-w-none space-y-6 rounded-2xl border
   border-slate-200 bg-white p-4 shadow-sm
   sm:p-8">
           {error && (
@@ -521,13 +522,13 @@ export default function AddCourse() {
               Cancel
             </button>
 
-            <button
+            <Button
+              text={submitting ? "Creating Course..." : "Create Course"}
               type="submit"
               disabled={submitting || loadingCategories}
-              className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {submitting ? "Creating Course..." : "Create Course"}
-            </button>
+              variant="primary"
+              size="md"
+            />
           </div>
         </form>
       </div>

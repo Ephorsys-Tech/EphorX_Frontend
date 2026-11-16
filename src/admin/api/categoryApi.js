@@ -12,17 +12,28 @@ async function request(url, options = {}) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
-    // Keep this if your backend uses cookie-based sessions.
     credentials: "include",
   });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `Request failed: ${response.status}`);
+  const text = await response.text();
+
+  let result = null;
+
+  try {
+    result = text ? JSON.parse(text) : null;
+  } catch {
+    result = text;
   }
 
-  if (response.status === 204) return null;
-  return response.json();
+  if (!response.ok) {
+    throw new Error(
+      result?.message ||
+      result?.error ||
+      `Request failed: ${response.status}`
+    );
+  }
+
+  return result;
 }
 
 export const categoryApi = {
