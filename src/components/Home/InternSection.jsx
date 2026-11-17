@@ -72,7 +72,7 @@ const InternSection = () => {
             <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
               Meet Our
               <span className="pl-3 text-blue-700">
-                Interns
+                Students
               </span>
             </h2>
           </div>
