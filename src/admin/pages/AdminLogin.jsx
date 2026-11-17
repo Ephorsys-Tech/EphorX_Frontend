@@ -1,87 +1,110 @@
-import { useState } from "react";
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import AuthLayout from "../components/AuthLayout.jsx";
-import LoginForm from "../components/LoginForm.jsx";
-import OtpVerificationForm from "../components/OtpVerificationForm.jsx";
-import ForgotPasswordForm from "../components/ForgotPasswordForm.jsx";
-import ResetPasswordForm from "../components/ResetPasswordForm.jsx";
-import ResetSuccess from "../components/ResetSuccess.jsx";
-import { Message } from "../components/AuthUI.jsx";
-import { loginAdmin, requestPasswordOtp, resetAdminPassword, verifyPasswordOtp } from "../api/authApi.js";
+import AuthLayout from '../components/AuthLayout.jsx'
+import LoginForm from '../components/LoginForm.jsx'
+import OtpVerificationForm from '../components/OtpVerificationForm.jsx'
+import ForgotPasswordForm from '../components/ForgotPasswordForm.jsx'
+import ResetPasswordForm from '../components/ResetPasswordForm.jsx'
+import ResetSuccess from '../components/ResetSuccess.jsx'
+import { Message } from '../components/AuthUI.jsx'
 
-export default function App() {
-  const [screen, setScreen] = useState("login");
+import {
+  loginAdmin,
+  requestPasswordOtp,
+  resetAdminPassword,
+  verifyPasswordOtp
+} from '../api/authApi.js'
 
-  const [email, setEmail] = useState("");
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetToken, setResetToken] = useState("");
+import { useAuth } from '../../context/AuthContext.jsx'
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+export default function App () {
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
+  const [screen, setScreen] = useState('login')
+
+  const [email, setEmail] = useState('')
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetToken, setResetToken] = useState('')
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
 
   const clearMessages = () => {
-    setError("");
-    setMessage("");
-  };
+    setError('')
+    setMessage('')
+  }
 
   const runRequest = async (request, onSuccess) => {
-    clearMessages();
-    setLoading(true);
+    clearMessages()
+    setLoading(true)
 
     try {
-      const data = await request();
-      if (onSuccess) await onSuccess(data);
-    } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+      const data = await request()
 
+      if (onSuccess) {
+        await onSuccess(data)
+      }
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Admin Login
   const handleLogin = (loginEmail, password, rememberMe) => {
     return runRequest(
       () => loginAdmin(loginEmail, password, rememberMe),
-      () => {
-        window.location.assign("/admin/dashboard");
-      }
-    );
-  };
+      data => {
+        if (!data.token) {
+          throw new Error('Login token not received from server.')
+        }
 
-  const handleRequestOtp = (emailAddress) => {
-    setResetEmail(emailAddress);
+        // Save authentication token
+        login(data.token)
+
+        // Redirect to admin dashboard
+        navigate('/admin/dashboard', { replace: true })
+      }
+    )
+  }
+
+  // Request Forgot Password OTP
+  const handleRequestOtp = emailAddress => {
+    setResetEmail(emailAddress)
 
     return runRequest(
       () => requestPasswordOtp(emailAddress),
       () => {
-        setScreen("verify-otp");
-        setMessage("If this email is registered, an OTP has been sent.");
+        setScreen('verify-otp')
+        setMessage('If this email is registered, an OTP has been sent.')
       }
-    );
-  };
+    )
+  }
 
-  const handleVerifyOtp = (otp) => {
+  // Verify OTP
+  const handleVerifyOtp = otp => {
     return runRequest(
       () => verifyPasswordOtp(resetEmail, otp),
-      (data) => {
+      data => {
         if (!data.resetToken) {
           throw new Error(
-            "OTP verified, but no reset token was returned by the server."
-          );
+            'OTP verified, but no reset token was returned by the server.'
+          )
         }
 
-        setResetToken(data.resetToken);
-        setScreen("reset-password");
-        setMessage("OTP verified successfully.");
+        setResetToken(data.resetToken)
+        setScreen('reset-password')
+        setMessage('OTP verified successfully.')
       }
-    );
-  };
+    )
+  }
 
-  const handleResetPassword = (
-    newPassword,
-    confirmPassword,
-    clearForm
-  ) => {
+  // Reset Password
+  const handleResetPassword = (newPassword, confirmPassword, clearForm) => {
     return runRequest(
       () =>
         resetAdminPassword(
@@ -91,49 +114,52 @@ export default function App() {
           confirmPassword
         ),
       () => {
-        clearForm();
-        setResetToken("");
-        setScreen("success");
+        clearForm()
+        setResetToken('')
+        setScreen('success')
       }
-    );
-  };
+    )
+  }
 
+  // Resend OTP
   const handleResendOtp = () => {
     return runRequest(
       () => requestPasswordOtp(resetEmail),
       () => {
-        setMessage("If this email is registered, a new OTP has been sent.");
+        setMessage('If this email is registered, a new OTP has been sent.')
       }
-    );
-  };
+    )
+  }
 
-  const goToScreen = (nextScreen) => {
-    clearMessages();
-    setScreen(nextScreen);
-  };
+  // Change Authentication Screen
+  const goToScreen = nextScreen => {
+    clearMessages()
+    setScreen(nextScreen)
+  }
 
+  // Back to Login
   const backToLogin = () => {
-    clearMessages();
-    setResetToken("");
-    setScreen("login");
-  };
+    clearMessages()
+    setResetToken('')
+    setScreen('login')
+  }
 
   return (
     <AuthLayout>
-      {screen === "login" && (
+      {screen === 'login' && (
         <LoginForm
           email={email}
           setEmail={setEmail}
           loading={loading}
           onLogin={handleLogin}
           onForgotPassword={() => {
-            setResetEmail(email.trim());
-            goToScreen("forgot");
+            setResetEmail(email.trim())
+            goToScreen('forgot')
           }}
         />
       )}
 
-      {screen === "forgot" && (
+      {screen === 'forgot' && (
         <ForgotPasswordForm
           email={resetEmail}
           setEmail={setResetEmail}
@@ -143,7 +169,7 @@ export default function App() {
         />
       )}
 
-      {screen === "verify-otp" && (
+      {screen === 'verify-otp' && (
         <OtpVerificationForm
           email={resetEmail}
           loading={loading}
@@ -153,7 +179,7 @@ export default function App() {
         />
       )}
 
-      {screen === "reset-password" && (
+      {screen === 'reset-password' && (
         <ResetPasswordForm
           loading={loading}
           onSubmit={handleResetPassword}
@@ -161,13 +187,9 @@ export default function App() {
         />
       )}
 
-      {screen === "success" && (
-        <ResetSuccess onBackToLogin={backToLogin} />
-      )}
+      {screen === 'success' && <ResetSuccess onBackToLogin={backToLogin} />}
 
-      {screen !== "success" && (
-        <Message error={error} message={message} />
-      )}
+      {screen !== 'success' && <Message error={error} message={message} />}
     </AuthLayout>
-  );
+  )
 }

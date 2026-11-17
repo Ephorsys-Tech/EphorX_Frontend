@@ -1,59 +1,24 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { getAdminProfile, logoutAdmin } from '../admin/api/authApi'
-
+import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-  const [admin, setAdmin] = useState(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [authLoading, setAuthLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => !!localStorage.getItem('adminToken')
+  )
 
-  // Restore session
-  const checkAuth = async () => {
-    try {
-      const data = await getAdminProfile()
-
-      setAdmin(data.admin || data)
-      setIsAuthenticated(true)
-    } catch {
-      setAdmin(null)
-      setIsAuthenticated(false)
-    } finally {
-      setAuthLoading(false)
-    }
+  const login = token => {
+    localStorage.setItem('adminToken', token)
+    setIsAuthenticated(true)
   }
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  // Login
-  const login = async () => {
-    await checkAuth()
-  }
-
-  // Logout
-  const logout = async () => {
-    try {
-      await logoutAdmin()
-    } finally {
-      setAdmin(null)
-      setIsAuthenticated(false)
-    }
+  const logout = () => {
+    localStorage.removeItem('adminToken')
+    setIsAuthenticated(false)
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        admin,
-        isAuthenticated,
-        authLoading,
-        login,
-        logout,
-        checkAuth
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
