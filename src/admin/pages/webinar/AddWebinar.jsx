@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { createWebinar } from "../../api/webinarApi";
+import Button from "../../../common/components/Button";
 
 const initialForm = {
   title: "",
@@ -197,7 +198,7 @@ const AddWebinar = () => {
   const labelClass = "text-sm font-medium text-gray-700";
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       {/* Page heading */}
       <div className="mb-7">
         <button
@@ -623,19 +624,12 @@ const AddWebinar = () => {
             Cancel
           </button>
 
-          <button
+          <Button
+          text= {saving ? "Creating Webinar..." : "Create Webinar"}
             type="submit"
             disabled={saving}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {saving ? (
-              <RefreshCw size={17} className="animate-spin" />
-            ) : (
-              <Save size={17} />
-            )}
-
-            {saving ? "Creating Webinar..." : "Create Webinar"}
-          </button>
+            icon={Save}
+          />
         </div>
       </form>
     </div>

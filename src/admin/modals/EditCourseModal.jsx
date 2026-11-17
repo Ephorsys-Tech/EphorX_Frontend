@@ -1,0 +1,735 @@
+
+import { useEffect, useState } from "react";
+import {
+    Upload,
+    Image as ImageIcon,
+    FileText,
+    X,
+    Clock,
+    IndianRupee,
+    Save,
+} from "lucide-react";
+
+import Modal from "../../ui/Modal";
+import courseApi from "../api/courseApi";
+import { categoryApi } from "../api/categoryApi";
+import Button from "../../common/components/Button";
+
+const initialForm = {
+    title: "",
+    description: "",
+    categoryId: "",
+    type: "online",
+    Originalprice: "",
+    discountPrice: "",
+    duration: "",
+    courseImage: null,
+    syllabusPdf: null,
+};
+
+const getCourseFromResponse = (response) => {
+    let result = response?.data ?? response;
+
+    if (result?.course) return result.course;
+    if (result?.data?.course) return result.data.course;
+
+    if (result?.data && !Array.isArray(result.data)) {
+        result = result.data;
+    }
+
+    return result;
+};
+
+const getCategoriesFromResponse = (response) => {
+    const result = response?.data ?? response;
+
+    if (Array.isArray(result)) return result;
+    if (Array.isArray(result?.categories)) return result.categories;
+    if (Array.isArray(result?.data)) return result.data;
+
+    if (Array.isArray(result?.data?.categories)) {
+        return result.data.categories;
+    }
+
+    return [];
+};
+
+const getFileUrl = (value) => {
+    if (!value) return "";
+
+    if (typeof value === "string") return value;
+
+    if (typeof value === "object") {
+        return (
+            value.url ||
+            value.secure_url ||
+            value.path ||
+            value.location ||
+            value.fileUrl ||
+            ""
+        );
+    }
+
+    return "";
+};
+
+export default function EditCourseModal({
+    isOpen,
+    onClose,
+    courseId,
+    onUpdated,
+}) {
+    const [form, setForm] = useState(initialForm);
+
+    const [categories, setCategories] = useState([]);
+    const [existingImage, setExistingImage] = useState("");
+    const [existingSyllabus, setExistingSyllabus] = useState("");
+
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
+    // Fetch course details and categories
+    useEffect(() => {
+        if (!isOpen || !courseId) return;
+
+        let active = true;
+
+        const fetchDetails = async () => {
+            setLoading(true);
+            setError("");
+            setSuccess("");
+
+            try {
+                const [courseResponse, categoryResponse] =
+                    await Promise.all([
+                        courseApi.getById(courseId),
+                        categoryApi.getAll(),
+                    ]);
+
+                if (!active) return;
+
+                const course = getCourseFromResponse(courseResponse);
+                const categoryList =
+                    getCategoriesFromResponse(categoryResponse);
+
+                if (
+                    !course ||
+                    typeof course !== "object" ||
+                    course.success === false
+                ) {
+                    throw new Error(
+                        course?.message || "Course details were not found."
+                    );
+                }
+
+                setCategories(categoryList);
+
+                const categoryValue =
+                    course.categoryId?._id ||
+                    course.categoryId ||
+                    course.category?._id ||
+                    course.category ||
+                    "";
+
+                setForm({
+                    title: course.title || "",
+                    description: course.description || "",
+                    categoryId: String(categoryValue),
+                    type: course.type || "online",
+                    Originalprice: course.Originalprice ?? "",
+                    discountPrice: course.discountPrice ?? "",
+                    duration: course.duration ?? "",
+                    courseImage: null,
+                    syllabusPdf: null,
+                });
+
+                setExistingImage(
+                    getFileUrl(
+                        course.imageUrl ||
+                        course.courseImage ||
+                        course.image ||
+                        course.imageURL
+                    )
+                );
+
+                setExistingSyllabus(
+                    getFileUrl(
+                        course.syllabusUrl ||
+                        course.syllabusPdf ||
+                        course.syllabus ||
+                        course.syllabusURL
+                    )
+                );
+            } catch (err) {
+                if (active) {
+                    setError(
+                        err?.response?.data?.message ||
+                        err.message ||
+                        "Failed to load course details."
+                    );
+                }
+            } finally {
+                if (active) setLoading(false);
+            }
+        };
+
+        fetchDetails();
+
+        return () => {
+            active = false;
+        };
+    }, [isOpen, courseId]);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        setForm((previous) => ({
+            ...previous,
+            [name]: value,
+        }));
+
+        setError("");
+        setSuccess("");
+    };
+
+    // Image validation
+    const handleImageChange = (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            setError("Please select a valid image file.");
+            event.target.value = "";
+            return;
+        }
+
+        setForm((previous) => ({
+            ...previous,
+            courseImage: file,
+        }));
+
+        setError("");
+        setSuccess("");
+    };
+
+    // Syllabus validation
+    const handleSyllabusChange = (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (
+            file.type !== "application/pdf" &&
+            !file.name.toLowerCase().endsWith(".pdf")
+        ) {
+            setError("Please select a PDF file.");
+            event.target.value = "";
+            return;
+        }
+
+        setForm((previous) => ({
+            ...previous,
+            syllabusPdf: file,
+        }));
+
+        setError("");
+        setSuccess("");
+    };
+
+    // Remove selected replacement image
+    const removeImage = () => {
+        setForm((previous) => ({
+            ...previous,
+            courseImage: null,
+        }));
+
+        const input = document.getElementById("edit-course-image");
+        if (input) input.value = "";
+    };
+
+    // Remove selected replacement syllabus
+    const removeSyllabus = () => {
+        setForm((previous) => ({
+            ...previous,
+            syllabusPdf: null,
+        }));
+
+        const input = document.getElementById("edit-syllabus-pdf");
+        if (input) input.value = "";
+    };
+
+    // Update course
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        setError("");
+        setSuccess("");
+
+        if (!courseId) {
+            setError("Course ID is missing.");
+            return;
+        }
+
+        if (!form.title.trim()) {
+            setError("Course title is required.");
+            return;
+        }
+
+        if (!form.description.trim()) {
+            setError("Course description is required.");
+            return;
+        }
+
+        if (!form.categoryId) {
+            setError("Please select a category.");
+            return;
+        }
+
+        if (!form.type) {
+            setError("Please select a course type.");
+            return;
+        }
+
+        if (!form.Originalprice.toString().trim()) {
+            setError("Original price is required.");
+            return;
+        }
+
+        if (
+            !Number.isFinite(Number(form.Originalprice)) ||
+            Number(form.Originalprice) < 0
+        ) {
+            setError("Please enter a valid original price.");
+            return;
+        }
+
+        if (!form.discountPrice.toString().trim()) {
+            setError("Discount price is required.");
+            return;
+        }
+
+        if (
+            !Number.isFinite(Number(form.discountPrice)) ||
+            Number(form.discountPrice) < 0
+        ) {
+            setError("Please enter a valid discount price.");
+            return;
+        }
+
+        if (!form.duration.trim()) {
+            setError("Course duration is required.");
+            return;
+        }
+
+        try {
+            setSaving(true);
+
+            const formData = new FormData();
+
+            formData.append("title", form.title.trim());
+            formData.append("description", form.description.trim());
+            formData.append("categoryId", form.categoryId);
+            formData.append("type", form.type);
+
+            formData.append(
+                "Originalprice",
+                form.Originalprice.toString().trim()
+            );
+
+            formData.append(
+                "discountPrice",
+                form.discountPrice.toString().trim()
+            );
+
+            formData.append("duration", form.duration.trim());
+
+            if (form.courseImage) {
+                formData.append("image", form.courseImage);
+            }
+
+            if (form.syllabusPdf) {
+                formData.append("syllabus", form.syllabusPdf);
+            }
+
+            await courseApi.update(courseId, formData);
+
+            setSuccess("Course updated successfully.");
+
+            setTimeout(() => {
+                onClose();
+                onUpdated?.();
+            }, 800);
+
+        } catch (err) {
+            setError(
+                err?.response?.data?.message ||
+                err.message ||
+                "Failed to update course. Please try again."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    return (
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title="Edit Course"
+            size="md"
+            showCloseButton={!saving}
+        >
+            {loading ? (
+                <div className="flex min-h-64 items-center justify-center">
+                    <p className="text-sm font-medium text-slate-500">
+                        Loading course details...
+                    </p>
+                </div>
+            ) : (
+                <>
+                    <div className="mb-6">
+                        <p className="text-sm text-slate-500">
+                            Update course details, pricing, duration,
+                            image, and syllabus.
+                        </p>
+
+                        <p className="mt-1 text-xs text-slate-400">
+                            Course ID: {courseId}
+                        </p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+
+                        {/* Error */}
+                        {error && (
+                            <div
+                                role="alert"
+                                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                            >
+                                {error}
+                            </div>
+                        )}
+
+                        {/* Success */}
+                        {success && (
+                            <div
+                                role="status"
+                                className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700"
+                            >
+                                {success}
+                            </div>
+                        )}
+
+                        {/* Course Title */}
+                        <div>
+                            <label
+                                htmlFor="edit-title"
+                                className="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                Course Title *
+                            </label>
+
+                            <input
+                                id="edit-title"
+                                name="title"
+                                type="text"
+                                value={form.title}
+                                onChange={handleChange}
+                                placeholder="Enter course title"
+                                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                required
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div>
+                            <label
+                                htmlFor="edit-description"
+                                className="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                Course Description *
+                            </label>
+
+                            <textarea
+                                id="edit-description"
+                                name="description"
+                                value={form.description}
+                                onChange={handleChange}
+                                placeholder="Describe what students will learn"
+                                rows={5}
+                                className="w-full resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                required
+                            />
+                        </div>
+
+                        {/* Category */}
+                        <div>
+                            <label
+                                htmlFor="edit-category"
+                                className="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                Category *
+                            </label>
+
+                            <select
+                                id="edit-category"
+                                name="categoryId"
+                                value={form.categoryId}
+                                onChange={handleChange}
+                                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                required
+                            >
+                                <option value="">Select a category</option>
+
+                                {categories.map((category) => (
+                                    <option
+                                        key={category._id || category.id}
+                                        value={category._id || category.id}
+                                    >
+                                        {category.name || category.title || "Unnamed Category"}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Course Type */}
+                        <div>
+                            <label
+                                htmlFor="edit-type"
+                                className="mb-2 block text-sm font-semibold text-slate-700"
+                            >
+                                Course Type *
+                            </label>
+
+                            <select
+                                id="edit-type"
+                                name="type"
+                                value={form.type}
+                                onChange={handleChange}
+                                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                required
+                            >
+                                <option value="online">Online</option>
+                                <option value="offline">Offline</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+
+                        {/* Pricing */}
+                        <div className="rounded-xl border border-slate-200 p-5">
+                            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900">
+                                <IndianRupee size={19} />
+                                Course Pricing
+                            </h2>
+
+                            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                <div>
+                                    <label
+                                        htmlFor="edit-original-price"
+                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                    >
+                                        Original Price (₹) *
+                                    </label>
+
+                                    <input
+                                        id="edit-original-price"
+                                        name="Originalprice"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value={form.Originalprice}
+                                        onChange={handleChange}
+                                        placeholder="Enter original price"
+                                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label
+                                        htmlFor="edit-discount-price"
+                                        className="mb-2 block text-sm font-semibold text-slate-700"
+                                    >
+                                        Discount Price (₹) *
+                                    </label>
+
+                                    <input
+                                        id="edit-discount-price"
+                                        name="discountPrice"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value={form.discountPrice}
+                                        onChange={handleChange}
+                                        placeholder="Enter discount price"
+                                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Duration */}
+                        <div>
+                            <label
+                                htmlFor="edit-duration"
+                                className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700"
+                            >
+                                <Clock size={17} />
+                                Course Duration *
+                            </label>
+
+                            <input
+                                id="edit-duration"
+                                name="duration"
+                                type="text"
+                                value={form.duration}
+                                onChange={handleChange}
+                                placeholder="e.g. 8 weeks, 3 months, 40 hours"
+                                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                                required
+                            />
+                        </div>
+
+                        {/* Image and Syllabus */}
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+                            {/* Course Image */}
+                            <div>
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                                    Course Image
+                                </label>
+
+                                <label
+                                    htmlFor="edit-course-image"
+                                    className="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-4 text-center transition hover:border-indigo-300 hover:bg-indigo-50"
+                                >
+                                    {form.courseImage ? (
+                                        <>
+                                            <ImageIcon size={25} className="text-indigo-600" />
+
+                                            <span className="mt-2 max-w-full break-all text-sm font-medium text-slate-700">
+                                                {form.courseImage.name}
+                                            </span>
+                                        </>
+                                    ) : existingImage ? (
+                                        <>
+                                            <img
+                                                src={existingImage}
+                                                alt="Current course"
+                                                className="mb-2 h-24 w-full rounded-lg object-cover"
+                                            />
+
+                                            <span className="text-sm text-slate-600">
+                                                Click to replace image
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Upload size={25} className="text-slate-400" />
+
+                                            <span className="mt-2 text-sm font-medium text-slate-600">
+                                                Upload a course image
+                                            </span>
+                                        </>
+                                    )}
+                                </label>
+
+                                <input
+                                    id="edit-course-image"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="sr-only"
+                                />
+
+                                {form.courseImage && (
+                                    <button
+                                        type="button"
+                                        onClick={removeImage}
+                                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-red-600"
+                                    >
+                                        <X size={14} />
+                                        Remove selected replacement
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* Syllabus */}
+                            <div>
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                                    Syllabus PDF
+                                </label>
+
+                                <label
+                                    htmlFor="edit-syllabus-pdf"
+                                    className="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-4 text-center transition hover:border-indigo-300 hover:bg-indigo-50"
+                                >
+                                    <FileText size={25} className="text-indigo-500" />
+
+                                    <span className="mt-2 max-w-full break-all text-sm font-medium text-slate-600">
+                                        {form.syllabusPdf
+                                            ? form.syllabusPdf.name
+                                            : existingSyllabus
+                                                ? "Current syllabus available"
+                                                : "Upload a syllabus PDF"}
+                                    </span>
+
+                                    <span className="mt-1 text-xs text-slate-400">
+                                        Select a PDF to replace the current syllabus
+                                    </span>
+                                </label>
+
+                                <input
+                                    id="edit-syllabus-pdf"
+                                    type="file"
+                                    accept="application/pdf,.pdf"
+                                    onChange={handleSyllabusChange}
+                                    className="sr-only"
+                                />
+
+                                {form.syllabusPdf && (
+                                    <button
+                                        type="button"
+                                        onClick={removeSyllabus}
+                                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-red-600"
+                                    >
+                                        <X size={14} />
+                                        Remove selected replacement
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Form Actions */}
+                        <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                disabled={saving}
+                                className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-60"
+                            >
+                                Cancel
+                            </button>
+
+
+
+                            <Button
+                                text={saving ? "Saving..." : "Save Changes"}
+                                type="submit"
+                                disabled={saving}
+                                variant="primary"
+                                size="md"
+                                icon={Save}
+                            />
+
+                        </div>
+                    </form>
+                </>
+            )}
+        </Modal>
+    );
+}

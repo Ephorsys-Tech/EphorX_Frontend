@@ -5,8 +5,6 @@ import {
   Plus,
   Search,
   CalendarDays,
-  Users,
-  BookOpen,
   RefreshCw,
   X,
   Trash2,
@@ -18,6 +16,8 @@ import {
   getAllDemoBookings,
   deleteDemoBooking,
 } from "../../api/demoBookingApi";
+import RefreshButton from "../../../common/components/RefreshButton.jsx";
+import Button from "../../../common/components/Button.jsx";
 
 const DemoSessions = () => {
   const navigate = useNavigate();
@@ -110,48 +110,36 @@ const DemoSessions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
 
       {/* Header */}
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Demo Sessions
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500">
             Manage all demo session booking requests.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <button
-            onClick={fetchDemoBookings}
-            disabled={loading}
-            className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-          >
-            <RefreshCw
-              size={17}
-              className={loading ? "animate-spin" : ""}
-            />
-            Refresh
-          </button>
 
-          <button
+          <Button
+            text="Add Demmo Session"
+            icon={Plus}
             onClick={() => navigate("/admin/add-demo")}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            <Plus size={18} />
-            Add Demo Session
-          </button>
+          />
         </div>
       </div>
 
       {/* Search */}
 
-      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="relative flex-1">
+      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Search Input */}
+          <div className="relative w-full flex-1 sm:max-w-md">
             <Search
               size={19}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -176,12 +164,21 @@ const DemoSessions = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-center gap-2 rounded-lg bg-indigo-50 px-5 py-3 whitespace-nowrap">
-            <span className="text-sm font-medium text-gray-600">
-              Total Bookings:            </span>
-            <span className="text-lg font-bold text-indigo-700">
-              {totalBookings}
-            </span>
+          {/* Right-side Actions */}
+          <div className="flex items-center justify-end gap-4">
+            <RefreshButton
+              onClick={fetchDemoBookings}
+              loading={loading}
+            />
+
+            <div className="flex items-center justify-center gap-2 rounded-lg bg-indigo-50 px-5 py-3 whitespace-nowrap">
+              <span className="text-sm font-medium text-gray-600">
+                Total Bookings:
+              </span>
+              <span className="text-lg font-bold text-indigo-700">
+                {totalBookings}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -285,7 +282,7 @@ const DemoSessions = () => {
               className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
             >
               <Plus size={17} />
-              Add Demo Session
+             Add Demo Sessions
             </button>
           )}
         </div>

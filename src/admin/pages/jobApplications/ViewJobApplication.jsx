@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -81,7 +80,7 @@ export default function ViewJobApplication() {
     : null;
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+   <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate("/admin/apply-jobs")}

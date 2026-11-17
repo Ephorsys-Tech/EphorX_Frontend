@@ -14,6 +14,8 @@ import EditEnrollmentModal from "../../modals/EditEnrollModal.jsx";
 
 import AddCourseEnrollment from "./AddCourseEnrollment.jsx";
 import AddWebinarEnrollment from "./AddWebinarEnrollment.jsx";
+import RefreshButton from "../../../common/components/RefreshButton.jsx";
+import Button from "../../../common/components/Button.jsx";
 
 const Enrollment = ({ onAddWebinar, onAddCourse }) => {
 
@@ -112,31 +114,31 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
 
     // Delete enrollment - will connect to DELETE API later
     const handleDelete = async (enrollment) => {
-  const confirmDelete = window.confirm(
-    `Are you sure you want to delete the enrollment of ${enrollment.fullName}?`
-  );
+        const confirmDelete = window.confirm(
+            `Are you sure you want to delete the enrollment of ${enrollment.fullName}?`
+        );
 
-  if (!confirmDelete) return;
+        if (!confirmDelete) return;
 
-  try {
-    if (activeTab === "webinar") {
-      await deleteWebinarEnrollment(enrollment._id);
-    } else {
-      await deleteCourseEnrollment(enrollment._id);
-    }
+        try {
+            if (activeTab === "webinar") {
+                await deleteWebinarEnrollment(enrollment._id);
+            } else {
+                await deleteCourseEnrollment(enrollment._id);
+            }
 
-    alert("Enrollment deleted successfully!");
+            alert("Enrollment deleted successfully!");
 
-    await fetchEnrollments();
-  } catch (error) {
-    console.error("Delete enrollment error:", error);
+            await fetchEnrollments();
+        } catch (error) {
+            console.error("Delete enrollment error:", error);
 
-    alert(
-      error.response?.data?.message ||
-        "Unable to delete enrollment. Please try again."
-    );
-  }
-};
+            alert(
+                error.response?.data?.message ||
+                "Unable to delete enrollment. Please try again."
+            );
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[#F6F8FC] px-3 md:px-8">
@@ -155,16 +157,13 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                 </div>
 
                 {/* Add Webinar / Add Course */}
-                <button
+                <Button
+                    text={activeTab === "webinar" ? "Enroll Webinar" : "Enroll Course"}
+                    icon={Plus}
                     onClick={handleAdd}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-[#4935F5] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3826DB]"
-                >
-                    <Plus size={20} />
-
-                    {activeTab === "webinar"
-                        ? "Add Webinar"
-                        : "Add Course"}
-                </button>
+                    variant="primary"
+                    size="md"
+                />
 
             </div>
 
@@ -194,19 +193,10 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     <div className="flex items-center justify-between gap-6">
 
                         {/* Refresh Button */}
-                        <button
+                        <RefreshButton
                             onClick={fetchEnrollments}
-                            disabled={loading}
-                            className="flex items-center gap-2 rounded-xl bg-[#4935F5] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3826DB] disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            <RefreshCw
-                                size={18}
-                                className={loading ? "animate-spin" : ""}
-                            />
-
-                            {loading ? "Refreshing..." : "Refresh"}
-                        </button>
-
+                            loading={loading}
+                        />
                         {/* Enrollment Count */}
                         <span className="whitespace-nowrap text-sm font-semibold text-slate-600">
                             {filteredEnrollments.length} Enrollments

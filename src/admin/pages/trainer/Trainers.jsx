@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+
+import { useEffect, useState, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Search,
   Plus,
   MoreHorizontal,
   Eye,
   Pencil,
-  Trash2,
-  RefreshCw,
   X,
+  Trash,
 } from "lucide-react";
+
 import { deleteTrainer, getAllTrainers } from "../../api/trainerApi";
+import RefreshButton from "../../../common/components/RefreshButton";
+import Button from "../../../common/components/Button";
+import Pagination from "../../../common/components/Pagination";
 
 const Trainer = () => {
   const navigate = useNavigate();
@@ -21,6 +25,10 @@ const Trainer = () => {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [activeMenu, setActiveMenu] = useState(null);
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchTrainers = async () => {
     try {
@@ -40,23 +48,54 @@ const Trainer = () => {
     fetchTrainers();
   }, [location.key]);
 
-  const filteredTrainers = trainers.filter((trainer) => {
+  // Filter trainers
+  const filteredTrainers = useMemo(() => {
     const searchTerm = search.trim().toLowerCase();
 
-    if (!searchTerm) return true;
+    if (!searchTerm) return trainers;
 
-    return [
-      trainer.name,
-      trainer.email,
-      trainer.designation,
-      trainer.specialization,
-      trainer.expertise,
-      trainer._id,
-    ].some((value) =>
-      String(value || "").toLowerCase().includes(searchTerm)
+    return trainers.filter((trainer) =>
+      [
+        trainer.name,
+        trainer.email,
+        trainer.designation,
+        trainer.specialization,
+        trainer.expertise,
+        trainer._id,
+      ].some((value) =>
+        String(value || "").toLowerCase().includes(searchTerm)
+      )
     );
-  });
+  }, [trainers, search]);
 
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(
+    filteredTrainers.length / itemsPerPage
+  );
+
+  // Trainers for current page
+  const paginatedTrainers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+
+    return filteredTrainers.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
+  }, [filteredTrainers, currentPage, itemsPerPage]);
+
+  // Adjust page after deletion
+  useEffect(() => {
+    if (totalPages > 0 && currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  // Delete trainer
   const handleDelete = async (trainer) => {
     setActiveMenu(null);
 
@@ -77,21 +116,22 @@ const Trainer = () => {
     }
   };
 
- const handleAction = (action, trainer) => {
-  setActiveMenu(null);
+  // Trainer actions
+  const handleAction = (action, trainer) => {
+    setActiveMenu(null);
 
-  if (action === "view") {
-    navigate(`/admin/view-trainer/${trainer._id}`);
-  } else if (action === "edit") {
-    navigate(`/admin/edit-trainer/${trainer._id}`);
-  } else if (action === "delete") {
-    handleDelete(trainer);
-  }
-};
-
+    if (action === "view") {
+      navigate(`/admin/view-trainer/${trainer._id}`);
+    } else if (action === "edit") {
+      navigate(`/admin/edit-trainer/${trainer._id}`);
+    } else if (action === "delete") {
+      handleDelete(trainer);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 sm:px-6 lg:px-8">
+
       {/* Page Header */}
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -104,21 +144,20 @@ const Trainer = () => {
           </p>
         </div>
 
-        <button
-          type="button"
+        <Button
+          text=" Add Trainer"
+          icon={Plus}
           onClick={() => navigate("/admin/add-trainer")}
-          className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200 sm:self-auto"
-        >
-          <Plus size={18} />
-          Add Trainer
-        </button>
+        />
       </div>
 
       {/* Trainers Table Container */}
       <div className="overflow-visible rounded-2xl border border-slate-200 bg-white shadow-sm">
-        {/* Search, Refresh & Count - Single Row */}
+
+        {/* Search, Refresh & Count */}
         <div className="flex flex-col justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:px-6">
-          {/* Search Bar */}
+
+          {/* Search */}
           <div className="relative w-full sm:max-w-md sm:flex-1">
             <Search
               size={18}
@@ -145,21 +184,13 @@ const Trainer = () => {
             )}
           </div>
 
-          {/* Refresh Button */}
-          <button
-            type="button"
+          {/* Refresh */}
+          <RefreshButton
             onClick={fetchTrainers}
-            disabled={loading}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border bg-indigo-600 px-4 py-3 text-sm font-medium text-white transition  disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <RefreshCw
-              size={16}
-              className={loading ? "animate-spin" : ""}
-            />
-            Refresh
-          </button>
+            loading={loading}
+          />
 
-          {/* Trainer Count */}
+          {/* Count */}
           <p className="whitespace-nowrap text-sm font-medium text-slate-600 sm:ml-2">
             {trainers.length} Trainers
           </p>
@@ -225,8 +256,8 @@ const Trainer = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => navigate("/admin/trainers/add")}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+                onClick={() => navigate("/admin/add-trainer")}
+                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
               >
                 <Plus size={16} />
                 Add Trainer
@@ -234,139 +265,138 @@ const Trainer = () => {
             )}
           </div>
         ) : (
-          /* Trainers Table */
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-212.5 text-left">
-              <thead className="bg-slate-50">
-                <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  <th className="px-6 py-4">Trainer</th>
-                  <th className="px-6 py-4">Designation</th>
-                  <th className="px-6 py-4">Specialization</th>
-                  <th className="px-6 py-4">Experience</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-slate-100">
-                {filteredTrainers.map((trainer) => (
-                  <tr
-                    key={trainer._id}
-                    className="transition hover:bg-slate-50"
-                  >
-                    {/* Trainer Details */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {trainer.avatar ? (
-                          <img
-                            src={trainer.avatar}
-                            alt={trainer.name || "Trainer"}
-                            className="h-11 w-11 rounded-full border border-slate-200 object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
-                            {trainer.name?.charAt(0)?.toUpperCase() || "T"}
-                          </div>
-                        )}
-
-                        <div>
-                          <p className="font-semibold text-slate-800">
-                            {trainer.name || "Unnamed Trainer"}
-                          </p>
-
-                          <p className="mt-1 text-xs text-slate-400">
-                            ID: {trainer._id?.slice(-6)}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Designation */}
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {trainer.designation || "—"}
-                    </td>
-
-                    {/* Specialization */}
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {trainer.specialization || trainer.expertise || "—"}
-                    </td>
-
-                    {/* Experience */}
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {trainer.experienceYears != null
-                        ? `${trainer.experienceYears} years`
-                        : "—"}
-                    </td>
-
-                    {/* Actions Menu */}
-                    <td className="py-4 text-center">
-                      <div className="relative inline-block text-left">
-                        <button
-                          type="button"
-                          aria-label={`Actions for ${trainer.name || "trainer"}`}
-                          aria-expanded={activeMenu === trainer._id}
-                          onClick={() =>
-                            setActiveMenu((current) =>
-                              current === trainer._id
-                                ? null
-                                : trainer._id
-                            )
-                          }
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-                        >
-                          <MoreHorizontal size={21} />
-                        </button>
-
-                        {activeMenu === trainer._id && (
-                          <div className="absolute right-0 z-20 w-25 origin-top-right rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleAction("view", trainer)
-                              }
-                              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
-                            >
-                              <Eye
-                                size={16}
-                                className="text-slate-500"
-                              />
-                              View
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleAction("edit", trainer)
-                              }
-                              className="flex w-full items-center gap-3 rounded-lg px-3  text-sm text-slate-700 transition hover:bg-slate-50"
-                            >
-                              <Pencil
-                                size={16}
-                                className="text-slate-500"
-                              />
-                              Edit
-                            </button>
-
-                            <div className="border-t border-slate-100" />
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleAction("delete", trainer)
-                              }
-                              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
-                            >
-                              <Trash2 size={16} />
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+          <>
+            {/* Trainers Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-212.5 text-left">
+                <thead className="bg-slate-50">
+                  <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <th className="px-6 py-4">Trainer</th>
+                    <th className="px-6 py-4">Designation</th>
+                    <th className="px-6 py-4">Specialization</th>
+                    <th className="px-6 py-4">Experience</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody className="divide-y divide-slate-100">
+                  {paginatedTrainers.map((trainer) => (
+                    <tr
+                      key={trainer._id}
+                      className="transition hover:bg-slate-50"
+                    >
+                      {/* Trainer Details */}
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          {trainer.avatar ? (
+                            <img
+                              src={trainer.avatar}
+                              alt={trainer.name || "Trainer"}
+                              className="h-11 w-11 rounded-full border border-slate-200 object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
+                              {trainer.name?.charAt(0)?.toUpperCase() || "T"}
+                            </div>
+                          )}
+
+                          <div>
+                            <p className="font-semibold text-slate-800">
+                              {trainer.name || "Unnamed Trainer"}
+                            </p>
+
+                            <p className="mt-1 text-xs text-slate-400">
+                              ID: {trainer._id?.slice(-6)}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Designation */}
+                      <td className="px-6 py-4 text-sm text-slate-600">
+                        {trainer.designation || "—"}
+                      </td>
+
+                      {/* Specialization */}
+                      <td className="px-6 py-4 text-sm text-slate-600">
+                        {trainer.specialization || trainer.expertise || "—"}
+                      </td>
+
+                      {/* Experience */}
+                      <td className="px-6 py-4 text-sm text-slate-600">
+                        {trainer.experienceYears != null
+                          ? `${trainer.experienceYears} years`
+                          : "—"}
+                      </td>
+
+                      {/* Actions Menu */}
+                      <td className="py-4 text-center">
+                        <div className="relative inline-block text-left">
+                          <button
+                            type="button"
+                            aria-label={`Actions for ${trainer.name || "trainer"}`}
+                            aria-expanded={activeMenu === trainer._id}
+                            onClick={() =>
+                              setActiveMenu((current) =>
+                                current === trainer._id
+                                  ? null
+                                  : trainer._id
+                              )
+                            }
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                          >
+                            <MoreHorizontal size={21} />
+                          </button>
+
+                          {activeMenu === trainer._id && (
+                            <div className="absolute right-0 z-20 w-36 origin-top-right rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
+
+                              <button
+                                type="button"
+                                onClick={() => handleAction("view", trainer)}
+                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
+                              >
+                                <Eye size={16} className="text-slate-500" />
+                                View
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleAction("edit", trainer)}
+                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
+                              >
+                                <Pencil size={16} className="text-slate-500" />
+                                Edit
+                              </button>
+
+                              <div className="border-t border-slate-100" />
+
+                              <button
+                                type="button"
+                                onClick={() => handleAction("delete", trainer)}
+                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
+                              >
+                                <Trash size={16} />
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredTrainers.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
     </div>

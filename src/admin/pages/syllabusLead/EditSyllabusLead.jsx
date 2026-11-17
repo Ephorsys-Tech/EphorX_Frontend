@@ -6,6 +6,7 @@ import {
   getSyllabusLeadById,
   updateSyllabusLead,
 } from "../../api/syllabusLeadApi";
+import Button from "../../../common/components/Button";
 
 const EditSyllabusLead = () => {
   const { id } = useParams();
@@ -91,22 +92,30 @@ const EditSyllabusLead = () => {
   }
 
   return (
-    <div className="p-4 md:p-6">
-      <button
-        onClick={() => navigate(`/admin/view-lead/${id}`)}
-        className="mb-7 flex items-center gap-3 text-[17px] font-medium text-slate-600 transition hover:text-blue-600"
-                    >
-        <ArrowLeft size={17} /> Back to Lead Details
-      </button>
+    
+<div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-none">
 
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-          Edit Syllabus Lead
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Update the information associated with this syllabus request.
-        </p>
-      </div>
+        {/* Header */}
+        <div className="mb-8">
+            <button
+                type="button"
+                onClick={() => navigate(`/admin/view-lead/${id}`)}
+                className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+            >
+                <ArrowLeft size={17} />
+                Back to Lead Details
+            </button>
+
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                Edit Syllabus Lead
+            </h1>
+
+            <p className="mt-2 text-sm text-gray-500">
+                Update the information associated with this syllabus request.
+            </p>
+        </div>
+
 
       {error && (
         <div className="mb-5 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
@@ -168,16 +177,16 @@ const EditSyllabusLead = () => {
             Cancel
           </button>
 
-          <button
+          <Button
+            text={saving ? "Saving..." : "Save Changes"}
             type="submit"
             disabled={saving}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-60"
-          >
-            <Save size={16} />
-            {saving ? "Saving..." : "Save Changes"}
-          </button>
+            icon={Save}
+          />
+
         </div>
       </form>
+    </div>
     </div>
   );
 };

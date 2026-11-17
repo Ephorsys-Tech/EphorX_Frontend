@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search,
-  RefreshCw,
   BriefcaseBusiness,
   Users,
   X,
@@ -17,6 +16,8 @@ import {
 } from "../../api/jobApplicationApi";
 
 import JobApplicationCard from "../../components/JobApplicationCard";
+import RefreshButton from "../../../common/components/RefreshButton";
+import Button from "../../../common/components/Button";
 
 export default function JobApplications() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function JobApplications() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Unable to load job applications."
+        "Unable to load job applications."
       );
     } finally {
       setLoading(false);
@@ -100,7 +101,7 @@ export default function JobApplications() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Unable to delete this application."
+        "Unable to delete this application."
       );
     } finally {
       setDeleting(false);
@@ -108,46 +109,33 @@ export default function JobApplications() {
   };
 
   const uniqueJobCount = new Set(
-    applications.map((application) =>
-      typeof application.jobId === "object"
-        ? application.jobId?._id
-        : application.jobId
-    ).filter(Boolean)
+    applications
+      .map((application) =>
+        typeof application.jobId === "object"
+          ? application.jobId?._id
+          : application.jobId
+      )
+      .filter(Boolean)
   ).size;
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       {/* Page heading and actions */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Job Applications
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500">
             Manage candidates who have applied for your job openings.
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <button
-            type="button"
-            onClick={() => navigate("/admin/add-job-application")}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
-          >
-            <Plus size={17} />
-            Add Application
-          </button>
-
-          <button
-            type="button"
-            onClick={fetchApplications}
-            disabled={loading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
-          >
-            <RefreshCw size={16} />
-            Refresh
-          </button>
-        </div>
+        <Button
+          text="Add Application"
+          icon={Plus}
+          onClick={() => navigate("/admin/add-job-application")}
+        />
       </div>
 
       {/* Summary cards */}
@@ -190,21 +178,53 @@ export default function JobApplications() {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="relative">
-          <Search
-            size={19}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
+      {/* Search and refresh */}
+      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by candidate name, email, phone or job title..."
-            className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          />
+          {/* Search input */}
+          <div className="relative w-full sm:max-w-md">
+            <Search
+              size={19}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by candidate name, email, phone or job title..."
+              className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+                aria-label="Clear search"
+              >
+                <X size={17} />
+              </button>
+            )}
+          </div>
+
+          {/* Refresh and total count */}
+          <div className="flex items-center justify-end gap-4">
+            <RefreshButton
+              onClick={fetchApplications}
+              loading={loading}
+            />
+
+            <div className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-50 px-5 py-3">
+              <span className="text-sm font-medium text-gray-600">
+                Total Applications:
+              </span>
+              <span className="text-lg font-bold text-indigo-700">
+                {applications.length}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -259,26 +279,17 @@ export default function JobApplications() {
           )}
         </div>
       ) : (
-        <>
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">
-              Showing {filteredApplications.length} of{" "}
-              {applications.length} applications
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {filteredApplications.map((application) => (
-              <JobApplicationCard
-                key={application._id}
-                application={application}
-                onView={handleView}
-                onEdit={handleEdit}
-                onDelete={setSelectedApplication}
-              />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {filteredApplications.map((application) => (
+            <JobApplicationCard
+              key={application._id}
+              application={application}
+              onView={handleView}
+              onEdit={handleEdit}
+              onDelete={setSelectedApplication}
+            />
+          ))}
+        </div>
       )}
 
       {/* Delete confirmation modal */}

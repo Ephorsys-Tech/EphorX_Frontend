@@ -11,7 +11,7 @@ const quickActions = [
     key: "add-course",
     label: "Add Course",
     icon: Plus,
-    path: "/admin/add-course",
+    path: "/admin/course",
   },
   {
     key: "students",

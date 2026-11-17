@@ -8,14 +8,18 @@ import {
     X,
     FolderOpen,
     Eye,
+    Edit,
 } from "lucide-react";
 import { categoryApi } from "../api/categoryApi";
+import RefreshButton from "../../common/components/RefreshButton";
+import Button from "../../common/components/Button";
 
 export default function Category() {
     const navigate = useNavigate();
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [saving, setSaving] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
     const [error, setError] = useState("");
@@ -25,36 +29,30 @@ export default function Category() {
     const [editingId, setEditingId] = useState(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-
-    const loadCategories = async ({ showLoader = true } = {}) => {
-        if (showLoader) setLoading(true);
+    const loadCategories = async () => {
+        setLoading(true);
         setError("");
 
         try {
             const result = await categoryApi.getAll();
 
-            const list = Array.isArray(result)
-                ? result
-                : Array.isArray(result?.categories)
-                    ? result.categories
-                    : Array.isArray(result?.data)
-                        ? result.data
-                        : Array.isArray(result?.data?.categories)
-                            ? result.data.categories
-                            : [];
-
-            setCategories(
-                list.map((category) => ({
-                    ...category,
-                    id: category.id ?? category._id,
-                    name: category.name ?? "",
-                    description: category.description ?? "",
-                }))
-            );
-        } catch (err) {
-            setError(err.message || "Failed to load categories.");
+            if (result?.success && Array.isArray(result.categories)) {
+                setCategories(
+                    result.categories.map((category) => ({
+                        ...category,
+                        id: category.id ?? category._id,
+                        name: category.name ?? "",
+                        description: category.description ?? "",
+                    }))
+                );
+            } else {
+                throw new Error("Invalid category response.");
+            }
+        } catch (error) {
+            console.error("Category loading error:", error);
+            setError(error.message || "Failed to load categories.");
         } finally {
-            if (showLoader) setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -236,47 +234,65 @@ export default function Category() {
                         </p>
                     </div>
 
-                    <button
-                        type="button"
+                    <Button
+                        text="Create Catagory"
+                        icon={Plus}
                         onClick={openCreateForm}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
-                    >
-                        <Plus size={18} />
-                        Create Category
-                    </button>
+                    />
                 </div>
 
                 {/* Search bar */}
-                <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex w-full items-center gap-3 rounded-lg border border-slate-200 px-4 transition focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 sm:max-w-xl">
-                        <Search size={19} className="shrink-0 text-slate-400" />
 
-                        <input
-                            type="search"
-                            placeholder="Search categories..."
-                            value={search}
-                            onChange={(event) => setSearch(event.target.value)}
-                            aria-label="Search categories"
-                            className="h-12 w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-                        />
+                <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        {/* Search Input */}
+                        <div className="relative w-full flex-1 sm:max-w-md">
+                            <Search
+                                size={19}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                            />
 
-                        {search && (
-                            <button
-                                type="button"
-                                onClick={() => setSearch("")}
-                                aria-label="Clear search"
-                                className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                            >
-                                <X size={17} />
-                            </button>
-                        )}
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={(event) => setSearch(event.target.value)}
+                                placeholder="Search categories..."
+                                aria-label="Search categories"
+                                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            />
+
+                            {search && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearch("")}
+                                    aria-label="Clear search"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+                                >
+                                    <X size={18} />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Right-side Actions */}
+                        <div className="flex items-center justify-end gap-4">
+                            <RefreshButton
+                                onClick={() => loadCategories()}
+                                loading={loading}
+                            />
+
+                            <div className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-50 px-5 py-3">
+                                <span className="text-sm font-medium text-gray-600">
+                                    Total Categories:
+                                </span>
+
+                                <span className="text-lg font-bold text-indigo-700">
+                                    {categories.length}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-
-                    <span className="text-sm text-slate-500 sm:text-right">
-                        {filteredCategories.length}{" "}
-                        {filteredCategories.length === 1 ? "category" : "categories"}
-                    </span>
                 </div>
+
 
                 {/* Category cards */}
                 {loading ? (
@@ -316,8 +332,7 @@ export default function Category() {
                                         type="button"
                                         onClick={() => handleViewCourses(category)}
                                         title="View Category Details and Courses"
-                                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-200 p-2.5 text-emerald-700 transition hover:bg-emerald-50"
-                                    >
+                                        className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
                                         <Eye size={18} />
                                         View
                                     </button>
@@ -328,9 +343,8 @@ export default function Category() {
                                         onClick={() => openEditForm(category)}
                                         title="Edit Category"
                                         aria-label={`Edit ${category.name}`}
-                                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 px-3 py-2.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
-                                    >
-                                        <Pencil size={15} />
+                                        className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100">
+                                        <Edit size={15} />
                                         Edit
                                     </button>
 
@@ -341,8 +355,7 @@ export default function Category() {
                                         disabled={deletingId !== null}
                                         title="Delete Category"
                                         aria-label={`Delete ${category.name}`}
-                                        className="inline-flex items-center justify-center gap-1 rounded-lg border border-red-200  py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
-                                    >
+                                        className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100">
                                         <Trash2 size={15} />
                                         Delete
                                     </button>

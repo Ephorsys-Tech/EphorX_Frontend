@@ -17,6 +17,7 @@ import {
   getJobApplicationById,
   updateJobApplication,
 } from "../../api/jobApplicationApi.js";
+import Button from "../../../common/components/Button.jsx";
 
 export default function EditJobApplication() {
   const { id } = useParams();
@@ -161,11 +162,11 @@ export default function EditJobApplication() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(`/admin/view-job-application/${id}`)}
-        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600"
+        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 "
       >
         <ArrowLeft size={18} />
         Back to Application
@@ -356,14 +357,12 @@ export default function EditJobApplication() {
             Cancel
           </button>
 
-          <button
+          <Button
+          text={saving ? "Saving..." : "Update Application"}
             type="submit"
             disabled={saving}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Save size={17} />
-            {saving ? "Saving..." : "Update Application"}
-          </button>
+            icon={Save}
+          />
         </div>
       </form>
     </div>

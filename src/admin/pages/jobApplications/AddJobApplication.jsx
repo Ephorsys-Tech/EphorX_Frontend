@@ -16,6 +16,7 @@ import {
 
 import axios from "axios";
 import { createJobApplication } from "../../api/jobApplicationApi";
+import Button from "../../../common/components/Button";
 
 const JOB_API_URL = "http://localhost:5500/api/auth/job";
 
@@ -167,7 +168,7 @@ export default function AddJobApplication() {
   };
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+   <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate("/admin/apply-jobs")}
@@ -181,7 +182,7 @@ export default function AddJobApplication() {
         <h1 className="text-2xl font-bold text-gray-900">
           Add Job Application
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="py-2 text-sm text-gray-500">
           Manually add a candidate's job application.
         </p>
       </div>
@@ -401,23 +402,12 @@ export default function AddJobApplication() {
             Cancel
           </button>
 
-          <button
+          <Button
+            text={saving?"Saving...":" Add Application"}
             type="submit"
             disabled={saving || loadingJobs || jobs.length === 0}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {saving ? (
-              <>
-                <LoaderCircle size={17} className="animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save size={17} />
-                Add Application
-              </>
-            )}
-          </button>
+            icon={Save}
+          />
         </div>
       </form>
     </div>

@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Plus,
   Search,
@@ -13,6 +12,10 @@ import {
 } from "lucide-react";
 
 import campaignApi from "../api/campaignApi";
+// import RefreshButton from "../../common/components/RefreshButton";
+import Button from "../../common/components/Button";
+import Pagination from "../../common/components/Pagination";
+
 
 const getCampaignList = (response) => {
   const result =
@@ -77,6 +80,10 @@ const CampaignManagement = () => {
   const [form, setForm] = useState(initialForm);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchCampaigns = async () => {
     try {
@@ -236,9 +243,39 @@ const CampaignManagement = () => {
     }
   };
 
-  const filteredCampaigns = campaigns.filter((campaign) =>
-    campaign.title?.toLowerCase().includes(search.toLowerCase())
-  );
+  // Filter campaigns
+  const filteredCampaigns = useMemo(() => {
+    return campaigns.filter((campaign) =>
+      campaign.title?.toLowerCase().includes(search.trim().toLowerCase())
+    );
+  }, [campaigns, search]);
+
+  // Reset pagination when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredCampaigns.length / itemsPerPage);
+
+  // Get campaigns for current page
+  const paginatedCampaigns = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+
+    return filteredCampaigns.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
+  }, [filteredCampaigns, currentPage, itemsPerPage]);
+
+  // Adjust page after deletion
+  useEffect(() => {
+    const safePage = Math.max(1, totalPages);
+
+    if (currentPage > safePage) {
+      setCurrentPage(safePage);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <div className="min-h-screen bg-white px-4 text-gray-900 sm:px-6">
@@ -246,7 +283,7 @@ const CampaignManagement = () => {
       {/* Header */}
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-xl font-bold sm:text-3xl">
+           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Campaign Management
           </h1>
 
@@ -255,39 +292,60 @@ const CampaignManagement = () => {
           </p>
         </div>
 
-        <button
+        <Button
+          text="Create Campaign"
+          icon={Plus}
           onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#2563ff] px-3 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
-        >
-          <Plus size={18} />
-          Create Campaign
-        </button>
+        />
       </div>
 
       {/* Search and Count */}
-      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="relative w-full sm:max-w-sm">
-          <Search
-            size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
 
-          <input
-            type="text"
-            placeholder="Search campaigns..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 py-3 pl-10 pr-4 text-sm outline-none focus:border-black"
-          />
+
+      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Search input */}
+          <div className="relative w-full sm:max-w-md">
+            <Search
+              size={18}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search campaigns..."
+              className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            />
+
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+
+          {/* Right-side actions */}
+          <div className="flex items-center justify-end gap-4">
+            {/* <RefreshButton
+        // onClick={() => fetchCampaigns(true)}
+        // loading={refreshing}
+      /> */}
+
+            <div className="rounded-lg bg-indigo-50 px-5 py-3 text-sm">
+              <span className="text-gray-600">Total Campaigns: </span>
+              <span className="font-semibold text-indigo-600">
+                {campaigns.length}
+              </span>
+            </div>
+          </div>
         </div>
-
-        <p className="text-sm text-gray-500">
-          Total campaigns:{" "}
-          <span className="font-semibold text-black">
-            {campaigns.length}
-          </span>
-        </p>
       </div>
+
 
       {/* Error */}
       {error && !showModal && (
@@ -323,7 +381,7 @@ const CampaignManagement = () => {
                 </td>
               </tr>
             ) : (
-              filteredCampaigns.map((campaign) => {
+              paginatedCampaigns.map((campaign) => {
                 const status = getCampaignStatus(campaign);
 
                 return (
@@ -421,6 +479,16 @@ const CampaignManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {!loading && filteredCampaigns.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={filteredCampaigns.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
 
       {/* Create / Edit Modal */}
       {showModal && (

@@ -1,8 +1,6 @@
-
 import { AUTH_API } from "../../config/api";
 
 const API_URL = `${AUTH_API}/admin`;
-
 async function postRequest(endpoint, body) {
   const response = await fetch(`${API_URL}/${endpoint}`, {
     method: "POST",
@@ -10,9 +8,7 @@ async function postRequest(endpoint, body) {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    ...(body !== undefined && {
-      body: JSON.stringify(body),
-    }),
+    body: JSON.stringify(body),
   });
 
   const data = await response.json().catch(() => ({}));
@@ -24,27 +20,23 @@ async function postRequest(endpoint, body) {
   return data;
 }
 
-// LOGIN
 export const loginAdmin = (email, password) =>
   postRequest("login", {
     email: email.trim(),
     password,
   });
 
-// FORGOT PASSWORD
 export const requestPasswordOtp = (email) =>
   postRequest("forgot-password", {
     email: email.trim(),
   });
 
-// VERIFY OTP
 export const verifyPasswordOtp = (email, otp) =>
   postRequest("verify-otp", {
     email: email.trim(),
     otp: otp.trim(),
   });
 
-// RESET PASSWORD
 export const resetAdminPassword = (
   email,
   resetToken,
@@ -57,7 +49,3 @@ export const resetAdminPassword = (
     newPassword,
     confirmPassword,
   });
-
-// LOGOUT
-export const logoutAdmin = () =>
-  postRequest("logout");

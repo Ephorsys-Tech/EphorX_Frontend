@@ -4,6 +4,7 @@ import { X, Save, LoaderCircle } from "lucide-react";
 
 import { updateWebinarEnrollment } from "../api/webEnrollApi.js";
 import { updateCourseEnrollment } from "../api/courseEnrollApi.js";
+import Button from "../../common/components/Button.jsx";
 
 const EditEnrollmentModal = ({
     enrollment,
@@ -225,23 +226,15 @@ const EditEnrollmentModal = ({
                             Cancel
                         </button>
 
-                        <button
+
+                        <Button
+                            text={loading ? " Updating..." : "Save Changes"}
                             type="submit"
                             disabled={loading}
-                            className="flex items-center gap-2 rounded-xl bg-[#4935F5] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3826DB] disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {loading ? (
-                                <>
-                                    <LoaderCircle size={18} className="animate-spin" />
-                                    Updating...
-                                </>
-                            ) : (
-                                <>
-                                    <Save size={18} />
-                                    Save Changes
-                                </>
-                            )}
-                        </button>
+                            variant="primary"
+                            size="md"
+                            icon={Save}
+                        />
 
                     </div>
                 </form>

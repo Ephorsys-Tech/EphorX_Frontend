@@ -9,9 +9,11 @@ import {
   X,
   Clock,
   IndianRupee,
+  Save,
 } from "lucide-react";
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
+import Button from "../../common/components/Button";
 
 const getCourseFromResponse = (response) => {
   let result = response?.data ?? response;
@@ -151,26 +153,26 @@ export default function EditCourse() {
         setExistingImage(
           getFileUrl(
             course.imageUrl ||
-              course.courseImage ||
-              course.image ||
-              course.imageURL
+            course.courseImage ||
+            course.image ||
+            course.imageURL
           )
         );
 
         setExistingSyllabus(
           getFileUrl(
             course.syllabusUrl ||
-              course.syllabusPdf ||
-              course.syllabus ||
-              course.syllabusURL
+            course.syllabusPdf ||
+            course.syllabus ||
+            course.syllabusURL
           )
         );
       } catch (err) {
         if (active) {
           setError(
             err?.response?.data?.message ||
-              err.message ||
-              "Failed to load course details."
+            err.message ||
+            "Failed to load course details."
           );
         }
       } finally {
@@ -332,8 +334,8 @@ export default function EditCourse() {
     } catch (err) {
       setError(
         err?.response?.data?.message ||
-          err.message ||
-          "Failed to update course. Please try again."
+        err.message ||
+        "Failed to update course. Please try again."
       );
     } finally {
       setSaving(false);
@@ -706,13 +708,14 @@ export default function EditCourse() {
               Cancel
             </button>
 
-            <button
+            <Button
+              text={saving ? "Updating..." : "Save Course"}
               type="submit"
               disabled={saving}
-              className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </button>
+              variant="primary"
+              size="md"
+              icon={Save}
+            />
           </div>
         </form>
       </div>

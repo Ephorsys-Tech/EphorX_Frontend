@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -14,8 +14,10 @@ import {
   IndianRupee,
   BookOpen,
 } from "lucide-react";
+
 import courseApi from "../api/courseApi";
 import { categoryApi } from "../api/categoryApi";
+import EditCourseModal from "../modals/EditCourseModal";
 
 // Extract the course from common API response formats.
 const getCourseFromResponse = (response) => {
@@ -108,103 +110,97 @@ export default function ViewCourse() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    let cancelled = false;
+  // Edit modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const fetchCourse = async () => {
-      if (!id) {
-        setError("Course ID is missing.");
-        setLoading(false);
-        return;
+  // Fetch course details
+  const fetchCourse = useCallback(async () => {
+    if (!id) {
+      setError("Course ID is missing.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const [courseResponse, categoryResult] =
+        await Promise.allSettled([
+          courseApi.getById(id),
+          categoryApi.getAll(),
+        ]);
+
+      if (courseResponse.status === "rejected") {
+        throw courseResponse.reason;
       }
 
-      try {
-        setLoading(true);
-        setError("");
+      const courseData = getCourseFromResponse(
+        courseResponse.value
+      );
 
-        const [courseResponse, categoryResult] =
-          await Promise.allSettled([
-            courseApi.getById(id),
-            categoryApi.getAll(),
-          ]);
+      const fetchedCourse =
+        courseData?.course || courseData;
 
-        if (cancelled) return;
-
-        if (courseResponse.status === "rejected") {
-          throw courseResponse.reason;
-        }
-
-        const courseData = getCourseFromResponse(
-          courseResponse.value
+      if (
+        !fetchedCourse ||
+        typeof fetchedCourse !== "object" ||
+        !(
+          fetchedCourse._id ||
+          fetchedCourse.id ||
+          fetchedCourse.title
+        )
+      ) {
+        throw new Error(
+          "Course details were not found in the API response."
         );
-
-        const fetchedCourse =
-          courseData?.course || courseData;
-
-        if (
-          !fetchedCourse ||
-          typeof fetchedCourse !== "object" ||
-          !(
-            fetchedCourse._id ||
-            fetchedCourse.id ||
-            fetchedCourse.title
-          )
-        ) {
-          throw new Error(
-            "Course details were not found in the API response."
-          );
-        }
-
-        setCourse({
-          ...fetchedCourse,
-          _id: fetchedCourse._id || fetchedCourse.id || id,
-
-          // Match the backend Course schema.
-          imageUrl: getFileUrl(
-            fetchedCourse.imageUrl ||
-              fetchedCourse.courseImage ||
-              fetchedCourse.image ||
-              fetchedCourse.imageURL
-          ),
-
-          syllabusUrl: getFileUrl(
-            fetchedCourse.syllabusUrl ||
-              fetchedCourse.syllabusPdf ||
-              fetchedCourse.syllabus ||
-              fetchedCourse.syllabusURL
-          ),
-        });
-
-        if (categoryResult.status === "fulfilled") {
-          setCategories(
-            getCategoriesFromResponse(categoryResult.value)
-          );
-        } else {
-          setCategories([]);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setCourse(null);
-          setError(
-            err?.response?.data?.message ||
-              err?.message ||
-              "Failed to load course details."
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
       }
-    };
 
-    fetchCourse();
+      setCourse({
+        ...fetchedCourse,
+        _id: fetchedCourse._id || fetchedCourse.id || id,
 
-    return () => {
-      cancelled = true;
-    };
+        imageUrl: getFileUrl(
+          fetchedCourse.imageUrl ||
+            fetchedCourse.courseImage ||
+            fetchedCourse.image ||
+            fetchedCourse.imageURL
+        ),
+
+        syllabusUrl: getFileUrl(
+          fetchedCourse.syllabusUrl ||
+            fetchedCourse.syllabusPdf ||
+            fetchedCourse.syllabus ||
+            fetchedCourse.syllabusURL
+        ),
+      });
+
+      if (categoryResult.status === "fulfilled") {
+        setCategories(
+          getCategoriesFromResponse(categoryResult.value)
+        );
+      } else {
+        setCategories([]);
+      }
+    } catch (err) {
+      console.error("Failed to load course:", err);
+
+      setCourse(null);
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to load course details."
+      );
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
+  useEffect(() => {
+    fetchCourse();
+  }, [fetchCourse]);
+
+  // Category details
   const categoryId = getCategoryId(course);
 
   const categoryName =
@@ -225,21 +221,38 @@ export default function ViewCourse() {
   const courseImage = course?.imageUrl || "";
   const syllabusPdf = course?.syllabusUrl || "";
 
-  const backToCourses = () => navigate("/admin/course");
+  // Navigate back
+  const backToCourses = () => {
+    navigate("/admin/course");
+  };
 
+  // Open edit modal
   const editCourse = () => {
     if (course?._id) {
-      navigate(`/admin/edit-course/${course._id}`);
+      setIsEditModalOpen(true);
     }
   };
 
+  // Close edit modal
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  // After successful update
+  const handleCourseUpdated = async () => {
+    setIsEditModalOpen(false);
+    await fetchCourse();
+  };
+
+  // Loading state
   if (loading) {
     return (
-      <div className="flex min-h-64 items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <LoaderCircle
-          className="animate-spin text-indigo-600"
+          className="animate-spin text-blue-600"
           size={28}
         />
+
         <span className="ml-3 text-sm text-slate-500">
           Loading course details...
         </span>
@@ -247,10 +260,11 @@ export default function ViewCourse() {
     );
   }
 
+  // Error state
   if (error || !course) {
     return (
-      <div className="min-h-64 bg-slate-50 px-4 py-10 sm:px-6">
-        <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white p-8">
+      <div className="min-h-screen w-full bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
+        <div className="w-full rounded-2xl border border-slate-200 bg-white p-8">
           <p className="text-sm text-red-600">
             {error || "Course not found."}
           </p>
@@ -258,7 +272,7 @@ export default function ViewCourse() {
           <button
             type="button"
             onClick={backToCourses}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="mb-2 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             <ArrowLeft size={17} />
             Back to Courses
@@ -269,13 +283,16 @@ export default function ViewCourse() {
   }
 
   return (
-    <div className="w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+
+      {/* Full width page content */}
+      <div className="w-full">
+
         {/* Navigation */}
         <button
           type="button"
           onClick={backToCourses}
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-indigo-600"
+          className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-600"
         >
           <ArrowLeft size={18} />
           Back to Courses
@@ -296,7 +313,7 @@ export default function ViewCourse() {
           <button
             type="button"
             onClick={editCourse}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
           >
             <Pencil size={17} />
             Edit Course
@@ -304,14 +321,15 @@ export default function ViewCourse() {
         </div>
 
         {/* Course content */}
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
           {/* Course image */}
-          <div className="flex min-h-56 items-center justify-center bg-slate-100 sm:min-h-72">
+          <div className="flex min-h-56 w-full items-center justify-center overflow-hidden bg-slate-100 sm:min-h-80 lg:min-h-96">
             {courseImage ? (
               <img
                 src={courseImage}
                 alt={course.title || "Course image"}
-                className="h-56 w-full object-cover sm:h-72"
+                className="h-56 w-full object-cover sm:h-80 lg:h-96"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";
                 }}
@@ -319,6 +337,7 @@ export default function ViewCourse() {
             ) : (
               <div className="flex flex-col items-center gap-3 text-slate-400">
                 <ImageIcon size={52} strokeWidth={1.3} />
+
                 <span className="text-sm">
                   No course image available
                 </span>
@@ -326,7 +345,8 @@ export default function ViewCourse() {
             )}
           </div>
 
-          <div className="p-6 sm:p-8">
+          <div className="p-6 sm:p-8 lg:p-10">
+
             {/* Title and category */}
             <div className="border-b border-slate-100 pb-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700">
@@ -334,7 +354,7 @@ export default function ViewCourse() {
                 {categoryName}
               </span>
 
-              <h2 className="mt-4 text-2xl font-bold text-slate-900 sm:text-3xl">
+              <h2 className="mt-4 text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                 {course.title || "Untitled Course"}
               </h2>
 
@@ -350,6 +370,7 @@ export default function ViewCourse() {
               {course.duration && (
                 <p className="mt-3 flex items-center gap-2 text-sm text-slate-500">
                   <Clock size={16} />
+
                   Duration:{" "}
                   <span className="font-medium text-slate-700">
                     {course.duration}
@@ -360,6 +381,7 @@ export default function ViewCourse() {
               {course.createdAt && (
                 <p className="mt-3 flex items-center gap-2 text-sm text-slate-500">
                   <CalendarDays size={16} />
+
                   Created{" "}
                   {Number.isNaN(
                     new Date(course.createdAt).getTime()
@@ -373,7 +395,7 @@ export default function ViewCourse() {
             </div>
 
             {/* Pricing */}
-            <section className="border-b border-slate-100 py-6">
+            <section className="border-b border-slate-100 py-8">
               <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900">
                 <IndianRupee size={20} />
                 Course Pricing
@@ -403,7 +425,7 @@ export default function ViewCourse() {
             </section>
 
             {/* Description */}
-            <section className="py-6">
+            <section className="py-8">
               <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
                 <BookOpen size={20} />
                 Course Description
@@ -415,7 +437,7 @@ export default function ViewCourse() {
             </section>
 
             {/* Syllabus */}
-            <section className="border-t border-slate-100 py-6">
+            <section className="border-t border-slate-100 py-8">
               <h3 className="mb-4 text-lg font-semibold text-slate-900">
                 Course Syllabus
               </h3>
@@ -431,6 +453,7 @@ export default function ViewCourse() {
                       <p className="text-sm font-semibold text-slate-800">
                         Course Syllabus PDF
                       </p>
+
                       <p className="mt-1 text-xs text-slate-500">
                         View the course learning materials
                       </p>
@@ -495,6 +518,14 @@ export default function ViewCourse() {
           </div>
         </div>
       </div>
+
+      {/* Edit Course Modal */}
+      <EditCourseModal
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        courseId={course?._id}
+        onUpdated={handleCourseUpdated}
+      />
     </div>
   );
 }
