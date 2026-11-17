@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
 
 const stats = [
-  { value: 10000, suffix: "+", label: "Active Members" },
-  { value: 20, suffix: "+", label: "Courses Available" },
+  { value: 1000, suffix: "+", label: "Active Members" },
+  { value: 10, suffix: "+", label: "Courses Available" },
   { value: 4.9, suffix: "/5", label: "Student Rating", decimal: true },
-  { value: 25, suffix: "+", label: "Expert Mentors" },
+  { value: 15, suffix: "+", label: "Expert Mentors" },
 ];
 
 export default function StatsSection() {
