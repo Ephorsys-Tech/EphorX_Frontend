@@ -219,7 +219,7 @@ export default function AddCourseModal({ isOpen, onClose }) {
             isOpen={isOpen}
             onClose={onClose}
             title="Add New Course"
-            size="xl"
+            size="md"
         >
             <div className="mb-6">
                 <p className="text-sm text-slate-500">

@@ -168,7 +168,7 @@ export default function AddJobApplication() {
   };
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+   <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate("/admin/apply-jobs")}
@@ -182,7 +182,7 @@ export default function AddJobApplication() {
         <h1 className="text-2xl font-bold text-gray-900">
           Add Job Application
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="py-2 text-sm text-gray-500">
           Manually add a candidate's job application.
         </p>
       </div>

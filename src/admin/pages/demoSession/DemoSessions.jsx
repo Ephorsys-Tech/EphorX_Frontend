@@ -110,16 +110,16 @@ const DemoSessions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
 
       {/* Header */}
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Demo Sessions
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500">
             Manage all demo session booking requests.
           </p>
         </div>
@@ -282,7 +282,7 @@ const DemoSessions = () => {
               className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
             >
               <Plus size={17} />
-              Add Demo Session
+             Add Demo Sessions
             </button>
           )}
         </div>

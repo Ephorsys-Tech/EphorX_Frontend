@@ -198,11 +198,11 @@ const CollegeTieUp = () => {
             {/* Page Heading */}
             <div className="mb-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
                 <div>
-                    <h1 className="text-lg font-bold tracking-tight sm:text-4xl">
+                     <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                         College Tie-Ups
                     </h1>
 
-                    <p className="mt-2 text-[#718096]">
+                   <p className="mt-2 text-sm text-gray-500">
                         Manage, view, edit and delete your partner colleges.
                     </p>
                 </div>

@@ -144,14 +144,14 @@ const AddTrainer = () => {
     "mb-2 block text-sm font-semibold text-slate-700";
 
   return (
-    <div className="min-h-screen w-full  bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-none">
         {/* Page Header */}
         <div className="mb-8">
           <button
             type="button"
             onClick={() => navigate("/admin/trainers")}
-            className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-indigo-600"
+            className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-indigo-600"
           >
             <ArrowLeft size={17} />
             Back to Trainers

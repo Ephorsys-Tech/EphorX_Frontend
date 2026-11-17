@@ -11,7 +11,7 @@ const RefreshButton = ({
       type="button"
       onClick={onClick}
       disabled={loading}
-      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border bg-blue-600 px-3 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
       <RefreshCw
         size={16}

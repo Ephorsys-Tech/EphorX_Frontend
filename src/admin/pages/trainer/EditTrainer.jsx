@@ -168,7 +168,7 @@ const EditTrainer = () => {
     }
 
     return (
-        <div className="min-h-screen w-full bg-gray-50 px-4 py-1 sm:px-6 lg:px-8">
+        <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-none">
                 {/* Header */}
                 <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -176,7 +176,7 @@ const EditTrainer = () => {
                         <button
                             type="button"
                             onClick={() => navigate("/admin/trainers")}
-                            className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+                            className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
                         >
                             <ArrowLeft size={17} />
                             Back to Trainers

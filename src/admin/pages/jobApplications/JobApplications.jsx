@@ -119,14 +119,14 @@ export default function JobApplications() {
   ).size;
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       {/* Page heading and actions */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Job Applications
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500">
             Manage candidates who have applied for your job openings.
           </p>
         </div>

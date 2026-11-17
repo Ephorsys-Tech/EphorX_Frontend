@@ -190,28 +190,30 @@ export default function AddJob() {
     "mb-2 block text-sm font-semibold text-gray-700";
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
+   
+<div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+  <div className="mx-auto max-w-none">
 
-        {/* Header */}
-        <div className="mb-7">
-          <button
-            type="button"
-            onClick={() => navigate("/admin/jobs")}
-            className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-blue-600"
-          >
-            <ArrowLeft size={18} />
-            Back to Jobs
-          </button>
+    {/* Header */}
+    <div className="mb-8">
+      <button
+        type="button"
+        onClick={() => navigate("/admin/jobs")}
+        className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+      >
+        <ArrowLeft size={17} />
+        Back to Jobs
+      </button>
 
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            Add New Job
-          </h1>
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+        Add New Job
+      </h1>
 
-          <p className="mt-2 text-sm text-gray-500">
-            Fill in the details below to create a new job opening.
-          </p>
-        </div>
+      <p className="mt-2 text-sm text-gray-500">
+        Fill in the details below to create a new job opening.
+      </p>
+    </div>
+
 
         {/* Error Message */}
         {error && (

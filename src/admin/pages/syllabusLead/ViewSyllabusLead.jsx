@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil, DownloadCloud  } from "lucide-react";
+import { ArrowLeft, Pencil, DownloadCloud } from "lucide-react";
 import { getSyllabusLeadById } from "../../api/syllabusLeadApi";
 
 const ViewSyllabusLead = () => {
@@ -45,77 +45,84 @@ const ViewSyllabusLead = () => {
     ];
 
     return (
-        <div className="p-4 md:p-6">
-            <button
-                onClick={() => navigate("/admin/syllabus-lead")}
-                className="mb-7 flex items-center gap-3 text-[17px] font-medium text-slate-600 transition hover:text-blue-600"
-            >
-                <ArrowLeft size={17} /> Back to Syllabus Leads
-            </button>
-
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-                        Syllabus Lead Details
-                    </h1>
-                    <p className="text-gray-500 mt-1">
-                        View the complete information submitted for this syllabus request.
-                    </p>
-                </div>
-
-                {lead && (
+        <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-none">
+                {/* Header */}
+                <div className="mb-8">
                     <button
-                        onClick={() => navigate(`/admin/edit-lead/${id}`)}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                        type="button"
+                        onClick={() => navigate("/admin/syllabus-lead")}
+                        className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
                     >
-                        <Pencil size={16} /> Edit Lead
+                        <ArrowLeft size={17} />
+                        Back to Syllabus Leads
                     </button>
-                )}
-            </div>
 
-            {loading ? (
-                <p className="text-gray-500 py-10">Loading lead details...</p>
-            ) : error ? (
-                <div className="p-4 bg-red-50 text-red-600 rounded-lg">{error}</div>
-            ) : !lead ? (
-                <p className="text-gray-500">Lead not found.</p>
-            ) : (
-                <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-7">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {fields.map(([label, value]) => (
-                            <div key={label} className="border-b border-gray-100 pb-4">
-                                <p className="text-sm text-gray-500 mb-1">{label}</p>
-                                <p className="font-medium text-gray-900 wrap-break-word">
-                                    {value || "—"}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                        <div>
+                            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                                Syllabus Lead Details
+                            </h1>
+                            <p className="mt-2 text-sm text-gray-500">
+                                View the complete information submitted for this syllabus request.
+                            </p>
+                        </div>
 
-
-                    <div className="mt-6">
-                        <p className="text-sm text-gray-500 mb-2">Syllabus PDF</p>
-
-                        {lead.syllabusUrl ? (
-                            <a
-                                href={lead.syllabusUrl}
-                                download
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                        {lead && (
+                            <button
+                                onClick={() => navigate(`/admin/edit-lead/${id}`)}
+                                className="flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700"
                             >
-                                <DownloadCloud size={17} />
-                                Download Syllabus PDF
-                            </a>
-                        ) : (
-                            <p className="text-gray-500">No syllabus available.</p>
+                                <Pencil size={16} />
+                                Edit Lead
+                            </button>
                         )}
                     </div>
-
                 </div>
-            )}
+
+                {loading ? (
+                    <p className="text-gray-500 py-10">Loading lead details...</p>
+                ) : error ? (
+                    <div className="p-4 bg-red-50 text-red-600 rounded-lg">{error}</div>
+                ) : !lead ? (
+                    <p className="text-gray-500">Lead not found.</p>
+                ) : (
+                    <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-7">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {fields.map(([label, value]) => (
+                                <div key={label} className="border-b border-gray-100 pb-4">
+                                    <p className="text-sm text-gray-500 mb-1">{label}</p>
+                                    <p className="font-medium text-gray-900 wrap-break-word">
+                                        {value || "—"}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+
+
+                        <div className="mt-6">
+                            <p className="text-sm text-gray-500 mb-2">Syllabus PDF</p>
+
+                            {lead.syllabusUrl ? (
+                                <a
+                                    href={lead.syllabusUrl}
+                                    download
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                                >
+                                    <DownloadCloud size={17} />
+                                    Download Syllabus PDF
+                                </a>
+                            ) : (
+                                <p className="text-gray-500">No syllabus available.</p>
+                            )}
+                        </div>
+
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
-
 export default ViewSyllabusLead;

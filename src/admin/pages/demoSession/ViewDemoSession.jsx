@@ -109,40 +109,41 @@ const ViewDemoSession = () => {
     if (!booking) return null;
 
     return (
-        <div className="min-h-screen w-full p-4 md:p-6">
-
-            {/* Header */}
-            <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                <div>
-                    <button
-                        onClick={() => navigate("/admin/book-demo")}
-                        className="mb-7 flex items-center gap-3 text-[17px] font-medium text-slate-600 transition hover:text-blue-600"
-                    >
-                        <ArrowLeft size={22} />
-                        Back to Demo Sessions
-                    </button>
-
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-800">
-                            View Demo Request
-                        </h1>
-
-                        <p className="text-sm text-gray-500">
-                            View complete demo booking details.
-                        </p>
-                    </div>
-                </div>
-
-                <button
-                    onClick={() =>
-                        navigate(`/admin/edit-demo/${booking._id}`)
-                    }
-                    className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                    <Pencil size={17} />
-                    Edit Demo Request
-                </button>
-            </div>
+       
+ <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+     <div className="mx-auto max-w-none">
+         {/* Header */}
+         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+             <div>
+                 <button
+                     type="button"
+                     onClick={() => navigate("/admin/book-demo")}
+                     className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+                 >
+                     <ArrowLeft size={17} />
+                     Back to Demo Sessions
+                 </button>
+ 
+                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                     View Demo Request
+                 </h1>
+ 
+                 <p className="mt-2 text-sm text-gray-500">
+                     View complete demo booking details.
+                 </p>
+             </div>
+ 
+             <button
+                 type="button"
+                 onClick={() =>
+                     navigate(`/admin/edit-demo/${booking._id}`)
+                 }
+                 className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+             >
+                 <Pencil size={17} />
+                 Edit Demo Request
+             </button>
+         </div>
 
             {/* Full Width Details Card */}
             <div className="w-full max-w-none rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7 lg:p-9">
@@ -247,6 +248,7 @@ const ViewDemoSession = () => {
                     />
                 </div>
             </div>
+        </div>
         </div>
     );
 };

@@ -198,7 +198,7 @@ const AddWebinar = () => {
   const labelClass = "text-sm font-medium text-gray-700";
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       {/* Page heading */}
       <div className="mb-7">
         <button

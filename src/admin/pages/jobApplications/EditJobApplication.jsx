@@ -162,11 +162,11 @@ export default function EditJobApplication() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(`/admin/view-job-application/${id}`)}
-        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600"
+        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 "
       >
         <ArrowLeft size={18} />
         Back to Application

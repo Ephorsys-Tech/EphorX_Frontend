@@ -378,7 +378,7 @@ export default function EditCourseModal({
             isOpen={isOpen}
             onClose={onClose}
             title="Edit Course"
-            size="xl"
+            size="md"
             showCloseButton={!saving}
         >
             {loading ? (

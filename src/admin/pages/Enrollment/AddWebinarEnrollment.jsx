@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { X, Plus, LoaderCircle } from "lucide-react";
 import { createWebinarEnrollment } from "../../api/webEnrollApi.js";
+import Button from "../../../common/components/Button.jsx";
 
 const AddWebinarEnrollment = ({
     webinarId = "",

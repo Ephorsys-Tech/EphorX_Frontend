@@ -213,7 +213,7 @@ const ViewWebinar = () => {
   const instructor = webinar.instructor || {};
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

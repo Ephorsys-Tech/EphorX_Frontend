@@ -115,29 +115,31 @@ const EditDemoSession = () => {
     }
 
     return (
-        <div className="min-h-screen w-full px-4 py-4 md:px-6 md:py-6">
-
-            {/* Back Button */}
+       
+<div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-none">
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <button
+                    type="button"
                     onClick={() => navigate("/admin/book-demo")}
-                    className="mb-7 flex items-center gap-3 text-[17px] font-medium text-slate-600 transition hover:text-blue-600"
+                    className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
                 >
-                    <ArrowLeft size={22} />
+                    <ArrowLeft size={17} />
                     Back to Demo Sessions
                 </button>
 
-                {/* Page Heading */}
-                <div className="mb-1">
-                    <h1 className="text-2xl font-bold text-gray-800">
-                        Edit Demo Session
-                    </h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                    Edit Demo Request
+                </h1>
 
-                    <p className="text-sm text-gray-500">
-                        Update the demo session booking details.
-                    </p>
-                </div>
+                <p className="mt-2 text-sm text-gray-500">
+                    Edit complete demo booking details.
+                </p>
             </div>
+        </div>
+    
 
             {/* Full Width Form */}
             <form
@@ -286,6 +288,8 @@ const EditDemoSession = () => {
                 </div>
             </form>
         </div>
+        </div>
+
     );
 };
 

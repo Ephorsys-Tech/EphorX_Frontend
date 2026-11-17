@@ -37,7 +37,7 @@ const LogoutModal = ({ onClose }) => {
 
       localStorage.removeItem("token");
       onClose();
-      navigate("/login", { replace: true });
+      navigate("/admin/", { replace: true });
     } catch (err) {
       setError(err.message || "Logout failed. Please try again.");
     } finally {

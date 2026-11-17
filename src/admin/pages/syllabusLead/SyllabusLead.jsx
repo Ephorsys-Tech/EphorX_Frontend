@@ -89,16 +89,16 @@ const SyllabusLeads = () => {
     };
 
     return (
-        <div className="px-4 md:px-6 space-y-6">
+         <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-4 lg:px-8 space-y-6">
 
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                         Syllabus Leads
                     </h1>
 
-                    <p className="text-gray-500 mt-1">
+                    <p className="mt-2 text-sm text-gray-500">
                         View and manage people who requested course syllabuses.
                     </p>
                 </div>

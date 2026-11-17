@@ -81,22 +81,22 @@ const ViewTrainer = () => {
 
   if (error || !trainer) {
     return (
-      <div className="min-h-screen w-full bg-gray-50 px-4  sm:px-6 lg:px-8">
-        <div className="w-full rounded-2xl border border-red-200 bg-white p-8 text-center shadow-sm">
+      <div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="w-full rounded-2xl border border-red-200 bg-white  text-center shadow-sm">
           <UserRound className="mx-auto h-12 w-12 text-gray-400" />
 
           <h1 className="mt-4 text-xl font-bold text-gray-900">
             Unable to Load Trainer
           </h1>
 
-          <p className="mt-2 text-sm text-red-600">
+          <p className="text-sm text-red-600">
             {error || "Trainer not found."}
           </p>
 
           <button
             type="button"
             onClick={() => navigate("/admin/trainers")}
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white transition hover:bg-indigo-700"
           >
             <ArrowLeft size={17} />
             Back to Trainers
@@ -107,7 +107,7 @@ const ViewTrainer = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+<div className="min-h-screen w-full  bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
 
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -115,7 +115,7 @@ const ViewTrainer = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/trainers")}
-            className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+            className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
           >
             <ArrowLeft size={17} />
             Back to Trainers

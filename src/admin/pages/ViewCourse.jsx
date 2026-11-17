@@ -272,7 +272,7 @@ export default function ViewCourse() {
           <button
             type="button"
             onClick={backToCourses}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="mb-2 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             <ArrowLeft size={17} />
             Back to Courses
@@ -283,7 +283,7 @@ export default function ViewCourse() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
 
       {/* Full width page content */}
       <div className="w-full">
@@ -292,7 +292,7 @@ export default function ViewCourse() {
         <button
           type="button"
           onClick={backToCourses}
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-600"
+          className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-blue-600"
         >
           <ArrowLeft size={18} />
           Back to Courses
