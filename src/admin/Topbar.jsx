@@ -1,18 +1,18 @@
+
 import { Menu, User, Maximize, Minimize } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 import logo from "../assets/Logo.png"
 
 const TopBar = ({ setSidebarOpen }) => {
   const dropdownRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false)
 
-  // Static admin details (replace when needed)
-  const admin = {
-    name: 'Admin',
-    role: 'Administrator'
-  }
+  const { admin } = useAuth()
+
+  const adminName = admin?.name || admin?.fullName || 'Admin'
 
   // Toggle Fullscreen
   const toggleFullscreen = async () => {
@@ -55,7 +55,7 @@ const TopBar = ({ setSidebarOpen }) => {
     }
   }, [])
 
-  const initials = admin.name
+  const initials = adminName
     .split(' ')
     .map(name => name[0])
     .join('')
@@ -64,6 +64,7 @@ const TopBar = ({ setSidebarOpen }) => {
 
   return (
     <header className='relative z-10 bg-white border-b border-slate-200 px-6 h-15 flex items-center justify-between shrink-0'>
+
       {/* Left */}
       <div className="flex items-center">
         <button
@@ -86,6 +87,7 @@ const TopBar = ({ setSidebarOpen }) => {
 
       {/* Right */}
       <div className='flex items-center gap-3'>
+
         {/* Fullscreen Button */}
         <button
           type='button'
@@ -96,7 +98,7 @@ const TopBar = ({ setSidebarOpen }) => {
           {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
         </button>
 
-        {/* Profile Dropdown */}
+        {/* Profile */}
         <div className='relative' ref={dropdownRef}>
           <button
             type='button'
@@ -104,11 +106,11 @@ const TopBar = ({ setSidebarOpen }) => {
           >
             <div className='hidden sm:block text-right'>
               <p className='text-[13px] font-medium text-slate-800 leading-tight'>
-                {admin.name}
+                {adminName}
               </p>
 
               <p className='text-[11px] uppercase tracking-wider text-slate-400 leading-tight'>
-                {admin.role}
+                Administrator
               </p>
             </div>
 
@@ -116,7 +118,6 @@ const TopBar = ({ setSidebarOpen }) => {
               <User size={18} />
             </div>
           </button>
-
         </div>
       </div>
     </header>

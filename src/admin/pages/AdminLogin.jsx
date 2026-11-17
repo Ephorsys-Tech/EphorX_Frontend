@@ -18,7 +18,7 @@ import {
 
 import { useAuth } from '../../context/AuthContext.jsx'
 
-export default function App () {
+export default function AdminLogin () {
   const navigate = useNavigate()
   const { login } = useAuth()
 
@@ -54,23 +54,24 @@ export default function App () {
     }
   }
 
+  
   // Admin Login
-  const handleLogin = (loginEmail, password, rememberMe) => {
-    return runRequest(
-      () => loginAdmin(loginEmail, password, rememberMe),
-      data => {
-        if (!data.token) {
-          throw new Error('Login token not received from server.')
-        }
-
-        // Save authentication token
-        login(data.token)
-
-        // Redirect to admin dashboard
-        navigate('/admin/dashboard', { replace: true })
+const handleLogin = (loginEmail, password, rememberMe) => {
+  return runRequest(
+    () => loginAdmin(loginEmail, password, rememberMe),
+    data => {
+      if (!data.token) {
+        throw new Error('Login token not received from server.')
       }
-    )
-  }
+
+      // Save authentication token and admin details
+      login(data.token, data.user)
+
+      // Redirect to admin dashboard
+      navigate('/admin/dashboard', { replace: true })
+    }
+  )
+}
 
   // Request Forgot Password OTP
   const handleRequestOtp = emailAddress => {

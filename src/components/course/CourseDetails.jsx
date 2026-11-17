@@ -16,7 +16,7 @@ import {
 import Modal from "../../ui/Modal";
 import CourseEnrollModal from "../modal/CourseEnrollModal";
 import SyllabusRequestModal from "../modal/SyllabusRequestModal";
-import courseApi from "../../admin/api/courseApi.js"; 
+import courseApi from "../../admin/api/courseApi.js";
 
 const formatPrice = (value) => {
   const number = Number(String(value ?? "").replace(/[^\d.]/g, ""));
@@ -106,11 +106,11 @@ export default function CourseDetails() {
         if (!selectedCourse || typeof selectedCourse !== "object") {
           throw new Error("Course not found.");
         }
-
         if (isMounted) {
           setCourse({
             ...selectedCourse,
-            category: selectedCourse.categoryName || "Other",
+
+            category: selectedCourse.categoryId?.name || "Other",
             image: selectedCourse.imageUrl,
             syllabus: selectedCourse.syllabusUrl,
             price: selectedCourse.discountPrice,
@@ -153,11 +153,11 @@ export default function CourseDetails() {
   const discount =
     originalPrice > 0 && discountedPrice >= 0
       ? Math.max(
-          0,
-          Math.round(
-            ((originalPrice - discountedPrice) / originalPrice) * 100
-          )
+        0,
+        Math.round(
+          ((originalPrice - discountedPrice) / originalPrice) * 100
         )
+      )
       : 0;
 
   const backLink =
