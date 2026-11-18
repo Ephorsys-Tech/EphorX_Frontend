@@ -23,7 +23,6 @@ export default function AdminLogin () {
   const { login } = useAuth()
 
   const [screen, setScreen] = useState('login')
-
   const [email, setEmail] = useState('')
   const [resetEmail, setResetEmail] = useState('')
   const [resetToken, setResetToken] = useState('')
@@ -54,24 +53,27 @@ export default function AdminLogin () {
     }
   }
 
-  
-  // Admin Login
-const handleLogin = (loginEmail, password, rememberMe) => {
-  return runRequest(
-    () => loginAdmin(loginEmail, password, rememberMe),
-    data => {
-      if (!data.token) {
-        throw new Error('Login token not received from server.')
+  // Admin Login - Cookie Based Authentication
+  const handleLogin = (loginEmail, password) => {
+    return runRequest(
+      () => loginAdmin(loginEmail, password),
+      data => {
+        const adminData =
+          data.admin || data.user || data.data?.admin || data.data?.user
+
+        if (!adminData) {
+          throw new Error('Admin details not received from server.')
+        }
+
+        // Update authentication state
+        // Token is stored in HTTP-only cookie by backend
+        login(adminData)
+
+        // Redirect to dashboard
+        navigate('/admin/dashboard', { replace: true })
       }
-
-      // Save authentication token and admin details
-      login(data.token, data.user)
-
-      // Redirect to admin dashboard
-      navigate('/admin/dashboard', { replace: true })
-    }
-  )
-}
+    )
+  }
 
   // Request Forgot Password OTP
   const handleRequestOtp = emailAddress => {
@@ -132,13 +134,11 @@ const handleLogin = (loginEmail, password, rememberMe) => {
     )
   }
 
-  // Change Authentication Screen
   const goToScreen = nextScreen => {
     clearMessages()
     setScreen(nextScreen)
   }
 
-  // Back to Login
   const backToLogin = () => {
     clearMessages()
     setResetToken('')

@@ -16,7 +16,7 @@ const LINKS = [
   { label: 'FAQ', to: '/faq' }
 ]
 
-const PHONE = '+91 00000 00000'
+const PHONE = '+91 95564 73002'
 const EMAIL = 'info@ephorx.com'
 
 function Logo() {

@@ -1,37 +1,63 @@
-
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { getAdminProfile, logoutAdmin } from '../admin/api/authApi'
 
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => !!localStorage.getItem('adminToken')
-  )
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [admin, setAdmin] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const [admin, setAdmin] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('adminDetails')) || null
-    } catch {
-      return null
+  // Restore session using HTTP-only cookie
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const response = await getAdminProfile()
+
+        const adminData =
+          response.admin || response.data?.admin || response.data || response
+
+        setAdmin(adminData)
+        setIsAuthenticated(true)
+      } catch (error) {
+        setAdmin(null)
+        setIsAuthenticated(false)
+      } finally {
+        setLoading(false)
+      }
     }
-  })
 
-  const login = (token, adminDetails) => {
-    localStorage.setItem('adminToken', token)
-    localStorage.setItem('adminDetails', JSON.stringify(adminDetails))
+    restoreSession()
+  }, [])
+
+  // Login
+  const login = adminDetails => {
     setAdmin(adminDetails)
     setIsAuthenticated(true)
   }
 
-  const logout = () => {
-    localStorage.removeItem('adminToken')
-    localStorage.removeItem('adminDetails')
-    setAdmin(null)
-    setIsAuthenticated(false)
+  // Logout
+  const logout = async () => {
+    try {
+      await logoutAdmin()
+    } catch (error) {
+      console.error('Logout error:', error.message)
+    } finally {
+      setAdmin(null)
+      setIsAuthenticated(false)
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, admin, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        admin,
+        loading,
+        login,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
