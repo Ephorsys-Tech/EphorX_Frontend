@@ -256,6 +256,8 @@ const ViewWebinar = () => {
                 <img
                   src={webinar.thumbnail}
                   alt={webinar.title || "Webinar thumbnail"}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               ) : (
@@ -371,6 +373,8 @@ const ViewWebinar = () => {
                 <img
                   src={instructor.avatar}
                   alt={instructor.name || "Instructor"}
+                  loading="lazy"
+                  decoding="async"
                   className="h-20 w-20 rounded-2xl object-cover"
                 />
               ) : (

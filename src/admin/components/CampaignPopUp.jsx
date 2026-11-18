@@ -114,6 +114,8 @@ const CampaignPopup = () => {
                 <motion.img
                   src={campaign.campaignImage}
                   alt={campaign.title}
+                  loading="lazy"
+                  decoding="async"
                   initial={{ scale: 1.04 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.8 }}
@@ -166,11 +168,10 @@ const CampaignPopup = () => {
                         type="button"
                         onClick={() => setCurrentIndex(index)}
                         aria-label={`Go to campaign ${index + 1}`}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          currentIndex === index
+                        className={`h-2 rounded-full transition-all duration-300 ${currentIndex === index
                             ? "w-8 bg-[#6cae9f]"
                             : "w-2 bg-[#b9b1a5]"
-                        }`}
+                          }`}
                       />
                     ))}
                   </div>

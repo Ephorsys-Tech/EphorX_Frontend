@@ -67,6 +67,8 @@ const CollegeTieUp = () => {
                 <img
                   src={college.collegeLogo}
                   alt={college.collegeName}
+                  loading="lazy"
+                  decoding="async"
                   className="h-26 w-28 rounded-xl border border-blue-100 bg-white object-contain p-2 shadow-sm"
                 />
               ) : (

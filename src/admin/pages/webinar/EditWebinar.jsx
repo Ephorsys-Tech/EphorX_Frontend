@@ -438,6 +438,8 @@ const EditWebinar = () => {
                                     <img
                                         src={thumbnailPreview}
                                         alt="Webinar thumbnail preview"
+                                        loading="lazy"
+                                        decoding="async"
                                         className="h-48 w-full object-cover"
                                     />
                                 ) : (
@@ -470,6 +472,8 @@ const EditWebinar = () => {
                                         <img
                                             src={avatarPreview}
                                             alt="Instructor avatar preview"
+                                            loading="lazy"
+                                            decoding="async"
                                             className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-sm"
                                         />
                                     ) : (
@@ -689,7 +693,7 @@ const EditWebinar = () => {
                     </button>
 
                     <Button
-                    text={saving ? "Saving Changes..." : "Save Changes"}
+                        text={saving ? "Saving Changes..." : "Save Changes"}
                         type="submit"
                         disabled={saving}
                         icon={Save}

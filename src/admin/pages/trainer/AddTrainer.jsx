@@ -198,6 +198,8 @@ const AddTrainer = () => {
                         <img
                           src={avatarPreview}
                           alt="Trainer preview"
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-cover"
                         />
                       ) : (
@@ -469,11 +471,11 @@ const AddTrainer = () => {
               </button>
 
               <Button
-              text= {loading ? "Saving Trainer..." : "Save Trainer"}
+                text={loading ? "Saving Trainer..." : "Save Trainer"}
                 type="submit"
                 disabled={loading}
                 icon={Save}
-             />
+              />
             </div>
           </div>
         </form>

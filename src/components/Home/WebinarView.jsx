@@ -15,6 +15,8 @@ function WebinarImage ({ src, alt }) {
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
         className='h-full w-full object-cover'
       />
@@ -39,6 +41,8 @@ function SpeakerPhoto ({ src, name }) {
       <img
         src={src}
         alt={name}
+        loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
         className='h-[72px] w-[72px] shrink-0 rounded-full border border-slate-200 object-cover'
       />

@@ -356,6 +356,8 @@ const AddWebinar = () => {
                   <img
                     src={thumbnailPreview}
                     alt="Webinar thumbnail preview"
+                    loading="lazy"
+                    decoding="async"
                     className="h-48 w-full object-cover"
                   />
                 ) : (
@@ -396,6 +398,8 @@ const AddWebinar = () => {
                     <img
                       src={avatarPreview}
                       alt="Instructor avatar preview"
+                      loading="lazy"
+                      decoding="async"
                       className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-sm"
                     />
                   ) : (
@@ -625,7 +629,7 @@ const AddWebinar = () => {
           </button>
 
           <Button
-          text= {saving ? "Creating Webinar..." : "Create Webinar"}
+            text={saving ? "Creating Webinar..." : "Create Webinar"}
             type="submit"
             disabled={saving}
             icon={Save}

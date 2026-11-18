@@ -46,7 +46,8 @@ const socialLinks = [
     label: 'Instagram',
     icon: FaInstagram,
     url: 'https://www.instagram.com/',
-    hover:  'bg-gradient-to-tr hover:from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF] ', },
+    hover: 'bg-gradient-to-tr hover:from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF] ',
+  },
   {
     label: 'LinkedIn',
     icon: FaLinkedinIn,
@@ -96,17 +97,16 @@ const SlideIndicators = ({ activeSlide, onChange }) => (
         aria-label={`Show slide ${index + 1}`}
         aria-pressed={activeSlide === index}
         onClick={() => onChange(index)}
-        className={`h-1.5 rounded-full transition-all duration-300 ${
-          activeSlide === index
+        className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === index
             ? 'w-8 bg-blue-700'
             : 'w-3 bg-blue-200 hover:bg-blue-400'
-        }`}
+          }`}
       />
     ))}
   </div>
 )
 
-export default function HeroSection () {
+export default function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0)
 
   useEffect(() => {
@@ -182,28 +182,28 @@ export default function HeroSection () {
           />
 
 
-         {/* Social links */}
-<div className="mt-8 flex items-center gap-3">
-  <span className="text-sm font-medium text-slate-500">
-    Follow us
-  </span>
+          {/* Social links */}
+          <div className="mt-8 flex items-center gap-3">
+            <span className="text-sm font-medium text-slate-500">
+              Follow us
+            </span>
 
-  <div className="flex gap-2">
-    {socialLinks.map(({ label, icon: Icon, url, hover }) => (
-      <a
-        key={label}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={label}
-        title={label}
-        className={`flex h-9 w-9 items-center justify-center rounded-full border border-slate-200  text-slate-200 transition-all duration-300 ${hover} hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600`}
-      >
-        <Icon size={15} />
-      </a>
-    ))}
-  </div>
-</div>
+            <div className="flex gap-2">
+              {socialLinks.map(({ label, icon: Icon, url, hover }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className={`flex h-9 w-9 items-center justify-center rounded-full border border-slate-200  text-slate-200 transition-all duration-300 ${hover} hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600`}
+                >
+                  <Icon size={15} />
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Right image */}
@@ -223,6 +223,9 @@ export default function HeroSection () {
             <img
               src={HeroImage}
               alt='Student enjoying a learning experience'
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className='h-full w-full object-cover'
             />
             <div className='absolute inset-0 bg-gradient-to-t from-blue-950/25 via-transparent to-transparent' />

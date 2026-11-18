@@ -127,6 +127,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <img
               src={logo}
               alt="EPhorX Logo"
+              loading="eager"
+              decoding="async"
               className="h-15"
               onError={(event) => {
                 event.currentTarget.style.display = "none";

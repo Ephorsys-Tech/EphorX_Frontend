@@ -292,6 +292,8 @@ const Trainer = () => {
                             <img
                               src={trainer.avatar}
                               alt={trainer.name || "Trainer"}
+                              loading="lazy"
+                              decoding="async"
                               className="h-11 w-11 rounded-full border border-slate-200 object-cover"
                             />
                           ) : (

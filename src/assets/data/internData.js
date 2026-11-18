@@ -133,7 +133,7 @@ export const internsRow1 = [
     photo:pratikhya,
   },
    {
-    name: " prasanta ojha",
+    name: " Prasanta ojha",
     college: "GIFT Autonomous,Bhubaneswar",
     photo: prasanta,
   },

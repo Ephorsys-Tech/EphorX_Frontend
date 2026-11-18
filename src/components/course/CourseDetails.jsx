@@ -34,6 +34,8 @@ function CourseImage({ src, alt }) {
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
         className="h-full w-full object-cover"
       />

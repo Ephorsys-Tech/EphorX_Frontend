@@ -153,6 +153,8 @@ const ViewTrainer = () => {
                 <img
                   src={trainer.avatar}
                   alt={trainer.name || "Trainer"}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               ) : (

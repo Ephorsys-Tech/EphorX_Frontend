@@ -597,6 +597,8 @@ export default function EditCourse() {
                     <img
                       src={existingImage}
                       alt="Current course"
+                      loading="lazy"
+                      decoding="async"
                       className="mb-2 h-24 w-full rounded-lg object-cover"
                     />
                     <span className="text-sm text-slate-600">

@@ -31,6 +31,7 @@ function ExpertItem ({ expert, index, onViewDetails }) {
               src={expert.image}
               alt={expert.name}
               loading='lazy'
+              decoding="async"
               onError={() => setFailed(true)}
               className='h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105'
             />

@@ -84,6 +84,9 @@ const AboutHero = () => {
             <img
               src={aboutImage}
               alt="EphorX learning and technology"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           </div>

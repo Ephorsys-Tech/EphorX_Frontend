@@ -198,11 +198,11 @@ const CollegeTieUp = () => {
             {/* Page Heading */}
             <div className="mb-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
                 <div>
-                     <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                    <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                         College Tie-Ups
                     </h1>
 
-                   <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-gray-500">
                         Manage, view, edit and delete your partner colleges.
                     </p>
                 </div>
@@ -315,6 +315,8 @@ const CollegeTieUp = () => {
                                             <img
                                                 src={college.collegeLogo}
                                                 alt={college.collegeName}
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="h-full w-full object-contain p-2"
                                             />
                                         ) : (
@@ -438,6 +440,8 @@ const CollegeTieUp = () => {
                                     <img
                                         src={selectedCollege?.collegeLogo}
                                         alt={selectedCollege?.collegeName}
+                                        loading="eager"
+                                        decoding="async"
                                         className="h-25 w-25 object-contain"
                                     />
                                 </div>
@@ -508,6 +512,8 @@ const CollegeTieUp = () => {
                                                 selectedCollege?.collegeLogo
                                             }
                                             alt="College logo preview"
+                                            loading="eager"
+                                            decoding="async"
                                             className="h-28 max-w-full object-contain"
                                         />
                                     ) : (

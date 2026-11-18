@@ -283,7 +283,7 @@ const CampaignManagement = () => {
       {/* Header */}
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Campaign Management
           </h1>
 
@@ -392,6 +392,8 @@ const CampaignManagement = () => {
                           <img
                             src={campaign.campaignImage}
                             alt={campaign.title}
+                            loading="lazy"
+                            decoding="async"
                             className="h-12 w-16 rounded-lg border border-gray-200 object-cover"
                           />
                         ) : (
@@ -564,6 +566,8 @@ const CampaignManagement = () => {
                     <img
                       src={imagePreview}
                       alt="Campaign preview"
+                      loading="eager"
+                      decoding="async"
                       className="mb-3 h-36 w-full rounded-lg object-contain"
                     />
                   ) : (
@@ -684,6 +688,8 @@ const CampaignManagement = () => {
               <img
                 src={selectedCampaign.campaignImage}
                 alt={selectedCampaign.title}
+                loading="eager"
+                decoding="async"
                 className="mb-5 h-52 w-full rounded-xl object-cover"
               />
             )}

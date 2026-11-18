@@ -329,6 +329,8 @@ export default function ViewCourse() {
               <img
                 src={courseImage}
                 alt={course.title || "Course image"}
+                loading="lazy"
+                decoding="async"
                 className="h-56 w-full object-cover sm:h-80 lg:h-96"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";

@@ -8,6 +8,8 @@ const CertificateModal = ({ certificate }) => {
         <img
           src={certificate.image}
           alt={certificate.title}
+          loading="eager"
+          decoding="async"
           className="h-auto max-h-[70vh] w-full object-contain"
         />
       </div>

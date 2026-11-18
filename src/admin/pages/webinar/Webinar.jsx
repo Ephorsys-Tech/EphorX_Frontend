@@ -517,6 +517,8 @@ const Webinar = () => {
                             <img
                               src={webinar.thumbnail}
                               alt={webinar.title || "Webinar thumbnail"}
+                              loading="lazy"
+                              decoding="async"
                               className="h-14 w-20 shrink-0 rounded-lg border border-gray-100 object-cover"
                             />
                           ) : (
@@ -551,6 +553,8 @@ const Webinar = () => {
                             <img
                               src={webinar.instructor.avatar}
                               alt={webinar.instructor.name || "Instructor"}
+                              loading="lazy"
+                              decoding="async"
                               className="h-10 w-10 shrink-0 rounded-full object-cover"
                             />
                           ) : (
@@ -601,11 +605,10 @@ const Webinar = () => {
                       {/* Type */}
                       <td className="px-5 py-4">
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
-                            webinar.type === "live"
-                              ? "bg-purple-100 text-purple-700"
-                              : "bg-indigo-100 text-indigo-700"
-                          }`}
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${webinar.type === "live"
+                            ? "bg-purple-100 text-purple-700"
+                            : "bg-indigo-100 text-indigo-700"
+                            }`}
                         >
                           {formatLabel(webinar.type)}
                         </span>

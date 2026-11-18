@@ -15,6 +15,8 @@ const ExpertDetailsModal = ({ expert, onClose }) => {
         <img
           src={expert.image}
           alt={expert.name}
+          loading="eager"
+          decoding="async"
           className="h-full w-full object-cover object-top"
         />
 

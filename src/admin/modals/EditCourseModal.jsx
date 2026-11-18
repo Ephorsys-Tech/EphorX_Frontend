@@ -619,6 +619,8 @@ export default function EditCourseModal({
                                             <img
                                                 src={existingImage}
                                                 alt="Current course"
+                                                loading="eager"
+                                                decoding="async"
                                                 className="mb-2 h-24 w-full rounded-lg object-cover"
                                             />
 

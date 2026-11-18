@@ -226,12 +226,16 @@ const EditTrainer = () => {
                                     <img
                                         src={URL.createObjectURL(avatar)}
                                         alt="Selected trainer"
+                                        loading="eager"
+                                        decoding="async"
                                         className="h-full w-full object-cover"
                                     />
                                 ) : currentAvatar ? (
                                     <img
                                         src={currentAvatar}
                                         alt="Current trainer"
+                                        loading="lazy"
+                                        decoding="async"
                                         className="h-full w-full object-cover"
                                     />
                                 ) : (
@@ -423,12 +427,12 @@ const EditTrainer = () => {
                         </button>
 
                         <Button
-                        text={saving ?"Saving Changes...":"Save"}
+                            text={saving ? "Saving Changes..." : "Save"}
                             type="submit"
                             disabled={saving}
                             icon={Save}
                         />
-                             
+
                     </div>
                 </form>
             </div>

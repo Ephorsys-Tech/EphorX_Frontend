@@ -94,17 +94,20 @@ export default function Footer() {
         <div className='grid grid-cols-1 gap-x-10 gap-y-12 py-4 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr] lg:py-16'>
           {/* Brand */}
           <div>
-        <Link
-  to='/'
-  aria-label='EphorX Home'
-  className='inline-block -ml-7 lg:-ml-8'
->
-  <img
-    src={image}
-    alt='EphorX logo'
-    className='h-17 w-auto object-contain'
-  />
-</Link>
+            <Link
+              to='/'
+              aria-label='EphorX Home'
+              className='inline-block -ml-7 lg:-ml-8'
+            >
+              <img
+                src={image}
+                alt='EphorX logo'
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                className='h-17 w-auto object-contain'
+              />
+            </Link>
 
             <p className='-mt-2 max-w-sm text-sm leading-7 text-slate-600'>
               Empowering learners with practical technology education, hands-on

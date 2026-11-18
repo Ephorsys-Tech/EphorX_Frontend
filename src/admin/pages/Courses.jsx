@@ -434,6 +434,8 @@ export default function Course() {
                       <img
                         src={imageUrl}
                         alt={course.title || "Course"}
+                        loading="eager"
+                        decoding="async"
                         className="h-full w-full object-cover"
                         onError={(event) => {
                           event.currentTarget.style.display = "none";

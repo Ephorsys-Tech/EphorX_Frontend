@@ -81,6 +81,8 @@ const TopBar = ({ setSidebarOpen }) => {
         <img
           src={logo}
           alt="EphorX logo"
+          loading="eager"
+          decoding="async"
           className="block h-15 w-auto object-contain"
         />
       </div>
