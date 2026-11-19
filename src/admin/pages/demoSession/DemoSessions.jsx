@@ -1,5 +1,10 @@
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -30,7 +35,7 @@ const DemoSessions = () => {
   const [deleting, setDeleting] = useState(false);
 
   // Fetch all demo sessions
-  const fetchDemoBookings = async () => {
+  const fetchDemoBookings = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -55,11 +60,11 @@ const DemoSessions = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchDemoBookings();
-  }, []);
+  }, [fetchDemoBookings]);
 
   // Search demo sessions
   const filteredBookings = useMemo(() => {
@@ -89,6 +94,7 @@ const DemoSessions = () => {
 
     try {
       setDeleting(true);
+      setError("");
 
       await deleteDemoBooking(deleteTarget._id);
 
@@ -100,7 +106,7 @@ const DemoSessions = () => {
     } catch (err) {
       console.error("Delete demo session error:", err);
 
-      alert(
+      setError(
         err.response?.data?.message ||
         "Failed to delete demo session. Please try again."
       );
@@ -110,183 +116,185 @@ const DemoSessions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col">
 
-      {/* Header */}
-      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            Demo Sessions
-          </h1>
+        {/* Header - Fixed */}
+        <div className="mb-5 flex shrink-0 flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              Demo Sessions
+            </h1>
 
-          <p className="mt-2 text-sm text-gray-500">
-            Manage all demo session booking requests.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-
-          <Button
-            text="Add Demmo Session"
-            icon={Plus}
-            onClick={() => navigate("/admin/add-demo")}
-          />
-        </div>
-      </div>
-
-      {/* Search */}
-
-      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* Search Input */}
-          <div className="relative w-full flex-1 sm:max-w-md">
-            <Search
-              size={19}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by name, email, phone, qualification or course..."
-              className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            />
-
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
-              >
-                <X size={18} />
-              </button>
-            )}
+            <p className="mt-2 text-sm text-gray-500">
+              Manage all demo session booking requests.
+            </p>
           </div>
 
-          {/* Right-side Actions */}
-          <div className="flex items-center justify-end gap-4">
-            <RefreshButton
-              onClick={fetchDemoBookings}
-              loading={loading}
+          <div className="flex flex-wrap gap-2">
+            <Button
+              text="Add Demo Session"
+              icon={Plus}
+              onClick={() => navigate("/admin/add-demo")}
             />
+          </div>
+        </div>
 
-            <div className="flex items-center justify-center gap-2 rounded-lg bg-indigo-50 px-5 py-3 whitespace-nowrap">
-              <span className="text-sm font-medium text-gray-600">
-                Total Bookings:
-              </span>
-              <span className="text-lg font-bold text-indigo-700">
-                {totalBookings}
-              </span>
+        {/* Search and Refresh - Fixed */}
+        <div className="mb-5 shrink-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+            {/* Search Input */}
+            <div className="relative w-full flex-1 sm:max-w-md">
+              <Search
+                size={19}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, email, phone, qualification or course..."
+                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+                  aria-label="Clear search"
+                >
+                  <X size={18} />
+                </button>
+              )}
+            </div>
+
+            {/* Right-side Actions */}
+            <div className="flex items-center justify-end gap-4">
+              <RefreshButton
+                onClick={fetchDemoBookings}
+                loading={loading}
+              />
+
+              <div className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-50 px-5 py-3">
+                <span className="text-sm font-medium text-gray-600">
+                  Total Bookings:
+                </span>
+
+                <span className="text-lg font-bold text-indigo-700">
+                  {totalBookings}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+        {/* Section Heading - Fixed */}
+        <div className="mb-4 flex shrink-0 items-center justify-between">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-800">
+            <CalendarDays size={20} />
+            All Demo Sessions
+          </h2>
 
-      {/* Section Heading */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-800">
-          <CalendarDays size={20} />
-          All Demo Sessions
-        </h2>
-
-        <span className="text-sm text-gray-500">
-          {filteredBookings.length} results
-        </span>
-      </div>
-
-      {/* Loading */}
-      {loading && (
-        <div className="rounded-xl border border-gray-200 bg-white p-10 text-center">
-          <RefreshCw
-            size={28}
-            className="mx-auto animate-spin text-blue-600"
-          />
-
-          <p className="mt-3 text-sm text-gray-500">
-            Loading demo sessions...
-          </p>
+          <span className="text-sm text-gray-500">
+            {filteredBookings.length} results
+          </span>
         </div>
-      )}
 
-      {/* Error */}
-      {!loading && error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-center">
-          <AlertCircle
-            size={28}
-            className="mx-auto text-red-500"
-          />
+        {/* Scrollable Content Area */}
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-5">
 
-          <p className="mt-3 text-sm text-red-600">
-            {error}
-          </p>
+          {/* Loading State */}
+          {loading && (
+            <div className="rounded-xl border border-gray-200 bg-white p-10 text-center">
+              <RefreshCw
+                size={28}
+                className="mx-auto animate-spin text-blue-600"
+              />
 
-          <button
-            onClick={fetchDemoBookings}
-            className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-          >
-            Try Again
-          </button>
-        </div>
-      )}
+              <p className="mt-3 text-sm text-gray-500">
+                Loading demo sessions...
+              </p>
+            </div>
+          )}
 
-      {/* Demo Booking Cards */}
-      {!loading && !error && filteredBookings.length > 0 && (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filteredBookings.map((booking) => (
-            <DemoBookingCard
-              key={booking._id}
-              booking={booking}
-              onView={(booking) =>
-                navigate(
-                  `/admin/view-demo/${booking._id}`
-                )
-              }
-              onEdit={(booking) =>
-                navigate(
-                  `/admin/edit-demo/${booking._id}`
-                )
-              }
-              onDelete={setDeleteTarget}
-            />
-          ))}
-        </div>
-      )}
+          {/* Error State */}
+          {!loading && error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-center">
+              <AlertCircle
+                size={28}
+                className="mx-auto text-red-500"
+              />
 
-      {/* Empty State */}
-      {!loading && !error && filteredBookings.length === 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white px-5 py-12 text-center">
-          <CalendarDays
-            size={40}
-            className="mx-auto text-gray-300"
-          />
+              <p className="mt-3 text-sm text-red-600">
+                {error}
+              </p>
 
-          <h3 className="mt-4 text-lg font-semibold text-gray-800">
-            {searchTerm
-              ? "No matching demo sessions found"
-              : "No demo sessions yet"}
-          </h3>
+              <button
+                type="button"
+                onClick={fetchDemoBookings}
+                className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
 
-          <p className="mt-2 text-sm text-gray-500">
-            {searchTerm
-              ? "Try searching with a different keyword."
-              : "Add a demo session to get started."}
-          </p>
+          {/* Demo Booking Cards */}
+          {!loading && !error && filteredBookings.length > 0 && (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {filteredBookings.map((booking) => (
+                <DemoBookingCard
+                  key={booking._id}
+                  booking={booking}
+                  onView={(booking) =>
+                    navigate(`/admin/view-demo/${booking._id}`)
+                  }
+                  onEdit={(booking) =>
+                    navigate(`/admin/edit-demo/${booking._id}`)
+                  }
+                  onDelete={setDeleteTarget}
+                />
+              ))}
+            </div>
+          )}
 
-          {!searchTerm && (
-            <button
-              onClick={() =>
-                navigate("/admin/add-demo")
-              }
-              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              <Plus size={17} />
-             Add Demo Sessions
-            </button>
+          {/* Empty State */}
+          {!loading && !error && filteredBookings.length === 0 && (
+            <div className="rounded-xl border border-gray-200 bg-white px-5 py-12 text-center">
+              <CalendarDays
+                size={40}
+                className="mx-auto text-gray-300"
+              />
+
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                {searchTerm
+                  ? "No matching demo sessions found"
+                  : "No demo sessions yet"}
+              </h3>
+
+              <p className="mt-2 text-sm text-gray-500">
+                {searchTerm
+                  ? "Try searching with a different keyword."
+                  : "Add a demo session to get started."}
+              </p>
+
+              {!searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => navigate("/admin/add-demo")}
+                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+                >
+                  <Plus size={17} />
+                  Add Demo Sessions
+                </button>
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
 
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
@@ -311,17 +319,19 @@ const DemoSessions = () => {
 
             <div className="mt-6 flex gap-3">
               <button
+                type="button"
                 onClick={() => setDeleteTarget(null)}
                 disabled={deleting}
-                className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
               >
                 Cancel
               </button>
 
               <button
+                type="button"
                 onClick={handleDelete}
                 disabled={deleting}
-                className="flex-1 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {deleting ? "Deleting..." : "Delete"}
               </button>

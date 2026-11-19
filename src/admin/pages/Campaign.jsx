@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import {
   Plus,
@@ -7,15 +8,12 @@ import {
   Pencil,
   Trash2,
   X,
-  CalendarDays,
   ImagePlus,
 } from "lucide-react";
 
 import campaignApi from "../api/campaignApi";
-// import RefreshButton from "../../common/components/RefreshButton";
 import Button from "../../common/components/Button";
 import Pagination from "../../common/components/Pagination";
-
 
 const getCampaignList = (response) => {
   const result =
@@ -152,11 +150,7 @@ const CampaignManagement = () => {
 
     if (!selectedFile) return;
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     if (!allowedTypes.includes(selectedFile.type)) {
       setError("Please select a JPEG, PNG, or WebP image.");
@@ -183,9 +177,7 @@ const CampaignManagement = () => {
       return;
     }
 
-    if (
-      new Date(form.endDate) <= new Date(form.startDate)
-    ) {
+    if (new Date(form.endDate) <= new Date(form.startDate)) {
       setError("End date must be after the start date.");
       return;
     }
@@ -258,7 +250,6 @@ const CampaignManagement = () => {
   // Pagination calculations
   const totalPages = Math.ceil(filteredCampaigns.length / itemsPerPage);
 
-  // Get campaigns for current page
   const paginatedCampaigns = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
 
@@ -278,10 +269,10 @@ const CampaignManagement = () => {
   }, [currentPage, totalPages]);
 
   return (
-    <div className="min-h-screen bg-white px-4 text-gray-900 sm:px-6">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-white px-4 text-gray-900 sm:px-6">
 
-      {/* Header */}
-      <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      {/* Fixed Header */}
+      <div className="mb-6 flex shrink-0 flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Campaign Management
@@ -299,12 +290,9 @@ const CampaignManagement = () => {
         />
       </div>
 
-      {/* Search and Count */}
-
-
-      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+      {/* Fixed Search and Count */}
+      <div className="mb-5 shrink-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {/* Search input */}
           <div className="relative w-full sm:max-w-md">
             <Search
               size={18}
@@ -321,6 +309,7 @@ const CampaignManagement = () => {
 
             {search && (
               <button
+                type="button"
                 onClick={() => setSearch("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
@@ -329,13 +318,7 @@ const CampaignManagement = () => {
             )}
           </div>
 
-          {/* Right-side actions */}
           <div className="flex items-center justify-end gap-4">
-            {/* <RefreshButton
-        // onClick={() => fetchCampaigns(true)}
-        // loading={refreshing}
-      /> */}
-
             <div className="rounded-lg bg-indigo-50 px-5 py-3 text-sm">
               <span className="text-gray-600">Total Campaigns: </span>
               <span className="font-semibold text-indigo-600">
@@ -346,151 +329,173 @@ const CampaignManagement = () => {
         </div>
       </div>
 
-
-      {/* Error */}
+      {/* Fixed Error Message */}
       {error && !showModal && (
-        <div className="mb-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        <div className="mb-4 shrink-0 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
           {error}
         </div>
       )}
 
-      {/* Campaign Table */}
-      <div className="overflow-x-auto rounded-xl border border-gray-200">
-        <table className="w-full min-w-212.5 text-left">
-          <thead className="border-b border-gray-200 bg-gray-50">
-            <tr className="text-xs uppercase tracking-wider text-gray-500">
-              <th className="px-5 py-4">Campaign</th>
-              <th className="px-5 py-4">Start Date</th>
-              <th className="px-5 py-4">End Date</th>
-              <th className="px-5 py-4">Status</th>
-              <th className="px-5 py-4 text-right">Actions</th>
-            </tr>
-          </thead>
+      {/* Scrollable Campaign Table and Pagination */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-gray-200 bg-white">
 
-          <tbody className="divide-y divide-gray-100">
-            {loading ? (
-              <tr>
-                <td colSpan="5" className="px-5 py-12 text-center text-sm text-gray-500">
-                  Loading campaigns...
-                </td>
-              </tr>
-            ) : filteredCampaigns.length === 0 ? (
-              <tr>
-                <td colSpan="5" className="px-5 py-12 text-center text-sm text-gray-500">
-                  No campaigns found.
-                </td>
-              </tr>
-            ) : (
-              paginatedCampaigns.map((campaign) => {
-                const status = getCampaignStatus(campaign);
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-212.5 text-left">
+              <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50">
+                <tr className="text-xs uppercase tracking-wider text-gray-500">
+                  <th className="px-5 py-4">Campaign</th>
+                  <th className="px-5 py-4">Start Date</th>
+                  <th className="px-5 py-4">End Date</th>
+                  <th className="px-5 py-4">Status</th>
+                  <th className="px-5 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
 
-                return (
-                  <tr key={campaign._id} className="transition hover:bg-gray-50">
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        {campaign.campaignImage ? (
-                          <img
-                            src={campaign.campaignImage}
-                            alt={campaign.title}
-                            loading="lazy"
-                            decoding="async"
-                            className="h-12 w-16 rounded-lg border border-gray-200 object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-12 w-16 items-center justify-center rounded-lg bg-gray-100">
-                            <ImagePlus size={20} className="text-gray-400" />
-                          </div>
-                        )}
-
-                        <div className="max-w-xs">
-                          <p className="font-semibold text-gray-900">
-                            {campaign.title}
-                          </p>
-                          <p className="mt-1 truncate text-xs text-gray-500">
-                            {campaign.description}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-5 py-4 text-sm text-gray-600">
-                      {new Date(campaign.startDate).toLocaleDateString()}
-                    </td>
-
-                    <td className="px-5 py-4 text-sm text-gray-600">
-                      {new Date(campaign.endDate).toLocaleDateString()}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[status]}`}
-                      >
-                        {status}
-                      </span>
-                    </td>
-
-                    <td className="relative px-5 py-4 text-right">
-                      <button
-                        onClick={() =>
-                          setMenuOpen(
-                            menuOpen === campaign._id
-                              ? null
-                              : campaign._id
-                          )
-                        }
-                        className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-black"
-                      >
-                        <MoreVertical size={19} />
-                      </button>
-
-                      {menuOpen === campaign._id && (
-                        <div className="absolute right-12 bottom-2 z-20 w-23 rounded-lg border border-gray-200 bg-white  text-left shadow-xl">
-                          <button
-                            onClick={() => {
-                              setSelectedCampaign(campaign);
-                              setMenuOpen(null);
-                            }}
-                            className="flex w-full items-center gap-3 px-2 py-2 text-sm hover:bg-gray-50"
-                          >
-                            <Eye size={16} />
-                            View
-                          </button>
-
-                          <button
-                            onClick={() => openEditModal(campaign)}
-                            className="flex w-full items-center gap-3 px-2 text-sm hover:bg-gray-50"
-                          >
-                            <Pencil size={16} />
-                            Edit
-                          </button>
-
-                          <button
-                            onClick={() => handleDelete(campaign._id)}
-                            className="flex w-full items-center gap-3 px-2 py-2 text-sm text-red-600 hover:bg-red-50"
-                          >
-                            <Trash2 size={16} />
-                            Delete
-                          </button>
-                        </div>
-                      )}
+              <tbody className="divide-y divide-gray-100">
+                {loading ? (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      className="px-5 py-12 text-center text-sm text-gray-500"
+                    >
+                      Loading campaigns...
                     </td>
                   </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
+                ) : filteredCampaigns.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      className="px-5 py-12 text-center text-sm text-gray-500"
+                    >
+                      No campaigns found.
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedCampaigns.map((campaign) => {
+                    const status = getCampaignStatus(campaign);
 
-      {/* Pagination */}
-      {!loading && filteredCampaigns.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalItems={filteredCampaigns.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={setCurrentPage}
-        />
-      )}
+                    return (
+                      <tr
+                        key={campaign._id}
+                        className="transition hover:bg-gray-50"
+                      >
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-3">
+                            {campaign.campaignImage ? (
+                              <img
+                                src={campaign.campaignImage}
+                                alt={campaign.title}
+                                loading="lazy"
+                                decoding="async"
+                                className="h-12 w-16 rounded-lg border border-gray-200 object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-12 w-16 items-center justify-center rounded-lg bg-gray-100">
+                                <ImagePlus
+                                  size={20}
+                                  className="text-gray-400"
+                                />
+                              </div>
+                            )}
+
+                            <div className="max-w-xs">
+                              <p className="font-semibold text-gray-900">
+                                {campaign.title}
+                              </p>
+                              <p className="mt-1 truncate text-xs text-gray-500">
+                                {campaign.description}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="px-5 py-4 text-sm text-gray-600">
+                          {new Date(campaign.startDate).toLocaleDateString()}
+                        </td>
+
+                        <td className="px-5 py-4 text-sm text-gray-600">
+                          {new Date(campaign.endDate).toLocaleDateString()}
+                        </td>
+
+                        <td className="px-5 py-4">
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[status]}`}
+                          >
+                            {status}
+                          </span>
+                        </td>
+
+                        <td className="relative px-5 py-4 text-right">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setMenuOpen(
+                                menuOpen === campaign._id
+                                  ? null
+                                  : campaign._id
+                              )
+                            }
+                            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-black"
+                          >
+                            <MoreVertical size={19} />
+                          </button>
+
+                          {menuOpen === campaign._id && (
+                            <div className="absolute bottom-2 right-12 z-20 w-32 rounded-lg border border-gray-200 bg-white text-left shadow-xl">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedCampaign(campaign);
+                                  setMenuOpen(null);
+                                }}
+                                className="flex w-full items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50"
+                              >
+                                <Eye size={16} />
+                                View
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => openEditModal(campaign)}
+                                className="flex w-full items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50"
+                              >
+                                <Pencil size={16} />
+                                Edit
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleDelete(campaign._id)}
+                                className="flex w-full items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                              >
+                                <Trash2 size={16} />
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination scrolls with the table */}
+          {!loading && filteredCampaigns.length > 0 && (
+            <div className="border-t border-gray-100 px-4 py-3">
+              <Pagination
+                currentPage={currentPage}
+                totalItems={filteredCampaigns.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Create / Edit Modal */}
       {showModal && (
@@ -509,6 +514,7 @@ const CampaignManagement = () => {
               </div>
 
               <button
+                type="button"
                 onClick={closeModal}
                 className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
               >
@@ -517,7 +523,6 @@ const CampaignManagement = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5 p-6">
-
               {error && (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                   {error}
@@ -663,7 +668,6 @@ const CampaignManagement = () => {
                       : "Create Campaign"}
                 </button>
               </div>
-
             </form>
           </div>
         </div>
@@ -677,6 +681,7 @@ const CampaignManagement = () => {
               <h2 className="text-xl font-bold">Campaign Details</h2>
 
               <button
+                type="button"
                 onClick={() => setSelectedCampaign(null)}
                 className="rounded-lg p-2 hover:bg-gray-100"
               >
@@ -720,6 +725,7 @@ const CampaignManagement = () => {
             </div>
 
             <button
+              type="button"
               onClick={() => setSelectedCampaign(null)}
               className="mt-6 w-full rounded-lg bg-[#2563ff] py-3 text-sm font-semibold text-white hover:bg-blue-500"
             >
@@ -728,7 +734,6 @@ const CampaignManagement = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
