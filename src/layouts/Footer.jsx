@@ -13,7 +13,7 @@ import Modal from '../ui/Modal'
 import CompanyMapModal from '../components/modal/CompanyMapModal'
 
 // TODO: replace with your real contact details
-const PHONE = '+91 00000 00000'
+const PHONE = '+91 95564 73002'
 const EMAIL = 'info@ephorx.com'
 const quickLinks = [
   { label: 'Home', to: '/' },
@@ -31,13 +31,13 @@ const socialLinks = [
   {
     label: 'Facebook',
     icon: FaFacebookF,
-    url: 'https://www.facebook.com/',
+    url: 'https://www.facebook.com/profile.php?id=61596955490461',
     hover: 'bg-[#1877F2] hover:border-[#1877F2]',
   },
   {
     label: 'Instagram',
     icon: FaInstagram,
-    url: 'https://www.instagram.com/',
+    url: 'https://www.instagram.com/ephorxlimited/?hl=en',
     hover:
       'bg-gradient-to-tr from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF]',
   },
@@ -50,13 +50,13 @@ const socialLinks = [
   {
     label: 'X',
     icon: FaXTwitter,
-    url: 'https://x.com/',
+    url: 'https://x.com/ephorxltd',
     hover: 'bg-black hover:border-black',
   },
   {
     label: 'YouTube',
     icon: FaYoutube,
-    url: 'https://www.youtube.com/',
+    url: 'https://www.youtube.com/@Ephorxlimited',
     hover: 'bg-[#FF0000] hover:border-[#FF0000]',
   },
 ]

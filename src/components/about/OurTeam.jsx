@@ -1,16 +1,15 @@
 
 import { motion } from "framer-motion";
 
-import image from "../../assets/college/college.png";
 import image1 from "../../assets/college/college.png";
 import image2 from "../../assets/college/college.png";
 import image3 from "../../assets/college/college.png";
-
+import ceo from "../../assets/ceo.png"
 const teamMembers = [
   {
-    name: "CEO Name",
-    position: "CEO",
-    image: image,
+    name: "Dipti Ranjan Sahoo",
+    position: "Founder and CEO",
+    image: ceo,
   },
   {
     name: "Founder Name",

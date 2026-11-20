@@ -39,13 +39,13 @@ const socialLinks = [
   {
     label: 'Facebook',
     icon: FaFacebookF,
-    url: 'https://www.facebook.com/',
+    url: 'https://www.facebook.com/profile.php?id=61596955490461',
     hover: 'bg-[#1877F2] hover:border-[#1877F2]',
   },
   {
     label: 'Instagram',
     icon: FaInstagram,
-    url: 'https://www.instagram.com/',
+    url: 'https://www.instagram.com/ephorxlimited/?hl=en',
     hover: 'bg-gradient-to-tr hover:from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF] ',
   },
   {
@@ -57,13 +57,13 @@ const socialLinks = [
   {
     label: 'X',
     icon: FaXTwitter,
-    url: 'https://x.com/',
+    url: 'https://x.com/ephorxltd',
     hover: 'bg-black hover:border-black',
   },
   {
     label: 'YouTube',
     icon: FaYoutube,
-    url: 'https://www.youtube.com/',
+    url: 'https://www.youtube.com/@Ephorxlimited',
     hover: 'bg-[#FF0000] hover:border-[#FF0000]',
   },
 ]
