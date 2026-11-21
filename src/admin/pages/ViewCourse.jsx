@@ -511,7 +511,7 @@ export default function ViewCourse() {
               <button
                 type="button"
                 onClick={editCourse}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
                 <Pencil size={17} />
                 Edit Course
