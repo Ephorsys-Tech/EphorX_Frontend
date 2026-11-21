@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   User,
@@ -129,19 +130,28 @@ const BookDemoModal = ({ onClose }) => {
     onClose();
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100";
+
+  const labelClass =
+    "mb-1.5 block text-sm font-semibold text-slate-700";
+
+  const iconClass =
+    "absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400";
+
   return (
     <>
       {submitted ? (
-        <div className="py-8 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-            <BookOpen size={30} />
+        <div className="py-6 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+            <BookOpen size={26} />
           </div>
 
-          <h3 className="mt-5 text-2xl font-bold text-slate-900">
+          <h3 className="mt-4 text-2xl font-bold text-slate-900">
             Thank You!
           </h3>
 
-          <p className="mt-3 text-sm leading-7 text-slate-500">
+          <p className="mt-2 text-sm leading-6 text-slate-500">
             Your demo request has been submitted successfully.
             Our team will contact you soon.
           </p>
@@ -149,35 +159,29 @@ const BookDemoModal = ({ onClose }) => {
           <button
             type="button"
             onClick={handleClose}
-            className="mt-6 rounded-xl bg-[#071927] px-7 py-3 text-sm font-bold text-white transition hover:bg-sky-600"
+            className="mt-5 rounded-xl bg-[#071927] px-7 py-2.5 text-sm font-bold text-white transition hover:bg-sky-600"
           >
             Close
           </button>
         </div>
       ) : (
-        <div className="px-9 py-2">
-          <div className="mb-2">
-            <p className="text-sm leading-6 text-blue-700 font-semibold">
+        <div className="px-5 py-1 sm:px-7">
+          <div className="mb-3">
+            <p className="text-sm leading-5 font-semibold text-blue-700">
               Interested in learning with EphorX? Share your details
               and we'll help you get started with a free demo session.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Full Name */}
             <div>
-              <label
-                htmlFor="demo-name"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="demo-name" className={labelClass}>
                 Full Name <span className="text-red-500">*</span>
               </label>
 
               <div className="relative">
-                <User
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
+                <User size={17} className={iconClass} />
 
                 <input
                   id="demo-name"
@@ -188,25 +192,19 @@ const BookDemoModal = ({ onClose }) => {
                   placeholder="Enter your full name"
                   autoComplete="name"
                   required
-                  className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className={inputClass}
                 />
               </div>
             </div>
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="demo-email"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="demo-email" className={labelClass}>
                 Email Address <span className="text-red-500">*</span>
               </label>
 
               <div className="relative">
-                <Mail
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
+                <Mail size={17} className={iconClass} />
 
                 <input
                   id="demo-email"
@@ -217,26 +215,20 @@ const BookDemoModal = ({ onClose }) => {
                   placeholder="Enter your email"
                   autoComplete="email"
                   required
-                  className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className={inputClass}
                 />
               </div>
             </div>
 
             {/* Phone Numbers */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <label
-                  htmlFor="demo-phone"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
-                >
+                <label htmlFor="demo-phone" className={labelClass}>
                   Phone Number <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-                  <Phone
-                    size={18}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
+                  <Phone size={17} className={iconClass} />
 
                   <input
                     id="demo-phone"
@@ -247,24 +239,18 @@ const BookDemoModal = ({ onClose }) => {
                     placeholder="Phone number"
                     autoComplete="tel"
                     required
-                    className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-3 text-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               <div>
-                <label
-                  htmlFor="demo-wpno"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
-                >
+                <label htmlFor="demo-wpno" className={labelClass}>
                   WhatsApp Number
                 </label>
 
                 <div className="relative">
-                  <Phone
-                    size={18}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
+                  <Phone size={17} className={iconClass} />
 
                   <input
                     id="demo-wpno"
@@ -273,7 +259,7 @@ const BookDemoModal = ({ onClose }) => {
                     value={formData.wpno}
                     onChange={handleChange}
                     placeholder="WhatsApp number"
-                    className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-3 text-sm outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -281,18 +267,12 @@ const BookDemoModal = ({ onClose }) => {
 
             {/* Qualification */}
             <div>
-              <label
-                htmlFor="demo-qualification"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="demo-qualification" className={labelClass}>
                 Highest Qualification
               </label>
 
               <div className="relative">
-                <GraduationCap
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
+                <GraduationCap size={18} className={iconClass} />
 
                 <input
                   type="text"
@@ -301,25 +281,19 @@ const BookDemoModal = ({ onClose }) => {
                   value={formData.qualification}
                   onChange={handleChange}
                   placeholder="Enter your highest qualification"
-                  className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-600 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className={`${inputClass} bg-white text-slate-600 placeholder:text-slate-400`}
                 />
               </div>
             </div>
 
             {/* Course */}
             <div>
-              <label
-                htmlFor="demo-course"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="demo-course" className={labelClass}>
                 Interested Course <span className="text-red-500">*</span>
               </label>
 
               <div className="relative">
-                <BookOpen
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
+                <BookOpen size={17} className={iconClass} />
 
                 <select
                   id="demo-course"
@@ -328,7 +302,7 @@ const BookDemoModal = ({ onClose }) => {
                   onChange={handleChange}
                   required
                   disabled={coursesLoading || courses.length === 0}
-                  className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-600 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100"
+                  className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-600 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100"
                 >
                   <option value="">
                     {coursesLoading
@@ -351,24 +325,26 @@ const BookDemoModal = ({ onClose }) => {
             {error && (
               <p
                 role="alert"
-                className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600"
+                className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
               >
                 {error}
               </p>
             )}
 
             {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading || coursesLoading || courses.length === 0}
-              className="w-full rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Submitting..." : "Book My Free Demo"}
-            </button>
+            <div className="pt-1">
+              <button
+                type="submit"
+                disabled={loading || coursesLoading || courses.length === 0}
+                className="w-full rounded-xl bg-blue-700 px-5 py-3 text-sm font-bold text-white transition duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading ? "Submitting..." : "Book My Free Demo"}
+              </button>
 
-            <p className="text-center text-xs text-slate-400 -mt-3">
-              Our team will contact you to discuss your demo session.
-            </p>
+              <p className="mt-2 text-center text-xs text-slate-400">
+                Our team will contact you to discuss your demo session.
+              </p>
+            </div>
           </form>
         </div>
       )}

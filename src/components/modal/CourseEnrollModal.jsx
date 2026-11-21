@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   ArrowRight,
@@ -20,9 +21,9 @@ const initialForm = {
 };
 
 const inputClass =
-  "w-full min-w-0 rounded-xl border border-gray-200 bg-gray-50/70 px-4 py-3 text-sm text-gray-900 outline-none transition duration-200 placeholder:text-gray-400 hover:border-gray-300 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100";
+  "w-full min-w-0 rounded-xl border border-gray-200 bg-gray-50/70 px-3 py-2 text-sm text-gray-900 outline-none transition duration-200 placeholder:text-gray-400 hover:border-gray-300 focus:border-sky-400 focus:bg-white focus:ring-2 focus:ring-sky-100";
 
-const labelClass = "mb-2 block text-sm font-semibold text-gray-700";
+const labelClass = "mb-1 block text-xs font-semibold text-gray-700";
 
 const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
   const [form, setForm] = useState(initialForm);
@@ -84,26 +85,26 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="-mt-6 w-full p-4 sm:p-6 md:p-6">
+    <div className="-mt-6 w-full p-3 sm:p-4">
       {/* Selected course */}
-      <div className="relative mb-4 overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-4 sm:p-5">
+      <div className="relative mb-3 overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-3">
         <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-sky-200/30 blur-2xl" />
 
-        <div className="relative flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black text-sky-400 shadow-md shadow-slate-900/10">
-            <BookOpen size={21} />
+        <div className="relative flex items-start gap-2.5">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-black text-sky-400 shadow-md shadow-slate-900/10">
+            <BookOpen size={18} />
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-500">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
               Course selected
             </p>
 
-            <h3 className="mt-1 break-words text-base font-bold leading-snug text-gray-950 sm:text-lg">
+            <h3 className="mt-0.5 break-words text-sm font-bold leading-snug text-gray-950 sm:text-base">
               {course?.title || "Enroll in a Course"}
             </h3>
 
-            <p className="mt-1 text-xs leading-relaxed text-gray-500 sm:text-sm">
+            <p className="mt-0.5 text-xs leading-relaxed text-gray-500">
               Fill in your details to begin your learning journey.
             </p>
           </div>
@@ -111,19 +112,19 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
       </div>
 
       {/* Form heading */}
-      <div className="mb-3">
-        <h4 className="text-base font-bold text-gray-900">
+      <div className="mb-2">
+        <h4 className="text-sm font-bold text-gray-900">
           Your Details
         </h4>
 
-        <p className="mt-1 text-sm leading-relaxed text-gray-500">
+        <p className="mt-0.5 text-xs leading-relaxed text-gray-500">
           Please provide your contact information below.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-3">
         {/* Name and email */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="min-w-0">
             <label htmlFor="course-enroll-name" className={labelClass}>
               Full Name <span className="text-sky-600">*</span>
@@ -131,8 +132,8 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
             <div className="relative">
               <UserRound
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <input
@@ -144,7 +145,7 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className={`${inputClass} pl-10`}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
@@ -156,8 +157,8 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
             <div className="relative">
               <Mail
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <input
@@ -169,14 +170,14 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
                 value={form.email}
                 onChange={handleChange}
                 required
-                className={`${inputClass} pl-10`}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
         </div>
 
         {/* Phone and WhatsApp */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="min-w-0">
             <label htmlFor="course-enroll-number" className={labelClass}>
               Phone Number <span className="text-sky-600">*</span>
@@ -184,8 +185,8 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
             <div className="relative">
               <Phone
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <input
@@ -197,7 +198,7 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
                 value={form.number}
                 onChange={handleChange}
                 required
-                className={`${inputClass} pl-10`}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
@@ -209,8 +210,8 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
             <div className="relative">
               <MessageCircle
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <input
@@ -221,7 +222,7 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
                 value={form.wpNumber}
                 onChange={handleChange}
                 required
-                className={`${inputClass} pl-10`}
+                className={`${inputClass} pl-9`}
               />
             </div>
           </div>
@@ -235,8 +236,8 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
 
           <div className="relative">
             <BriefcaseBusiness
-              size={17}
-              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
             />
 
             <select
@@ -245,7 +246,7 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
               value={form.profession}
               onChange={handleChange}
               required
-              className={`${inputClass} appearance-none pl-10 ${
+              className={`${inputClass} appearance-none pl-9 ${
                 form.profession ? "" : "text-gray-400"
               }`}
             >
@@ -265,18 +266,18 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
         </div>
 
         {/* Submit and cancel */}
-        <div className="border-t border-gray-100 pt-5">
+        <div className="border-t border-gray-100 pt-3">
           {error && (
-            <p className="mb-3 text-sm text-red-500">
+            <p className="mb-2 text-xs text-red-500">
               {error}
             </p>
           )}
 
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+          <div className="flex flex-col-reverse gap-2 sm:flex-row">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-3.5 text-sm font-semibold text-gray-600 transition duration-200 hover:border-gray-300 hover:bg-gray-50 sm:w-auto"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-600 transition duration-200 hover:border-gray-300 hover:bg-gray-50 sm:w-auto"
             >
               Cancel
             </button>
@@ -284,18 +285,18 @@ const CourseEnrollModal = ({ course, onClose, onSubmit }) => {
             <button
               type="submit"
               disabled={loading}
-              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="group flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-black/10 transition duration-300 hover:bg-sky-600 hover:shadow-sky-500/40 focus:outline-none focus:ring-2 focus:ring-sky-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Submitting..." : "Submit Enrollment"}
 
               <ArrowRight
-                size={17}
+                size={16}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </button>
           </div>
 
-          <p className="mt-3 text-center text-xs leading-relaxed text-gray-400">
+          <p className="mt-2 text-center text-xs leading-relaxed text-gray-400">
             Please ensure your contact details are correct.
           </p>
         </div>
