@@ -308,37 +308,38 @@ const Webinar = () => {
         </div>
       )}
 
-      {/* Fixed summary cards */}
-      <div className="mb-6 grid shrink-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
+     {/* Fixed summary cards */}
+<div className="mb-2 grid shrink-0 grid-cols-2 gap-2 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
+  {stats.map((stat) => {
+    const Icon = stat.icon;
 
-          return (
-            <div
-              key={stat.label}
-              className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">
-                    {stat.label}
-                  </p>
+    return (
+      <div
+        key={stat.label}
+        className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-5"
+      >
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-xs font-medium text-gray-500 sm:text-sm">
+              {stat.label}
+            </p>
 
-                  <p className="mt-2 text-3xl font-bold text-gray-900">
-                    {stat.value}
-                  </p>
-                </div>
+            <p className="mt-1 text-xl font-bold text-gray-900 sm:mt-2 sm:text-3xl">
+              {stat.value}
+            </p>
+          </div>
 
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.color}`}
-                >
-                  <Icon size={22} />
-                </div>
-              </div>
-            </div>
-          );
-        })}
+          <div
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg sm:h-12 sm:w-12 sm:rounded-xl ${stat.color}`}
+          >
+            <Icon size={18} className="sm:hidden" />
+            <Icon size={22} className="hidden sm:block" />
+          </div>
+        </div>
       </div>
+    );
+  })}
+</div>
 
       {/* Fixed search and filters */}
       <div className="mb-5 shrink-0 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5">
@@ -357,50 +358,6 @@ const Webinar = () => {
               placeholder="Search by title, category, or instructor..."
               className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
             />
-          </div>
-
-          {/* Filters */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            >
-              <option value="all">All Statuses</option>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-
-            <select
-              value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            >
-              <option value="all">All Types</option>
-              <option value="live">Live</option>
-              <option value="pre-recorded">Pre-recorded</option>
-            </select>
-
-            <select
-              value={availabilityFilter}
-              onChange={(event) => setAvailabilityFilter(event.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            >
-              <option value="all">All Availability</option>
-              <option value="scheduled">Scheduled</option>
-              <option value="anytime">Anytime</option>
-              <option value="completed">Completed</option>
-            </select>
-
-            <button
-              type="button"
-              onClick={clearFilters}
-              disabled={!hasActiveFilters}
-              className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Clear Filters
-            </button>
           </div>
         </div>
       </div>

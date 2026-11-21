@@ -318,26 +318,6 @@ export default function Course() {
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-              <select
-                value={selectedCategory}
-                onChange={(event) =>
-                  setSelectedCategory(event.target.value)
-                }
-                className="min-w-48 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                <option value="all">All Categories</option>
-
-                {categories.map((category) => (
-                  <option
-                    key={getId(category)}
-                    value={getId(category)}
-                  >
-                    {category.name ||
-                      category.title ||
-                      "Unnamed Category"}
-                  </option>
-                ))}
-              </select>
 
               <RefreshButton
                 onClick={fetchData}
@@ -346,23 +326,6 @@ export default function Course() {
             </div>
           </div>
         </div>
-
-        {/* Fixed summary */}
-        {!loading && (
-          <div className="mb-4 flex shrink-0 items-center justify-between">
-            <p className="text-sm text-gray-600">
-              Showing{" "}
-              <span className="font-semibold text-gray-900">
-                {filteredCourses.length}
-              </span>{" "}
-              of{" "}
-              <span className="font-semibold text-gray-900">
-                {courses.length}
-              </span>{" "}
-              courses
-            </p>
-          </div>
-        )}
 
         {/* Only this section scrolls */}
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-4">

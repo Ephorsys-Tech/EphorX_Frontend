@@ -124,14 +124,14 @@ export default function JobApplications() {
       <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col">
 
         {/* Page Heading - Fixed */}
-        <div className="mb-5 flex shrink-0 flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
+        <div className="mb-2 flex shrink-0 flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
               Job Applications
             </h1>
 
             <p className="mt-2 text-sm text-gray-500">
-              Manage candidates who have applied for your job openings.
+              Manage candidates who have applied for jobs.
             </p>
           </div>
 
@@ -143,8 +143,8 @@ export default function JobApplications() {
         </div>
 
         {/* Summary Cards - Fixed */}
-        <div className="mb-5 grid shrink-0 grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="mb-2 grid shrink-0 grid-cols-2 gap-4 sm:grid-cols-2 ">
+          <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">

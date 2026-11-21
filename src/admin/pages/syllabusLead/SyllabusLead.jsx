@@ -157,7 +157,7 @@ const SyllabusLeads = () => {
                         </h1>
 
                         <p className="mt-2 text-sm text-gray-500">
-                            View and manage people who requested course syllabuses.
+                            Manage people who requested course syllabuses.
                         </p>
                     </div>
 

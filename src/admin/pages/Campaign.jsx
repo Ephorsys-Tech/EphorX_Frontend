@@ -279,7 +279,7 @@ const CampaignManagement = () => {
           </h1>
 
           <p className="mt-2 text-sm text-gray-500">
-            Create, schedule, and manage your website campaigns.
+            Create, schedule your website campaigns.
           </p>
         </div>
 
