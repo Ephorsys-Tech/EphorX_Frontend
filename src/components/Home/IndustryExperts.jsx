@@ -296,7 +296,7 @@ export default function IndustryExperts ({
         isOpen={Boolean(selectedExpert)}
         onClose={() => setSelectedExpert(null)}
         title='Expert Details'
-        size='lg'
+        size='md'
         theme='white'
       >
         <ExpertDetailsModal

@@ -392,7 +392,7 @@ const Courses = () => {
         isOpen={Boolean(selectedSyllabusCourse)}
         onClose={() => setSelectedSyllabusCourse(null)}
         title='Get Course Syllabus'
-        size='lg'
+        size='md'
         theme='white'
       >
         <SyllabusRequestModal

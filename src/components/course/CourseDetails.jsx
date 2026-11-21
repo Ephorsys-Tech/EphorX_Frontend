@@ -414,7 +414,7 @@ export default function CourseDetails() {
         isOpen={Boolean(selectedEnrollment)}
         onClose={() => setSelectedEnrollment(null)}
         title="Enroll in Course"
-        size="lg"
+        size="md"
         theme="white"
       >
         <CourseEnrollModal
@@ -429,7 +429,7 @@ export default function CourseDetails() {
         isOpen={Boolean(selectedSyllabusCourse)}
         onClose={() => setSelectedSyllabusCourse(null)}
         title="Get Course Syllabus"
-        size="lg"
+        size="md"
         theme="white"
       >
         <SyllabusRequestModal
