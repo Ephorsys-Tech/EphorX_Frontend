@@ -28,8 +28,9 @@ const Trainer = () => {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 4;
 
+  // Fetch trainers
   const fetchTrainers = async () => {
     try {
       setLoading(true);
@@ -86,7 +87,7 @@ const Trainer = () => {
       startIndex,
       startIndex + itemsPerPage
     );
-  }, [filteredTrainers, currentPage, itemsPerPage]);
+  }, [filteredTrainers, currentPage]);
 
   // Adjust page after deletion
   useEffect(() => {
@@ -130,10 +131,11 @@ const Trainer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 sm:px-6 lg:px-8">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-slate-50 px-4 sm:px-6 lg:px-8">
 
-      {/* Page Header */}
-      <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      {/* Fixed Page Header */}
+      <div className="mb-5 flex shrink-0 flex-col justify-between gap-4 sm:flex-row sm:items-center">
+
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             Trainers
@@ -151,14 +153,15 @@ const Trainer = () => {
         />
       </div>
 
-      {/* Trainers Table Container */}
-      <div className="overflow-visible rounded-2xl border border-slate-200 bg-white shadow-sm">
+      {/* Main Content Container */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-        {/* Search, Refresh & Count */}
-        <div className="flex flex-col justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:px-6">
+        {/* Fixed Search, Refresh & Count */}
+        <div className="flex shrink-0 flex-col justify-between gap-3 border-b border-slate-100 px-4 py-4 sm:flex-row sm:items-center sm:px-6">
 
           {/* Search */}
           <div className="relative w-full sm:max-w-md sm:flex-1">
+
             <Search
               size={18}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -198,7 +201,7 @@ const Trainer = () => {
 
         {/* Search Results Count */}
         {search && (
-          <div className="border-b border-slate-100 px-5 py-2 sm:px-6">
+          <div className="shrink-0 border-b border-slate-100 px-5 py-2 sm:px-6">
             <p className="text-xs text-slate-500">
               Found {filteredTrainers.length} matching trainer
               {filteredTrainers.length !== 1 ? "s" : ""}
@@ -206,200 +209,215 @@ const Trainer = () => {
           </div>
         )}
 
-        {/* Loading State */}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="h-9 w-9 animate-spin rounded-full border-4 border-indigo-100 border-t-indigo-600" />
+        {/* Scrollable Content Area */}
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-auto overscroll-contain">
 
-            <p className="mt-4 text-sm text-slate-500">
-              Loading trainers...
-            </p>
-          </div>
-        ) : error ? (
-          /* Error State */
-          <div className="px-6 py-16 text-center">
-            <p className="font-medium text-red-600">{error}</p>
+          {/* Loading State */}
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="h-9 w-9 animate-spin rounded-full border-4 border-indigo-100 border-t-indigo-600" />
 
-            <button
-              type="button"
-              onClick={fetchTrainers}
-              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : filteredTrainers.length === 0 ? (
-          /* Empty State */
-          <div className="px-6 py-16 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-              <Search size={25} />
+              <p className="mt-4 text-sm text-slate-500">
+                Loading trainers...
+              </p>
             </div>
+          ) : error ? (
+            /* Error State */
+            <div className="px-6 py-16 text-center">
+              <p className="font-medium text-red-600">
+                {error}
+              </p>
 
-            <h3 className="mt-4 text-lg font-semibold text-slate-900">
-              {search ? "No matching trainers" : "No trainers yet"}
-            </h3>
-
-            <p className="mt-2 text-sm text-slate-500">
-              {search
-                ? "Try another name, email, or specialization."
-                : "Add your first trainer to get started."}
-            </p>
-
-            {search ? (
               <button
                 type="button"
-                onClick={() => setSearch("")}
-                className="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+                onClick={fetchTrainers}
+                className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
               >
-                Clear search
+                Try Again
               </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => navigate("/admin/add-trainer")}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
-              >
-                <Plus size={16} />
-                Add Trainer
-              </button>
-            )}
-          </div>
-        ) : (
-          <>
-            {/* Trainers Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-212.5 text-left">
-                <thead className="bg-slate-50">
-                  <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    <th className="px-6 py-4">Trainer</th>
-                    <th className="px-6 py-4">Designation</th>
-                    <th className="px-6 py-4">Specialization</th>
-                    <th className="px-6 py-4">Experience</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
-                  </tr>
-                </thead>
+            </div>
+          ) : filteredTrainers.length === 0 ? (
+            /* Empty State */
+            <div className="px-6 py-16 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                <Search size={25} />
+              </div>
 
-                <tbody className="divide-y divide-slate-100">
-                  {paginatedTrainers.map((trainer) => (
-                    <tr
-                      key={trainer._id}
-                      className="transition hover:bg-slate-50"
-                    >
-                      {/* Trainer Details */}
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          {trainer.avatar ? (
-                            <img
-                              src={trainer.avatar}
-                              alt={trainer.name || "Trainer"}
-                              loading="lazy"
-                              decoding="async"
-                              className="h-11 w-11 rounded-full border border-slate-200 object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
-                              {trainer.name?.charAt(0)?.toUpperCase() || "T"}
-                            </div>
-                          )}
+              <h3 className="mt-4 text-lg font-semibold text-slate-900">
+                {search ? "No matching trainers" : "No trainers yet"}
+              </h3>
 
-                          <div>
-                            <p className="font-semibold text-slate-800">
-                              {trainer.name || "Unnamed Trainer"}
-                            </p>
+              <p className="mt-2 text-sm text-slate-500">
+                {search
+                  ? "Try another name, email, or specialization."
+                  : "Add your first trainer to get started."}
+              </p>
 
-                            <p className="mt-1 text-xs text-slate-400">
-                              ID: {trainer._id?.slice(-6)}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
+              {search ? (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+                >
+                  Clear search
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => navigate("/admin/add-trainer")}
+                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+                >
+                  <Plus size={16} />
+                  Add Trainer
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Trainers Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-212.5 text-left">
 
-                      {/* Designation */}
-                      <td className="px-6 py-4 text-sm text-slate-600">
-                        {trainer.designation || "—"}
-                      </td>
-
-                      {/* Specialization */}
-                      <td className="px-6 py-4 text-sm text-slate-600">
-                        {trainer.specialization || trainer.expertise || "—"}
-                      </td>
-
-                      {/* Experience */}
-                      <td className="px-6 py-4 text-sm text-slate-600">
-                        {trainer.experienceYears != null
-                          ? `${trainer.experienceYears} years`
-                          : "—"}
-                      </td>
-
-                      {/* Actions Menu */}
-                      <td className="py-4 text-center">
-                        <div className="relative inline-block text-left">
-                          <button
-                            type="button"
-                            aria-label={`Actions for ${trainer.name || "trainer"}`}
-                            aria-expanded={activeMenu === trainer._id}
-                            onClick={() =>
-                              setActiveMenu((current) =>
-                                current === trainer._id
-                                  ? null
-                                  : trainer._id
-                              )
-                            }
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-                          >
-                            <MoreHorizontal size={21} />
-                          </button>
-
-                          {activeMenu === trainer._id && (
-                            <div className="absolute right-0 z-20 w-36 origin-top-right rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
-
-                              <button
-                                type="button"
-                                onClick={() => handleAction("view", trainer)}
-                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
-                              >
-                                <Eye size={16} className="text-slate-500" />
-                                View
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleAction("edit", trainer)}
-                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
-                              >
-                                <Pencil size={16} className="text-slate-500" />
-                                Edit
-                              </button>
-
-                              <div className="border-t border-slate-100" />
-
-                              <button
-                                type="button"
-                                onClick={() => handleAction("delete", trainer)}
-                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
-                              >
-                                <Trash size={16} />
-                                Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td>
+                  <thead className="sticky top-0 z-10 bg-slate-50">
+                    <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      <th className="px-6 py-4">Trainer</th>
+                      <th className="px-6 py-4">Designation</th>
+                      <th className="px-6 py-4">Specialization</th>
+                      <th className="px-6 py-4">Experience</th>
+                      <th className="px-6 py-4 text-center">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
 
-            {/* Pagination */}
-            <Pagination
-              currentPage={currentPage}
-              totalItems={filteredTrainers.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={setCurrentPage}
-            />
-          </>
-        )}
+                  <tbody className="divide-y divide-slate-100">
+
+                    {paginatedTrainers.map((trainer) => (
+                      <tr
+                        key={trainer._id}
+                        className="transition hover:bg-slate-50"
+                      >
+
+                        {/* Trainer Details */}
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+
+                            {trainer.avatar ? (
+                              <img
+                                src={trainer.avatar}
+                                alt={trainer.name || "Trainer"}
+                                loading="lazy"
+                                decoding="async"
+                                className="h-11 w-11 rounded-full border border-slate-200 object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
+                                {trainer.name?.charAt(0)?.toUpperCase() || "T"}
+                              </div>
+                            )}
+
+                            <div>
+                              <p className="font-semibold text-slate-800">
+                                {trainer.name || "Unnamed Trainer"}
+                              </p>
+
+                              <p className="mt-1 text-xs text-slate-400">
+                                ID: {trainer._id?.slice(-6)}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Designation */}
+                        <td className="px-6 py-4 text-sm text-slate-600">
+                          {trainer.designation || "—"}
+                        </td>
+
+                        {/* Specialization */}
+                        <td className="px-6 py-4 text-sm text-slate-600">
+                          {trainer.specialization || trainer.expertise || "—"}
+                        </td>
+
+                        {/* Experience */}
+                        <td className="px-6 py-4 text-sm text-slate-600">
+                          {trainer.experienceYears != null
+                            ? `${trainer.experienceYears} years`
+                            : "—"}
+                        </td>
+
+                        {/* Actions Menu */}
+                        <td className="px-6 py-4 text-center">
+                          <div className="relative inline-block text-left">
+
+                            <button
+                              type="button"
+                              aria-label={`Actions for ${trainer.name || "trainer"}`}
+                              aria-expanded={activeMenu === trainer._id}
+                              onClick={() =>
+                                setActiveMenu((current) =>
+                                  current === trainer._id
+                                    ? null
+                                    : trainer._id
+                                )
+                              }
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                            >
+                              <MoreHorizontal size={21} />
+                            </button>
+
+                            {activeMenu === trainer._id && (
+                              <div className="absolute right-10 -top-15 z-30 w-30 origin-top-right rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleAction("view", trainer)}
+                                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
+                                >
+                                  <Eye size={16} className="text-slate-500" />
+                                  View
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleAction("edit", trainer)}
+                                  className="flex w-full items-center gap-3 rounded-lg px-3  text-sm text-slate-700 transition hover:bg-slate-50"
+                                >
+                                  <Pencil size={16} className="text-slate-500" />
+                                  Edit
+                                </button>
+
+                                <div className="border-t border-slate-100" />
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleAction("delete", trainer)}
+                                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
+                                >
+                                  <Trash size={16} />
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="border-t border-slate-100">
+                <Pagination
+                  currentPage={currentPage}
+                  totalItems={filteredTrainers.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

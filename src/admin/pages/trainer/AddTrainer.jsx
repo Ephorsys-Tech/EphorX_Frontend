@@ -21,11 +21,9 @@ const AddTrainer = () => {
   const [formData, setFormData] = useState({
     name: "",
     designation: "",
-    category: "",
     specialization: "",
     description: "",
     experienceYears: "",
-    detailsUrl: "",
     status: "draft",
   });
 
@@ -85,20 +83,11 @@ const AddTrainer = () => {
     if (
       !formData.name.trim() ||
       !formData.designation.trim() ||
-      !formData.category.trim() ||
       !formData.specialization.trim() ||
       !formData.description.trim() ||
       formData.experienceYears === ""
     ) {
       setError("Please fill in all required fields.");
-      return;
-    }
-
-    if (
-      formData.detailsUrl.trim() &&
-      !/^https?:\/\/.+/i.test(formData.detailsUrl.trim())
-    ) {
-      setError("Please enter a valid URL starting with http:// or https://.");
       return;
     }
 
@@ -116,11 +105,9 @@ const AddTrainer = () => {
 
       trainerData.append("name", formData.name.trim());
       trainerData.append("designation", formData.designation.trim());
-      trainerData.append("category", formData.category.trim());
       trainerData.append("specialization", formData.specialization.trim());
       trainerData.append("description", formData.description.trim());
       trainerData.append("experienceYears", String(experience));
-      trainerData.append("detailsUrl", formData.detailsUrl.trim());
       trainerData.append("status", formData.status);
 
       if (avatar) {
@@ -297,29 +284,12 @@ const AddTrainer = () => {
                     Professional Information
                   </h2>
                   <p className="mt-1 text-xs text-slate-500">
-                    Category, specialization, and experience.
+                    Specialization and experience.
                   </p>
                 </div>
               </div>
 
               <div className="grid gap-6 p-5 sm:grid-cols-2 sm:p-7">
-                {/* Category */}
-                <div>
-                  <label htmlFor="category" className={labelClass}>
-                    Category <span className="text-red-500">*</span>
-                  </label>
-
-                  <input
-                    id="category"
-                    name="category"
-                    type="text"
-                    value={formData.category}
-                    onChange={handleChange}
-                    placeholder="e.g. Fitness, Yoga, Nutrition"
-                    required
-                    className={inputClass}
-                  />
-                </div>
 
                 {/* Specialization */}
                 <div>
@@ -402,50 +372,6 @@ const AddTrainer = () => {
                 <p className="mt-2 text-right text-xs text-slate-400">
                   {formData.description.length}/2000 characters
                 </p>
-              </div>
-            </section>
-
-            {/* Additional Settings */}
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-5 sm:px-7">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-                  <Layers size={20} />
-                </div>
-
-                <div>
-                  <h2 className="font-bold text-slate-900">
-                    Additional Settings
-                  </h2>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Set the trainer's details link and publication status.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid gap-6 p-5 sm:grid-cols-2 sm:p-7">
-                {/* Details URL */}
-                <div className="sm:col-span-2">
-                  <label htmlFor="detailsUrl" className={labelClass}>
-                    Details URL <span className="font-normal text-slate-400">(Optional)</span>
-                  </label>
-
-                  <div className="relative">
-                    <LinkIcon
-                      size={17}
-                      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                    />
-
-                    <input
-                      id="detailsUrl"
-                      name="detailsUrl"
-                      type="url"
-                      value={formData.detailsUrl}
-                      onChange={handleChange}
-                      placeholder="https://example.com/trainers/rahul"
-                      className={`${inputClass} pl-10`}
-                    />
-                  </div>
-                </div>
               </div>
             </section>
 
