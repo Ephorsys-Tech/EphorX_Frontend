@@ -109,7 +109,7 @@ const SyllabusLeads = () => {
             startIndex + itemsPerPage
         );
     }, [filteredLeads, currentPage]);
-
+ 
     // Adjust page after deleting
     useEffect(() => {
         if (totalPages > 0 && currentPage > totalPages) {
