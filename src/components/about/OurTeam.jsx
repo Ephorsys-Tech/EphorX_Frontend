@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 
-import pc from "../../assets/pc.png";
+import pc from "../../assets/pc.jpeg";
 import pm from "../../assets/pm.png";
 import ceo from "../../assets/ceo.png";
 
@@ -12,12 +12,12 @@ const teamMembers = [
     image: ceo,
   },
   {
-    name: "Swapnajit Acharya",
+    name: "Pratikshya Rout",
     position: "Program Coordinator",
     image: pc,
   },
   {
-    name: "Pradyumna Sahoo",
+    name: "Swapnajit Acharya",
     position: "Program Manager",
     image: pm,
   },

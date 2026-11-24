@@ -83,16 +83,16 @@ const CertificatesSection = () => {
                 transition={{ duration: 0.4, delay: index * 0.08 }}
                 className='group flex w-full max-w-[300px] flex-col overflow-hidden rounded-xl bg-white text-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:w-[calc(33.333%-16px)] sm:max-w-[320px]'
               >
-              {/* Certificate preview */}
-<div className='group aspect-[4/3] w-full overflow-hidden bg-slate-50 p-4'>
-  <img
-    src={certificate.image}
-    alt={`${certificate.title} certificate`}
-    loading='lazy'
-    decoding='async'
-    className='h-full w-full rounded-lg border border-slate-200 bg-white object-contain shadow-sm transition-transform duration-500 group-hover:scale-105'
-  />
-</div>
+                {/* Certificate preview */}
+                <div className='group aspect-[4/3] w-full overflow-hidden bg-slate-50 p-4'>
+                  <img
+                    src={certificate.image}
+                    alt={`${certificate.title} certificate`}
+                    loading='lazy'
+                    decoding='async'
+                    className='h-full w-full rounded-lg border border-slate-200 bg-white object-contain shadow-sm transition-transform duration-500 group-hover:scale-105'
+                  />
+                </div>
 
                 {/* Card details */}
                 <div className='flex flex-1 flex-col p-4'>

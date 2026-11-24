@@ -392,7 +392,7 @@ const SyllabusLeads = () => {
                                                                         }
                                                                     />
 
-                                                                    <div className="absolute right-8 top-0 z-20 w-36 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+                                                                    <div className="absolute right-8 -top-12 z-20 w-28 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
                                                                         <button
                                                                             type="button"
                                                                             onClick={() => {
@@ -411,7 +411,7 @@ const SyllabusLeads = () => {
                                                                                 setOpenActionId(null);
                                                                                 navigate(`/admin/edit-lead/${lead._id}`);
                                                                             }}
-                                                                            className="flex w-full items-center gap-3 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
+                                                                            className="flex w-full items-center gap-3 px-4  text-sm text-gray-700 transition hover:bg-gray-50"
                                                                         >
                                                                             <Pencil size={16} />
                                                                             Edit

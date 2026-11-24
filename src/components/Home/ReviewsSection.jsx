@@ -5,104 +5,103 @@ import { motion } from 'framer-motion'
 import { Star, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Review data
-
 const reviews = [
   {
-    name: "Barsha Priyadarshini Sahoo",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "BS",
+    name: 'Barsha Priyadarshini Sahoo',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'BS',
     rating: 5,
-    text: "The course was informative and helped me improve my technical and practical skills.",
-    course: "MERN Stack & AI DevOps",
+    text: 'The course was informative and helped me improve my technical and practical skills.',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "Mandakini Das",
-    role: "MERN Stack & DevOps Student",
-    initials: "MD",
+    name: 'Mandakini Das',
+    role: 'MERN Stack & DevOps Student',
+    initials: 'MD',
     rating: 5,
-    text: "Concepts are explained simply and clearly. Thank you Sir for your guidance and support. 🙏🏻",
-    course: "MERN Stack & DevOps",
+    text: 'Concepts are explained simply and clearly. Thank you Sir for your guidance and support. 🙏🏻',
+    course: 'MERN Stack & DevOps'
   },
   {
-    name: "Bibhuti Bhusan Sahoo",
-    role: "MERN Stack Development Student",
-    initials: "BS",
+    name: 'Bibhuti Bhusan Sahoo',
+    role: 'MERN Stack Development Student',
+    initials: 'BS',
     rating: 5,
-    text: "Practical examples made learning MERN technologies easier. Thank you for your support.",
-    course: "MERN Stack Development",
+    text: 'Practical examples made learning MERN technologies easier. Thank you for your support.',
+    course: 'MERN Stack Development'
   },
   {
-    name: "Arpeet pattanaik",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "AP",
+    name: 'Arpeet pattanaik',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'AP',
     rating: 5,
-    text: "The teacher explains well, clears doubts, and always helps improve our knowledge. 🫡",
-    course: "MERN Stack & AI DevOps",
+    text: 'The teacher explains well, clears doubts, and always helps improve our knowledge. 🫡',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "Sonalita Behera",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "SB",
+    name: 'Sonalita Behera',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'SB',
     rating: 5,
-    text: "The best teacher in every possible way. Thank you! 😊",
-    course: "MERN Stack & AI DevOps",
+    text: 'The best teacher in every possible way. Thank you! 😊',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "SATYAPRIYABRAT PRADHAN",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "SP",
+    name: 'SATYAPRIYABRAT PRADHAN',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'SP',
     rating: 5,
-    text: "Excellent teaching, clear explanations, and helpful guidance. A wonderful learning experience!",
-    course: "MERN Stack & AI DevOps",
+    text: 'Excellent teaching, clear explanations, and helpful guidance. A wonderful learning experience!',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "Prativa Priyadarshini",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "PP",
+    name: 'Prativa Priyadarshini',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'PP',
     rating: 5,
-    text: "Very helpful learning experience. Special thanks to Manoj Sir for his guidance. 😊",
-    course: "MERN Stack & AI DevOps",
+    text: 'Very helpful learning experience. Special thanks to Manoj Sir for his guidance. 😊',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "Kiranjit Mahunta",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "KM",
+    name: 'Kiranjit Mahunta',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'KM',
     rating: 5,
-    text: "Excellent explanation skills. Fundamentals are clear and easy to understand.",
-    course: "MERN Stack & AI DevOps",
+    text: 'Excellent explanation skills. Fundamentals are clear and easy to understand.',
+    course: 'MERN Stack & AI DevOps'
   },
   {
-    name: "Loni Swain",
-    role: "MERN Stack & DevOps Student",
-    initials: "LS",
+    name: 'Loni Swain',
+    role: 'MERN Stack & DevOps Student',
+    initials: 'LS',
     rating: 5,
-    text: "The teaching style is simple and helpful. Thank you Sir for your patience and support. 🙏🏻",
-    course: "MERN Stack & DevOps",
+    text: 'The teaching style is simple and helpful. Thank you Sir for your patience and support. 🙏🏻',
+    course: 'MERN Stack & DevOps'
   },
   {
-    name: "Sonali Parida",
-    role: "MERN Stack Student",
-    initials: "SP",
+    name: 'Sonali Parida',
+    role: 'MERN Stack Student',
+    initials: 'SP',
     rating: 5,
-    text: "The concepts are explained clearly and make learning interesting. Thank you for your support.",
-    course: "MERN Stack",
+    text: 'The concepts are explained clearly and make learning interesting. Thank you for your support.',
+    course: 'MERN Stack'
   },
   {
-    name: "ROHAN PRADHAN",
-    role: "MERN Stack Student",
-    initials: "RP",
+    name: 'ROHAN PRADHAN',
+    role: 'MERN Stack Student',
+    initials: 'RP',
     rating: 5,
-    text: "Good learning experience. Teachers explain clearly and help whenever we have doubts.",
-    course: "MERN Stack",
+    text: 'Good learning experience. Teachers explain clearly and help whenever we have doubts.',
+    course: 'MERN Stack'
   },
   {
-    name: "Pragyan paramita Rout",
-    role: "MERN Stack & AI DevOps Student",
-    initials: "PR",
+    name: 'Pragyan paramita Rout',
+    role: 'MERN Stack & AI DevOps Student',
+    initials: 'PR',
     rating: 5,
-    text: "Manoj Sir explains everything perfectly and is very supportive. Thank you Sir! 😊",
-    course: "MERN Stack & AI DevOps",
-  },
+    text: 'Manoj Sir explains everything perfectly and is very supportive. Thank you Sir! 😊',
+    course: 'MERN Stack & AI DevOps'
+  }
 ]
 
 // TODO: replace with your real rating
@@ -138,12 +137,10 @@ function ReviewCard({ review, index, compact = false }) {
       viewport={{ once: true, amount: 0.15 }}
       transition={{
         duration: 0.4,
-        delay: Math.min(index, 3) * 0.06,
+        delay: Math.min(index, 3) * 0.06
       }}
       className={`flex h-full flex-col rounded-2xl border border-slate-200 bg-white transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/5 ${
-        compact
-          ? 'min-h-[136px] p-3'
-          : 'p-6'
+        compact ? 'min-h-[136px] p-3' : 'p-6'
       }`}
     >
       <Stars rating={review.rating} size={compact ? 14 : 16} />
@@ -225,8 +222,8 @@ export default function ReviewsSection() {
       if (!target) return
 
       container.scrollTo({
-         left: target.offsetLeft,
-        behavior: 'smooth',
+        left: target.offsetLeft,
+        behavior: 'smooth'
       })
     }, 3000)
 
@@ -245,7 +242,7 @@ export default function ReviewsSection() {
       if (!group) return
 
       const distance = Math.abs(
-        group.offsetTop - container.scrollTop
+        group.offsetLeft - container.scrollLeft
       )
 
       if (distance < smallestDistance) {
@@ -285,7 +282,7 @@ export default function ReviewsSection() {
 
     el.scrollBy({
       left: direction * el.clientWidth * 0.8,
-      behavior: 'smooth',
+      behavior: 'smooth'
     })
   }
 
@@ -312,7 +309,8 @@ export default function ReviewsSection() {
         <div className='absolute bottom-24 left-[7%] h-6 w-6 rounded-full bg-blue-300/40' />
       </div>
 
-      <div className='mx-auto max-w-7xl px-5 sm:px-8'>
+      {/* Section content - aligned with CoursesByCategory */}
+      <div className='mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-8'>
         {/* Heading */}
         <div className='mx-auto mb-12 max-w-2xl text-center'>
           <h2 className='text-3xl font-bold tracking-tight text-[#0b2a5b] sm:text-4xl lg:text-5xl'>
@@ -391,11 +389,11 @@ export default function ReviewsSection() {
           </div>
         </div>
 
-        {/* Desktop review cards - unchanged horizontal carousel */}
+        {/* Desktop review cards - horizontal carousel */}
         <div
           ref={scrollRef}
           onScroll={updateArrows}
-          className='-mx-5 hidden snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:flex sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+          className='hidden snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
         >
           {reviews.map((review, index) => (
             <div
@@ -410,38 +408,38 @@ export default function ReviewsSection() {
           ))}
         </div>
 
-      {/* Mobile reviews - horizontal manual + auto scroll */}
-<div
-  ref={mobileScrollRef}
-  onScroll={handleMobileScroll}
-  className="sm:hidden flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
->
-  {Array.from({ length: mobileGroupCount }).map((_, groupIndex) => {
-    const groupReviews = reviews.slice(
-      groupIndex * 3,
-      groupIndex * 3 + 3
-    );
+        {/* Mobile reviews - horizontal manual + auto scroll */}
+        <div
+          ref={mobileScrollRef}
+          onScroll={handleMobileScroll}
+          className='flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+        >
+          {Array.from({ length: mobileGroupCount }).map((_, groupIndex) => {
+            const groupReviews = reviews.slice(
+              groupIndex * 3,
+              groupIndex * 3 + 3
+            )
 
-    return (
-      <div
-        key={groupIndex}
-        ref={(element) => {
-          mobileGroupRefs.current[groupIndex] = element;
-        }}
-        className="w-full shrink-0 snap-start flex flex-col gap-3"
-      >
-        {groupReviews.map((review, index) => (
-          <ReviewCard
-            key={review.name}
-            review={review}
-            index={index}
-            compact
-          />
-        ))}
-      </div>
-    );
-  })}
-</div>
+            return (
+              <div
+                key={groupIndex}
+                ref={element => {
+                  mobileGroupRefs.current[groupIndex] = element
+                }}
+                className='flex w-full shrink-0 snap-start flex-col gap-3'
+              >
+                {groupReviews.map((review, index) => (
+                  <ReviewCard
+                    key={review.name}
+                    review={review}
+                    index={index}
+                    compact
+                  />
+                ))}
+              </div>
+            )
+          })}
+        </div>
 
         {/* Call to action */}
         <div className='mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl bg-[#0b2a5b] p-6 text-white sm:flex-row sm:items-center sm:px-8'>
