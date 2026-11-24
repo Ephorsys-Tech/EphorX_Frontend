@@ -1,6 +1,7 @@
+
 import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Phone, Mail, Menu, X, Clock, Sparkles } from 'lucide-react'
+import { Phone, Mail, Menu, X, Clock, } from 'lucide-react'
 import image from '../assets/Logo.png'
 import Modal from '../ui/Modal'
 import ContactModal from '../components/modal/ContactModal'
@@ -18,9 +19,8 @@ const LINKS = [
 const PHONE = '+91 95564 73002'
 const EMAIL = 'info@ephorx.com'
 const PARENT = 'Ephorsys Private Limited'
-const WORKING_HOURS = 'Mon – Sat: 10:00 – 19:00'
+const WORKING_HOURS = 'Mon – Sat: 10:00 AM – 7:00 PM'
 
-/* Moving strip ke messages — yahan se text badal sakte ho */
 const TICKER_ITEMS = [
   { lead: 'Admissions are open', rest: 'for the new batch' },
   { lead: 'EphorX', rest: `– A Unit of ${PARENT}` },
@@ -33,7 +33,7 @@ function Logo () {
     <Link
       to='/'
       aria-label={`EphorX Home – A Unit of ${PARENT}`}
-      className='flex shrink-0 items-center gap-3 -ml-7 lg:-ml-8'
+      className='ml-0 flex shrink-0 items-center gap-2 sm:gap-3'
     >
       <img
         src={image}
@@ -41,14 +41,16 @@ function Logo () {
         loading='eager'
         fetchPriority='high'
         decoding='async'
-        className='h-16 w-auto sm:h-15 lg:h-16 xl:h-18'
+        className='h-9 w-auto sm:h-9 md:h-9 lg:h-11 2xl:h-13'
       />
 
-      {/* Divider + parent company line (sirf bade screen par) */}
-      <span className='hidden h-9 w-px bg-slate-300 2xl:block' />
+      <span className='h-9 w-px bg-slate-300 2xl:block' />
+
       <span className='hidden leading-tight 2xl:block'>
-        <span className='block text-[11px] text-slate-500'>A Unit of</span>
-        <span className='block text-[13px] font-semibold text-[#0b2a5b]'>
+        <span className='block text-[11px] text-slate-500'>
+          A Unit of
+        </span>
+        <span className='block whitespace-nowrap text-[13px] font-semibold text-[#0b2a5b]'>
           {PARENT}
         </span>
       </span>
@@ -62,16 +64,20 @@ function TickerRow () {
       {TICKER_ITEMS.map(item => (
         <span
           key={item.lead}
-          className='flex shrink-0 items-center gap-2 whitespace-nowrap px-8'
+          className='flex shrink-0 items-center gap-2 whitespace-nowrap px-4 sm:px-8'
         >
-          <Sparkles size={14} className='text-amber-300' aria-hidden='true' />
+         
+
           <span>
-            <b className='font-bold text-amber-300'>{item.lead}</b>{' '}
-            <span className='text-white/90'>{item.rest}</span>
+            <b className='font-bold text-amber-300'>
+              {item.lead}
+            </b>{' '}
+            <span className='text-white/90'>
+              {item.rest}
+            </span>
           </span>
-          <span className='ml-8 text-amber-300/60' aria-hidden='true'>
-            ✦
-          </span>
+
+         
         </span>
       ))}
     </>
@@ -84,22 +90,33 @@ export default function Navbar () {
   const [contactOpen, setContactOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 15)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15)
+    }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('scroll', handleScroll, {
+      passive: true
+    })
+
     handleScroll()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   useEffect(() => {
     if (!open) return
 
-    const onKey = e => e.key === 'Escape' && setOpen(false)
+    const onKey = e => {
+      if (e.key === 'Escape') setOpen(false)
+    }
 
     window.addEventListener('keydown', onKey)
 
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+    }
   }, [open])
 
   const handleContactSubmit = async formData => {
@@ -113,26 +130,30 @@ export default function Navbar () {
 
   return (
     <header id='top' className='fixed inset-x-0 top-0 z-50'>
-      {/* Marquee animation (continuous, left se right ki taraf scroll) */}
       <style>{`
         @keyframes ephorx-marquee {
           from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
+          to { transform: translateX(-50%); }
         }
+
         .ephorx-marquee-track {
           display: flex;
           width: max-content;
           animation: ephorx-marquee 32s linear infinite;
         }
+
         .ephorx-marquee:hover .ephorx-marquee-track {
           animation-play-state: paused;
         }
+
         @media (prefers-reduced-motion: reduce) {
-          .ephorx-marquee-track { animation-duration: 120s; }
+          .ephorx-marquee-track {
+            animation-duration: 120s;
+          }
         }
       `}</style>
 
-      {/* ───────── Main bar ───────── */}
+      {/* Main Navbar */}
       <div
         className={`bg-white/95 backdrop-blur transition-shadow duration-300 ${
           scrolled
@@ -140,18 +161,18 @@ export default function Navbar () {
             : 'border-b border-slate-200'
         }`}
       >
-        <nav className='mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-2 px-5 sm:px-8 lg:h-[72px] lg:gap-3 lg:px-8'>
+        <nav className='mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-2 px-5 sm:px-8 md:gap-3 lg:h-[72px] lg:px-8'>
           <Logo />
 
-          {/* Desktop links */}
-          <ul className='hidden shrink-0 items-center gap-0 lg:flex xl:gap-1'>
+          {/* Desktop Links */}
+          <ul className='hidden shrink-0 items-center gap-0 xl:flex xl:gap-1'>
             {LINKS.map(link => (
               <li key={link.label}>
                 <NavLink
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `group relative block whitespace-nowrap px-2 py-2 text-sm font-semibold transition-colors xl:px-3 xl:text-[15px] ${
+                    `group relative block whitespace-nowrap px-2 py-2 text-sm font-semibold transition-colors 2xl:px-3 2xl:text-[15px] ${
                       isActive
                         ? 'text-blue-700'
                         : 'text-slate-700 hover:text-blue-700'
@@ -161,8 +182,9 @@ export default function Navbar () {
                   {({ isActive }) => (
                     <>
                       {link.label}
+
                       <span
-                        className={`absolute inset-x-2 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-3 ${
+                        className={`absolute inset-x-2 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 2xl:inset-x-3 ${
                           isActive
                             ? 'scale-x-100'
                             : 'scale-x-0 group-hover:scale-x-100'
@@ -176,19 +198,19 @@ export default function Navbar () {
           </ul>
 
           {/* Desktop CTA */}
-          <div className='hidden shrink-0 items-center lg:flex'>
+          <div className='hidden shrink-0 items-center xl:flex'>
             <button
               type='button'
               onClick={openContact}
-              className='flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full bg-amber-400 px-3 py-2.5 text-sm font-bold text-[#0b2a5b] shadow-sm transition hover:bg-amber-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 xl:px-5'
+              className='flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full bg-blue-700 px-3 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-600 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 2xl:px-5'
             >
               <Phone size={16} />
               Book Consultation
             </button>
           </div>
 
-          {/* Mobile actions */}
-          <div className='flex shrink-0 items-center gap-2 lg:hidden'>
+          {/* Mobile and Tablet Actions */}
+          <div className='flex shrink-0 items-center gap-2 xl:hidden'>
             <button
               type='button'
               onClick={openContact}
@@ -210,10 +232,12 @@ export default function Navbar () {
           </div>
         </nav>
 
-        {/* Mobile menu */}
+        {/* Mobile and Tablet Menu */}
         <div
-          className={`grid border-slate-200 bg-white transition-all duration-300 lg:hidden ${
-            open ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr] border-t-0'
+          className={`grid border-slate-200 bg-white transition-all duration-300 xl:hidden ${
+            open
+              ? 'grid-rows-[1fr] border-t'
+              : 'grid-rows-[0fr] border-t-0'
           }`}
         >
           <div className='overflow-hidden'>
@@ -244,7 +268,7 @@ export default function Navbar () {
                 type='button'
                 tabIndex={open ? 0 : -1}
                 onClick={openContact}
-                className='flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 py-3 text-base font-bold text-[#0b2a5b] transition hover:bg-amber-300'
+                className='flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 py-3 text-base font-bold text-white transition hover:bg-blue-600'
               >
                 <Phone size={18} />
                 Book Consultation
@@ -259,6 +283,7 @@ export default function Navbar () {
                   <Phone size={15} className='text-blue-700' />
                   {PHONE}
                 </a>
+
                 <a
                   href={`mailto:${EMAIL}`}
                   tabIndex={open ? 0 : -1}
@@ -267,10 +292,12 @@ export default function Navbar () {
                   <Mail size={15} className='text-blue-700' />
                   {EMAIL}
                 </a>
+
                 <p className='mt-1 flex items-center gap-2'>
                   <Clock size={15} className='text-blue-700' />
                   {WORKING_HOURS}
                 </p>
+
                 <p className='text-xs text-slate-500'>
                   EphorX – A Unit of {PARENT}
                 </p>
@@ -280,21 +307,25 @@ export default function Navbar () {
         </div>
       </div>
 
-      {/* ───────── Info row + moving strip (scroll par collapse hoti hain) ───────── */}
+      {/* Info Row and Moving Strip */}
       <div
         className={`overflow-hidden transition-all duration-300 ${
           scrolled ? 'max-h-0' : 'max-h-[100px]'
         }`}
       >
-        {/* Working hours + contact (desktop only) */}
-        <div className='hidden border-b border-slate-200 bg-slate-50 lg:block'>
+        {/* Working Hours and Contact */}
+        <div className='hidden border-b border-slate-200 bg-slate-50 xl:block'>
           <div className='mx-auto flex h-12 max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-8'>
             <div className='flex items-center gap-3'>
               <span className='flex h-8 w-8 items-center justify-center rounded-full border border-amber-400 text-amber-500'>
                 <Clock size={15} />
               </span>
+
               <div className='leading-tight'>
-                <p className='text-[11px] text-slate-500'>Working hours</p>
+                <p className='text-[11px] text-slate-500'>
+                  Working hours
+                </p>
+
                 <p className='text-[13px] font-semibold text-[#0b2a5b]'>
                   {WORKING_HOURS}
                 </p>
@@ -309,6 +340,7 @@ export default function Navbar () {
                 <Phone size={14} className='text-blue-700' />
                 {PHONE}
               </a>
+
               <a
                 href={`mailto:${EMAIL}`}
                 className='flex items-center gap-2 transition hover:text-blue-700'
@@ -320,13 +352,12 @@ export default function Navbar () {
           </div>
         </div>
 
-        {/* Continuously moving strip */}
+        {/* Moving Announcement Strip */}
         <div
           className='ephorx-marquee overflow-hidden bg-[#0b2a5b] text-[13px] text-white'
           aria-label={`EphorX – A Unit of ${PARENT}`}
         >
           <div className='ephorx-marquee-track h-9 items-center'>
-            {/* Do baar render — taaki -50% par loop seamless ho */}
             <TickerRow />
             <TickerRow />
             <TickerRow />
@@ -335,7 +366,7 @@ export default function Navbar () {
         </div>
       </div>
 
-      {/* Shared Contact Modal */}
+      {/* Contact Modal */}
       <Modal
         isOpen={contactOpen}
         onClose={() => setContactOpen(false)}
