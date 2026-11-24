@@ -11,8 +11,6 @@ import {
 } from "lucide-react";
 import contactApi from "../../admin/api/contactApi";
 
-
-
 const initialForm = {
   name: "",
   email: "",
@@ -24,10 +22,10 @@ const initialForm = {
 };
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition duration-300 placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100";
+  "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition duration-300 placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100";
 
 const FieldLabel = ({ children, required = false }) => (
-  <label className="mb-2 block text-sm font-semibold text-slate-700">
+  <label className="mb-1.5 block text-sm font-semibold text-slate-700">
     {children}
     {required && <span className="ml-1 text-sky-600">*</span>}
   </label>
@@ -50,52 +48,52 @@ const ContactModal = ({ onClose, onSubmit }) => {
     if (error) setError("");
   };
 
- const handleSubmit = async (event) => {
-  event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  if (loading) return;
+    if (loading) return;
 
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {
-    const payload = {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
-      wpno: formData.wpno.trim(),
-      subject: formData.subject.trim(),
-      course: formData.course.trim(),
-      message: formData.message.trim(),
-    };
+    try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        wpno: formData.wpno.trim(),
+        subject: formData.subject.trim(),
+        course: formData.course.trim(),
+        message: formData.message.trim(),
+      };
 
-    const response = await contactApi.create(payload);
+      const response = await contactApi.create(payload);
 
-    if (response?.success === false) {
-      throw new Error(
-        response.message || "Failed to send your message."
+      if (response?.success === false) {
+        throw new Error(
+          response.message || "Failed to send your message."
+        );
+      }
+
+      if (onSubmit) {
+        await onSubmit(formData);
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Contact form submission failed:", err);
+
+      setError(
+        err.message || "Unable to send your message. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
-
-    if (onSubmit) {
-      await onSubmit(formData);
-    }
-
-    setSubmitted(true);
-  } catch (err) {
-    console.error("Contact form submission failed:", err);
-
-    setError(
-      err.message || "Unable to send your message. Please try again."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   if (submitted) {
     return (
-      <div className="px-6 py-14 text-center sm:px-10">
+      <div className="px-6 py-10 text-center sm:px-10">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-100 text-sky-600">
           <CheckCircle2 size={32} />
         </div>
@@ -120,24 +118,24 @@ const ContactModal = ({ onClose, onSubmit }) => {
   }
 
   return (
-    <section className="relative overflow-hidden bg-white px-6 pb-3 sm:px-9">
+    <section className="relative overflow-hidden bg-white px-5 pb-1 sm:px-7">
       <div className="pointer-events-none absolute right-5 top-5 h-16 w-16 rotate-12 rounded-2xl bg-sky-100/70" />
       <div className="pointer-events-none absolute bottom-20 right-8 h-24 w-24 rounded-full bg-blue-50" />
       <div className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-sky-100/60 blur-2xl" />
 
       <div className="relative z-10">
-        <div className="mb-7">
-          <h3 className="mt-1 text-2xl font-black text-slate-950">
+        <div className="mb-3">
+          <h3 className="mt-1 text-xl font-black text-slate-950">
             Send us a message
           </h3>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-1.5 text-sm text-slate-500">
             Share your details and we'll get in touch.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <FieldLabel required>Name</FieldLabel>
 
@@ -184,7 +182,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <FieldLabel required>Phone Number</FieldLabel>
 
@@ -233,6 +231,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
 
           <div>
             <FieldLabel>Course</FieldLabel>
+
             <input
               name="course"
               value={formData.course}
@@ -251,7 +250,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
               value={formData.message}
               onChange={handleChange}
               placeholder="What would you like to know?"
-              rows={4}
+              rows={3}
               maxLength={2000}
               className={`${inputClass} resize-y`}
               required
@@ -276,7 +275,7 @@ const ContactModal = ({ onClose, onSubmit }) => {
             whileHover={{ scale: loading ? 1 : 1.015 }}
             whileTap={{ scale: loading ? 1 : 0.98 }}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition-colors duration-300 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Sending..." : "Send Message"}
             <Send size={16} />

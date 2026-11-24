@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 
 import { createWebinarEnrollment } from '../../admin/api/webEnrollApi.js'
@@ -11,9 +12,9 @@ const initialForm = {
 }
 
 const inputClass =
-  'h-11 w-full min-w-0 rounded-lg border border-slate-300 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100'
+  'h-10 w-full min-w-0 rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100'
 
-const labelClass = 'mb-2 block text-sm font-medium text-slate-700'
+const labelClass = 'mb-1.5 block text-sm font-medium text-slate-700'
 
 const required = <span className='ml-0.5 text-red-500'>*</span>
 
@@ -59,7 +60,6 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
         return
       }
 
-      // Call the optional parent callback if provided
       await onSubmit?.(result)
 
       alert('Webinar enrollment saved successfully!')
@@ -80,23 +80,28 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className='w-full space-y-6 px-6 pb-6 pt-3 sm:px-8'
+      className='w-full space-y-4 px-5 pb-5 pt-2 sm:px-7'
     >
       {/* Webinar information */}
-      <div className='rounded-xl border border-slate-200 bg-slate-50 p-4'>
-        <p className='text-xs text-slate-500'>Registering for</p>
-        <h3 className='mt-0.5 break-words text-base font-semibold leading-snug text-slate-900'>
+      <div className='relative overflow-hidden rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-white px-4 py-3'>
+        <div className='absolute left-0 top-0 h-full w-1 bg-blue-700' />
+
+        <p className='text-[11px] font-semibold uppercase tracking-wider text-blue-700'>
+          Webinar Registration
+        </p>
+
+        <h3 className='mt-1 break-words text-lg font-bold leading-snug text-slate-900'>
           {webinar?.title || 'Webinar'}
         </h3>
       </div>
 
-      <p className='text-sm leading-6 text-slate-600'>
+      <p className='text-sm leading-5 text-slate-600'>
         Fill in your details to reserve your place.
       </p>
 
-      <div className='space-y-5'>
+      <div className='space-y-3'>
         {/* Name and email */}
-        <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
           <div className='min-w-0'>
             <label htmlFor='webinar-name' className={labelClass}>
               Full name{required}
@@ -133,7 +138,7 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
         </div>
 
         {/* Phone numbers */}
-        <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
           <div className='min-w-0'>
             <label htmlFor='webinar-number' className={labelClass}>
               Phone number{required}
@@ -201,23 +206,23 @@ export default function WebinarEnrollModal ({ onClose, webinar, onSubmit }) {
       {error && (
         <p
           role='alert'
-          className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'
+          className='rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700'
         >
           {error}
         </p>
       )}
 
       {/* Submit */}
-      <div className='border-t border-slate-200 pt-6'>
+      <div className='border-t border-slate-200 pt-4'>
         <button
           type='submit'
           disabled={loading}
-          className='cursor-pointer w-full rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
+          className='w-full cursor-pointer rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
         >
           {loading ? 'Submitting...' : 'Submit enrollment'}
         </button>
 
-        <p className='mt-3 text-center text-xs text-slate-500'>
+        <p className='mt-2 text-center text-xs text-slate-500'>
           Please ensure your contact details are correct.
         </p>
       </div>

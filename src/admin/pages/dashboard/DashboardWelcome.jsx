@@ -62,6 +62,8 @@ export default function DashboardWelcome({ adminImage, onNavigate }) {
           <img
             src={adminImage}
             alt="Education management mascot"
+            loading="eager"
+            decoding="async"
             className="mx-auto mr-15 h-36 w-full max-w-64 object-contain drop-shadow-xl sm:h-40 md:mx-0 md:h-44 lg:h-52"
           />
         </div>

@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { internsRow1, internsRow2 } from "../../assets/data/internData";
 
 const InternCard = ({ intern }) => {
@@ -10,6 +12,8 @@ const InternCard = ({ intern }) => {
         <img
           src={intern.photo}
           alt={intern.name}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover"
         />
       </div>
@@ -29,27 +33,95 @@ const InternCard = ({ intern }) => {
 };
 
 const InternRow = ({ interns, direction }) => {
-  const repeatedInterns = [...interns, ...interns];
+  const x = useMotionValue(0);
+  const trackRef = useRef(null);
+  const positionRef = useRef(0);
+  const isPaused = useRef(false);
+  const distanceRef = useRef(0);
+
+  // Set the starting position for each row
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    distanceRef.current = trackRef.current.scrollWidth / 2;
+
+    const initialPosition =
+      direction === "right" ? -distanceRef.current : 0;
+
+    positionRef.current = initialPosition;
+    x.set(initialPosition);
+  }, [direction, x]);
+
+  // Smooth continuous movement
+  useAnimationFrame((time, delta) => {
+    if (isPaused.current || !trackRef.current) return;
+
+    const distance = trackRef.current.scrollWidth / 2;
+
+    if (!distance) return;
+
+    distanceRef.current = distance;
+
+    // Same speed as the original 35-second animation
+    const speed = distance / 40;
+    let nextPosition = positionRef.current;
+
+    if (direction === "left") {
+      nextPosition -= speed * (delta / 1000);
+
+      if (nextPosition <= -distance) {
+        nextPosition += distance;
+      }
+    } else {
+      nextPosition += speed * (delta / 1000);
+
+      if (nextPosition >= 0) {
+        nextPosition -= distance;
+      }
+    }
+
+    positionRef.current = nextPosition;
+    x.set(nextPosition);
+  });
+
+  const handleMouseEnter = () => {
+    isPaused.current = true;
+  };
+
+  const handleMouseLeave = () => {
+    isPaused.current = false;
+  };
 
   return (
-    <div className="overflow-hidden py-4">
+    <div
+      className="overflow-hidden py-4"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <motion.div
-        className="flex w-max gap-3"
-        animate={{
-          x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
-        }}
-        transition={{
-          duration: 35,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        ref={trackRef}
+        className="flex w-max"
+        style={{ x }}
       >
-        {repeatedInterns.map((intern, index) => (
-          <InternCard
-            key={`${intern.name}-${index}`}
-            intern={intern}
-          />
-        ))}
+        {/* First set */}
+        <div className="flex gap-3 pr-3">
+          {interns.map((intern, index) => (
+            <InternCard
+              key={`${intern.name}-first-${index}`}
+              intern={intern}
+            />
+          ))}
+        </div>
+
+        {/* Duplicate set for seamless movement */}
+        <div className="flex gap-3 pr-3" aria-hidden="true">
+          {interns.map((intern, index) => (
+            <InternCard
+              key={`${intern.name}-second-${index}`}
+              intern={intern}
+            />
+          ))}
+        </div>
       </motion.div>
     </div>
   );
@@ -72,7 +144,7 @@ const InternSection = () => {
             <h2 className="text-4xl font-bold text-gray-900 sm:text-[38px]">
               Meet Our
               <span className="pl-3 text-blue-700">
-                Interns
+                Students
               </span>
             </h2>
           </div>

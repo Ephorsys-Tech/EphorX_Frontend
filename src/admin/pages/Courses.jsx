@@ -106,8 +106,8 @@ export default function Course() {
 
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        "Failed to load courses. Please try again."
+          err?.message ||
+          "Failed to load courses. Please try again."
       );
     } finally {
       setLoading(false);
@@ -245,8 +245,8 @@ export default function Course() {
 
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete course. Please try again."
+          err?.message ||
+          "Failed to delete course. Please try again."
       );
     } finally {
       setDeleting(false);
@@ -259,11 +259,11 @@ export default function Course() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col">
 
-        {/* Page header */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Fixed page header */}
+        <div className="mb-6 flex shrink-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
               Courses
@@ -281,9 +281,9 @@ export default function Course() {
           />
         </div>
 
-        {/* Error message */}
+        {/* Fixed error message */}
         {error && (
-          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <div className="mb-4 flex shrink-0 items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
             <AlertCircle size={20} className="mt-0.5 shrink-0" />
 
             <div className="flex-1 text-sm">{error}</div>
@@ -299,8 +299,8 @@ export default function Course() {
           </div>
         )}
 
-        {/* Search and filters */}
-        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        {/* Fixed search and filters */}
+        <div className="mb-4 shrink-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-1">
               <Search
@@ -318,26 +318,6 @@ export default function Course() {
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-              <select
-                value={selectedCategory}
-                onChange={(event) =>
-                  setSelectedCategory(event.target.value)
-                }
-                className="min-w-48 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                <option value="all">All Categories</option>
-
-                {categories.map((category) => (
-                  <option
-                    key={getId(category)}
-                    value={getId(category)}
-                  >
-                    {category.name ||
-                      category.title ||
-                      "Unnamed Category"}
-                  </option>
-                ))}
-              </select>
 
               <RefreshButton
                 onClick={fetchData}
@@ -347,213 +327,204 @@ export default function Course() {
           </div>
         </div>
 
-        {/* Summary */}
-        {!loading && (
-          <div className="mb-5 flex items-center justify-between">
-            <p className="text-sm text-gray-600">
-              Showing{" "}
-              <span className="font-semibold text-gray-900">
-                {filteredCourses.length}
-              </span>{" "}
-              of{" "}
-              <span className="font-semibold text-gray-900">
-                {courses.length}
-              </span>{" "}
-              courses
-            </p>
-          </div>
-        )}
+        {/* Only this section scrolls */}
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-4">
 
-        {/* Loading, empty state, or course cards */}
-        {loading ? (
-          <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white">
-            <RefreshCw
-              size={30}
-              className="animate-spin text-blue-600"
-            />
+          {/* Loading state */}
+          {loading ? (
+            <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white">
+              <RefreshCw
+                size={30}
+                className="animate-spin text-blue-600"
+              />
 
-            <p className="mt-4 text-sm text-gray-500">
-              Loading courses...
-            </p>
-          </div>
-        ) : filteredCourses.length === 0 ? (
-          <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-6 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50">
-              <BookOpen size={26} className="text-blue-600" />
+              <p className="mt-4 text-sm text-gray-500">
+                Loading courses...
+              </p>
             </div>
+          ) : filteredCourses.length === 0 ? (
+            /* Empty state */
+            <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-6 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50">
+                <BookOpen size={26} className="text-blue-600" />
+              </div>
 
-            <h2 className="mt-4 text-lg font-semibold text-gray-900">
-              {courses.length === 0
-                ? "No courses yet"
-                : "No matching courses"}
-            </h2>
+              <h2 className="mt-4 text-lg font-semibold text-gray-900">
+                {courses.length === 0
+                  ? "No courses yet"
+                  : "No matching courses"}
+              </h2>
 
-            <p className="mt-2 max-w-md text-sm text-gray-500">
-              {courses.length === 0
-                ? "Create your first course to get started."
-                : "Try changing your search or category filter."}
-            </p>
+              <p className="mt-2 max-w-md text-sm text-gray-500">
+                {courses.length === 0
+                  ? "Create your first course to get started."
+                  : "Try changing your search or category filter."}
+              </p>
 
-            {courses.length === 0 ? (
-              <button
-                type="button"
-                onClick={handleAdd}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
-              >
-                <Plus size={17} />
-                Add Course
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedCategory("all");
-                }}
-                className="mt-5 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Clear Filters
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredCourses.map((course) => {
-              const categoryName = getCategoryName(course);
-              const imageUrl = getCourseImage(course);
-              const syllabusUrl = getSyllabusUrl(course);
-
-              return (
-                <article
-                  key={getId(course)}
-                  className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              {courses.length === 0 ? (
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
                 >
-                  {/* Course image */}
-                  <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gray-100">
-                    {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={course.title || "Course"}
-                        className="h-full w-full object-cover"
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
-                        }}
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center text-gray-400">
-                        <ImageIcon size={38} strokeWidth={1.5} />
+                  <Plus size={17} />
+                  Add Course
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedCategory("all");
+                  }}
+                  className="mt-5 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Clear Filters
+                </button>
+              )}
+            </div>
+          ) : (
+            /* Course cards */
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {filteredCourses.map((course) => {
+                const categoryName = getCategoryName(course);
+                const imageUrl = getCourseImage(course);
+                const syllabusUrl = getSyllabusUrl(course);
 
-                        <span className="mt-2 text-xs">
-                          No course image
-                        </span>
+                return (
+                  <article
+                    key={getId(course)}
+                    className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  >
+                    {/* Course image */}
+                    <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gray-100">
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={course.title || "Course"}
+                          loading="eager"
+                          decoding="async"
+                          className="h-full w-full object-cover"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center text-gray-400">
+                          <ImageIcon size={38} strokeWidth={1.5} />
+
+                          <span className="mt-2 text-xs">
+                            No course image
+                          </span>
+                        </div>
+                      )}
+
+                      <span className="absolute left-3 top-3 max-w-[80%] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-blue-700 shadow-sm">
+                        {categoryName}
+                      </span>
+                    </div>
+
+                    {/* Course details */}
+                    <div className="p-5">
+                      <h2 className="line-clamp-1 text-lg font-bold text-gray-900">
+                        {course.title || "Untitled Course"}
+                      </h2>
+
+                      <p className="mt-2 min-h-10 line-clamp-2 text-sm leading-5 text-gray-500">
+                        {course.description ||
+                          "No description provided."}
+                      </p>
+
+                      {/* Prices */}
+                      <div className="mt-4">
+                        <div className="flex flex-wrap items-baseline gap-2">
+                          <span className="text-xl font-bold text-blue-700">
+                            ₹{course.discountPrice || "0"}
+                          </span>
+
+                          {course.Originalprice && (
+                            <span className="text-sm text-gray-400 line-through">
+                              ₹{course.Originalprice}
+                            </span>
+                          )}
+                        </div>
+
+                        {course.duration && (
+                          <p className="mt-2 text-sm text-gray-600">
+                            <span className="font-medium">
+                              Duration:
+                            </span>{" "}
+                            {course.duration}
+                          </p>
+                        )}
                       </div>
-                    )}
 
-                    <span className="absolute left-3 top-3 max-w-[80%] truncate rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-blue-700 shadow-sm">
-                      {categoryName}
-                    </span>
-                  </div>
+                      {/* Course type and syllabus */}
+                      <div className="mt-4 flex flex-wrap items-center gap-2">
+                        {course.type && (
+                          <span className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700">
+                            {course.type}
+                          </span>
+                        )}
 
-                  {/* Course details */}
-                  <div className="p-5">
-                    <h2 className="line-clamp-1 text-lg font-bold text-gray-900">
-                      {course.title || "Untitled Course"}
-                    </h2>
-
-                    <p className="mt-2 min-h-10 line-clamp-2 text-sm leading-5 text-gray-500">
-                      {course.description ||
-                        "No description provided."}
-                    </p>
-
-                    {/* Prices */}
-                    <div className="mt-4">
-                      <div className="flex flex-wrap items-baseline gap-2">
-                        <span className="text-xl font-bold text-blue-700">
-                          ₹{course.discountPrice || "0"}
-                        </span>
-
-                        {course.Originalprice && (
-                          <span className="text-sm text-gray-400 line-through">
-                            ₹{course.Originalprice}
+                        {syllabusUrl ? (
+                          <a
+                            href={syllabusUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(event) =>
+                              event.stopPropagation()
+                            }
+                            className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200"
+                          >
+                            <FileText size={13} />
+                            View syllabus
+                          </a>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs text-gray-500">
+                            <FileText size={13} />
+                            No syllabus
                           </span>
                         )}
                       </div>
 
-                      {course.duration && (
-                        <p className="mt-2 text-sm text-gray-600">
-                          <span className="font-medium">
-                            Duration:
-                          </span>{" "}
-                          {course.duration}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Course type and syllabus */}
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
-                      {course.type && (
-                        <span className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700">
-                          {course.type}
-                        </span>
-                      )}
-
-                      {syllabusUrl ? (
-                        <a
-                          href={syllabusUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={(event) =>
-                            event.stopPropagation()
-                          }
-                          className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200"
+                      {/* Actions */}
+                      <div className="mt-5 flex items-center gap-2 border-t border-gray-100 pt-4">
+                        <button
+                          type="button"
+                          onClick={() => handleView(course)}
+                          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                         >
-                          <FileText size={13} />
-                          View syllabus
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs text-gray-500">
-                          <FileText size={13} />
-                          No syllabus
-                        </span>
-                      )}
+                          <Eye size={16} />
+                          View
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(course)}
+                          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
+                        >
+                          <Edit size={16} />
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setDeletingCourse(course)}
+                          aria-label={`Delete ${course.title || "course"}`}
+                          className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
+                        >
+                          <Trash2 size={16} />
+                          Delete
+                        </button>
+                      </div>
                     </div>
-
-                    {/* Actions */}
-                    <div className="mt-5 flex items-center gap-2 border-t border-gray-100 pt-4">
-                      <button
-                        type="button"
-                        onClick={() => handleView(course)}
-                        className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-                      >
-                        <Eye size={16} />
-                        View
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleEdit(course)}
-                        className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
-                      >
-                        <Edit size={16} />
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setDeletingCourse(course)}
-                        aria-label={`Delete ${course.title || "course"}`}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-red-600 transition hover:bg-red-100"
-                      >
-                        <Trash2 size={16} />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Add Course Modal */}

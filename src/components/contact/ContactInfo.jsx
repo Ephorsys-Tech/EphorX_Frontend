@@ -6,30 +6,30 @@ const contactItems = [
     number: '01',
     title: 'Email Address',
     description: 'Have a question? Send us a message.',
-    value: 'hello@ephorx.com',
-    link: 'mailto:hello@ephorx.com'
+    value: 'support@ephorx.com',
+    link: 'mailto:support@ephorx.com'
   },
   {
     number: '02',
     title: 'Phone Number',
     description: 'Talk directly with our team.',
-    value: '+91 XXXXX XXXXX',
+    value: '+91 95564 73002',
     link: null
   },
   {
-    number: '03',
-    title: 'Our Location',
-    description: 'Come and connect with us in person.',
-    value: 'Add your office address',
-    link: null
-  },
-  {
-    number: '04',
-    title: 'Working Hours',
-    description: "We're here to help you move forward.",
-    value: 'Add your working hours',
-    link: null
-  }
+  number: '03',
+  title: 'Our Location',
+  description: 'Come and connect with us in person.',
+  value: 'Ephorsys Pvt. Ltd., Bhubaneswar, Odisha, India',
+  link: null
+},
+{
+  number: '04',
+  title: 'Working Hours',
+  description: "We're here to help you move forward.",
+  value: '10:00 AM – 7:00 PM',
+  link: null
+}
 ]
 
 const ContactInfo = () => {

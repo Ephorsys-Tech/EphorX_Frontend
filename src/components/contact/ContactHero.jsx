@@ -97,6 +97,9 @@ const ContactHero = () => {
             <img
               src={contactImage}
               alt='EphorX support and guidance'
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className='h-full w-full object-cover'
             />
           </div>

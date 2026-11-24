@@ -8,18 +8,27 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-dvh w-full min-h-screen overflow-hidden bg-slate-50">
+    <div className="flex h-dvh w-full overflow-hidden bg-slate-50">
+
+      {/* Fixed Sidebar */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
 
+      {/* Main Dashboard */}
       <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <TopBar setSidebarOpen={setSidebarOpen} />
 
-        <main className="min-h-0 min-w-0 flex-1 overflow-x-hidden p-4 md:p-6">
+        {/* Fixed Topbar */}
+        <div className="shrink-0">
+          <TopBar setSidebarOpen={setSidebarOpen} />
+        </div>
+
+        {/* Scrollable Page Content */}
+        <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6">
           <Outlet />
         </main>
+
       </div>
     </div>
   );

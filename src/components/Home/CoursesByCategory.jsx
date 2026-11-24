@@ -30,6 +30,7 @@ function Thumb ({ src, title }) {
         src={src}
         alt=''
         loading='lazy'
+         decoding="async"
         onError={() => setFailed(true)}
         className='h-[88px] w-[88px] shrink-0 rounded-lg object-cover'
       />

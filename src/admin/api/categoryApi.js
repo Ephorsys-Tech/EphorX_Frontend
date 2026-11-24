@@ -1,15 +1,12 @@
-
 import { AUTH_API } from "../../config/api";
 
 const BASE_URL = `${AUTH_API}/category`;
-async function request(url, options = {}) {
-  const token = localStorage.getItem("token");
 
+async function request(url, options = {}) {
   const response = await fetch(url, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
     credentials: "include",
@@ -42,7 +39,9 @@ export const categoryApi = {
   },
 
   getById(id) {
-    return request(`${BASE_URL}/getById/${encodeURIComponent(id)}`);
+    return request(
+      `${BASE_URL}/getById/${encodeURIComponent(id)}`
+    );
   },
 
   create(data) {

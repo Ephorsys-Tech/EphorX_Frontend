@@ -260,7 +260,7 @@ const OpenPositions = () => {
           isOpen={Boolean(selectedJob && modalType)}
           onClose={closeModal}
           title={modalType === "details" ? "Job Details" : "Apply for Position"}
-          size="lg"
+          size="md"
           theme="white"
         >
           {selectedJob && modalType === "details" && (

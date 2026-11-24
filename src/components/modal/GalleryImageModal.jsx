@@ -7,6 +7,8 @@ const GalleryImageModal = ({ image }) => {
       <img
         src={image}
         alt="Gallery preview"
+        loading="eager"
+        decoding="async"
         className="max-h-[75vh] w-full rounded-xl object-contain"
       />
     </div>

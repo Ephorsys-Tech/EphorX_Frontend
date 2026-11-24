@@ -1,33 +1,32 @@
-import { BrowserRouter, Routes, useLocation } from 'react-router-dom'
-import PublicRoutes from './public.routes'
-import AdminRoutes from './admin.routes'
-import ScrollToTop from '../components/ScrollToTop'
-import CampaignPopup from '../admin/components/CampaignPopUp'
+
+import { Routes, useLocation } from "react-router-dom";
+
+import PublicRoutes from "./public.routes";
+import AdminRoutes from "./admin.routes";
+import ScrollToTop from "../components/ScrollToTop";
+import CampaignPopup from "../admin/components/CampaignPopUp";
 
 const AppContent = () => {
-  const location = useLocation()
-  const isAdminRoute = location.pathname.startsWith('/admin')
+  const location = useLocation();
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <>
       <ScrollToTop />
 
-      {!isAdminRoute && <CampaignPopup/>}
+      {!isAdminRoute && <CampaignPopup />}
 
       <Routes>
         {PublicRoutes}
         {AdminRoutes}
       </Routes>
     </>
-  )
-}
+  );
+};
 
 const AppRoutes = () => {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  )
-}
+  return <AppContent />;
+};
 
-export default AppRoutes
+export default AppRoutes;

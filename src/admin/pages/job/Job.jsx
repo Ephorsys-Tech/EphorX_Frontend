@@ -142,11 +142,11 @@ export default function Job() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col">
 
-        {/* Page Header */}
-        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        {/* Page Header - Fixed */}
+        <div className="mb-6 flex shrink-0 flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
               Jobs Management
@@ -164,9 +164,9 @@ export default function Job() {
           />
         </div>
 
-        {/* Error Message */}
+        {/* Error Message - Fixed */}
         {error && (
-          <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
+          <div className="mb-5 flex shrink-0 items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertCircle
               size={20}
               className="mt-0.5 shrink-0 text-red-600"
@@ -187,8 +187,8 @@ export default function Job() {
           </div>
         )}
 
-        {/* Search, Refresh and Total Jobs */}
-        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+        {/* Search, Refresh and Total Jobs - Fixed */}
+        <div className="mb-5 shrink-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
             {/* Search */}
@@ -238,77 +238,81 @@ export default function Job() {
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading ? (
-          <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-gray-200 bg-white">
-            <RefreshCw
-              size={32}
-              className="animate-spin text-blue-600"
-            />
+        {/* Scrollable Content Area */}
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-5">
 
-            <p className="mt-4 text-sm font-medium text-gray-500">
-              Loading jobs...
-            </p>
-          </div>
-        ) : filteredJobs.length === 0 ? (
-
-          /* Empty State */
-          <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-4 text-center">
-
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">
-              <BriefcaseBusiness
-                size={30}
-                className="text-blue-600"
+          {/* Loading State */}
+          {loading ? (
+            <div className="flex min-h-75 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white">
+              <RefreshCw
+                size={32}
+                className="animate-spin text-blue-600"
               />
+
+              <p className="mt-4 text-sm font-medium text-gray-500">
+                Loading jobs...
+              </p>
+            </div>
+          ) : filteredJobs.length === 0 ? (
+
+            /* Empty State */
+            <div className="flex min-h-75 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white px-4 text-center">
+
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">
+                <BriefcaseBusiness
+                  size={30}
+                  className="text-blue-600"
+                />
+              </div>
+
+              <h2 className="mt-5 text-lg font-semibold text-gray-900">
+                {searchTerm
+                  ? "No matching jobs found"
+                  : "No jobs available"}
+              </h2>
+
+              <p className="mt-2 max-w-md text-sm text-gray-500">
+                {searchTerm
+                  ? "Try changing your search keyword."
+                  : "You haven't added any jobs yet. Start by creating your first job opening."}
+              </p>
+
+              {searchTerm ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  className="mt-5 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                >
+                  Clear Search
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => navigate("/admin/add-job")}
+                  className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                  <Plus size={17} />
+                  Add New Job
+                </button>
+              )}
             </div>
 
-            <h2 className="mt-5 text-lg font-semibold text-gray-900">
-              {searchTerm
-                ? "No matching jobs found"
-                : "No jobs available"}
-            </h2>
+          ) : (
 
-            <p className="mt-2 max-w-md text-sm text-gray-500">
-              {searchTerm
-                ? "Try changing your search keyword."
-                : "You haven't added any jobs yet. Start by creating your first job opening."}
-            </p>
-
-            {searchTerm ? (
-              <button
-                type="button"
-                onClick={() => setSearchTerm("")}
-                className="mt-5 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-              >
-                Clear Search
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => navigate("/admin/add-job")}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-              >
-                <Plus size={17} />
-                Add New Job
-              </button>
-            )}
-          </div>
-
-        ) : (
-
-          /* Jobs Grid */
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredJobs.map((job) => (
-              <JobCard
-                key={job._id}
-                job={job}
-                onView={handleView}
-                onEdit={handleEdit}
-                onDelete={setDeletingJob}
-              />
-            ))}
-          </div>
-        )}
+            /* Jobs Grid */
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {filteredJobs.map((job) => (
+                <JobCard
+                  key={job._id}
+                  job={job}
+                  onView={handleView}
+                  onEdit={handleEdit}
+                  onDelete={setDeletingJob}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Delete Confirmation Modal */}

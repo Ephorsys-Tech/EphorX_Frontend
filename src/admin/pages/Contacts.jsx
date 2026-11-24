@@ -372,7 +372,7 @@ export default function Contacts() {
                                                             </button>
 
                                                             {openActionId === contactId && (
-                                                                <div className="absolute right-0 z-30 mt-2 min-w-36 overflow-hidden rounded-xl border border-slate-200 bg-white py-2 text-left shadow-lg">
+                                                              <div className="absolute right-10 -top-15 z-30 w-30 origin-top-right rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
 
                                                                     {/* View */}
                                                                     <button
@@ -385,7 +385,7 @@ export default function Contacts() {
                                                                     >
                                                                         <Eye
                                                                             size={16}
-                                                                            className="text-emerald-600"
+                                                                            
                                                                         />
                                                                         View
                                                                     </button>
@@ -397,11 +397,11 @@ export default function Contacts() {
                                                                             setEditingContact(contact);
                                                                             setOpenActionId(null);
                                                                         }}
-                                                                        className="flex w-full items-center gap-3 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50"
+                                                                        className="flex w-full items-center gap-3 px-4  text-sm text-slate-700 transition hover:bg-slate-50"
                                                                     >
                                                                         <Pencil
                                                                             size={16}
-                                                                            className="text-blue-600"
+                                                                            
                                                                         />
                                                                         Edit
                                                                     </button>

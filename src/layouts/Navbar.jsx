@@ -16,22 +16,25 @@ const LINKS = [
   { label: 'FAQ', to: '/faq' }
 ]
 
-const PHONE = '+91 00000 00000'
+const PHONE = '+91 95564 73002'
 const EMAIL = 'info@ephorx.com'
 
-function Logo () {
+function Logo() {
   return (
     <Link to='/' aria-label='EphorX Home' className='shrink-0 -ml-7 lg:-ml-8'>
       <img
         src={image}
         alt='EphorX logo'
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
         className='h-16 w-auto sm:h-15 lg:h-16 xl:h-18'
       />
     </Link>
   )
 }
 
-export default function Navbar () {
+export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
@@ -69,9 +72,8 @@ export default function Navbar () {
 
       {/* Top info bar */}
       <div
-        className={`hidden overflow-hidden bg-[#0b2a5b] text-white transition-all duration-300 lg:block ${
-          scrolled ? 'max-h-0' : 'max-h-10'
-        }`}
+        className={`hidden overflow-hidden bg-[#0b2a5b] text-white transition-all duration-300 lg:block ${scrolled ? 'max-h-0' : 'max-h-10'
+          }`}
       >
         <div className='mx-auto flex h-10 max-w-7xl items-center justify-between px-5 text-[13px] sm:px-8 lg:px-8'>
 
@@ -103,11 +105,10 @@ export default function Navbar () {
 
       {/* Main bar */}
       <div
-        className={`bg-white/95 backdrop-blur transition-shadow duration-300 ${
-          scrolled
+        className={`bg-white/95 backdrop-blur transition-shadow duration-300 ${scrolled
             ? 'shadow-[0_6px_24px_-12px_rgba(11,42,91,0.35)]'
             : 'border-b border-slate-200'
-        }`}
+          }`}
       >
 
         {/* Same container and padding as Hero Section */}
@@ -123,10 +124,9 @@ export default function Navbar () {
                   to={link.to}
                   end
                   className={({ isActive }) =>
-                    `group relative block whitespace-nowrap px-2 py-2 text-sm font-semibold transition-colors xl:px-3 xl:text-[15px] ${
-                      isActive
-                        ? 'text-blue-700'
-                        : 'text-slate-700 hover:text-blue-700'
+                    `group relative block whitespace-nowrap px-2 py-2 text-sm font-semibold transition-colors xl:px-3 xl:text-[15px] ${isActive
+                      ? 'text-blue-700'
+                      : 'text-slate-700 hover:text-blue-700'
                     }`
                   }
                 >
@@ -135,11 +135,10 @@ export default function Navbar () {
                       {link.label}
 
                       <span
-                        className={`absolute inset-x-2 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-3 ${
-                          isActive
+                        className={`absolute inset-x-2 -bottom-0.5 h-0.5 origin-left rounded-full bg-blue-600 transition-transform duration-200 xl:inset-x-3 ${isActive
                             ? 'scale-x-100'
                             : 'scale-x-0 group-hover:scale-x-100'
-                        }`}
+                          }`}
                       />
                     </>
                   )}
@@ -186,9 +185,8 @@ export default function Navbar () {
 
         {/* Mobile menu */}
         <div
-          className={`grid border-slate-200 bg-white transition-all duration-300 lg:hidden ${
-            open ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr] border-t-0'
-          }`}
+          className={`grid border-slate-200 bg-white transition-all duration-300 lg:hidden ${open ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr] border-t-0'
+            }`}
         >
           <div className='overflow-hidden'>
 
@@ -201,10 +199,9 @@ export default function Navbar () {
                     tabIndex={open ? 0 : -1}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition ${
-                        isActive
-                          ? 'bg-blue-50 text-blue-700'
-                          : 'text-slate-800 hover:bg-slate-50'
+                      `flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition ${isActive
+                        ? 'bg-blue-50 text-blue-700'
+                        : 'text-slate-800 hover:bg-slate-50'
                       }`
                     }
                   >

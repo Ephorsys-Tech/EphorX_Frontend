@@ -19,6 +19,32 @@ import sonalita from "../interns/sonalita.png"
 import sthiti from "../interns/sthiti.png"
 import trupti from "../interns/trupti.png"
 
+import alokjyoti from "../interns/Alokjyoti.png"
+import amit from "../interns/amit.png"
+import Ankita from "../interns/Ankita.png"
+import Arabinda from "../interns/Arabinda.png"
+import Arpit from "../interns/Arpit.png"
+import Asutosh from "../interns/Asutosh.png"
+import Badal from "../interns/Badal.png"
+import Bineet from "../interns/Bineet.png"
+import Chandrabhanu from "../interns/Chandrabhanu.png"
+import jagdish from "../interns/jagdish.jpeg"
+import krushnachandra from "../interns/krushnachandra.png"
+import Manini from "../interns/Manini.png"
+import Mohammad from "../interns/Mohammad.png"
+import Monalisa from "../interns/Monalisa.png"
+import Pradosh from "../interns/Pradosh.jpeg"
+import prasanta from "../interns/prasanta.png"
+import pratikhya from "../interns/pratikhya.png"
+import suchismita from "../interns/suchismita.png"
+import sambit from "../interns/sambit.png"
+import Satyakanta from "../interns/Satyakanta.png"
+import Tushar from "../interns/Tushar.png"
+import Subhasmita from "../interns/Subhasmita.png"
+import Subhadra from "../interns/Subhadra.png"
+import Srimaya from "../interns/Srimaya.png"
+
+
 export const internsRow1 = [
   {
     name: "Ananya Baral",
@@ -70,6 +96,73 @@ export const internsRow1 = [
     college: "GIFT Autonomous,Bhubaneswar",
     photo:trupti,
   },
+
+  {
+    name: " Alokjyoti Pradhan",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: alokjyoti,
+  },
+  {
+    name: "Amit Kumar Sahu",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:amit,
+  },
+  {
+    name: "Ankita Kumari Patro ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:Ankita,
+  },
+  {
+    name: "Arabinda Nayak",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:Arabinda,
+  },
+   {
+    name: "Arpit Swayam Gourav",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Arpit,
+  },
+  {
+    name: "Asutosh Jethi ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Asutosh,
+  },
+  {
+    name: "Pratikhya Sahu ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:pratikhya,
+  },
+   {
+    name: " Prasanta ojha",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: prasanta,
+  },
+  {
+    name: " Pradosh kumar Tosh",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Pradosh,
+  },
+   {
+    name: "Monalisa Panda",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Monalisa,
+  },
+   {
+    name: "atyakanta Dash ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Satyakanta,
+  },
+   {
+    name: "Subhadra jena",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:Subhadra ,
+  },
+   {
+    name: "Srimaya kumar Sahoo",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Srimaya,
+  },
+
 ];
 
 export const internsRow2 = [
@@ -122,5 +215,64 @@ export const internsRow2 = [
     name: "Sonali Parida ",
     college: "GIFT Autonomous,Bhubaneswar",
     photo:sonali,
+  },
+
+  {
+    name: "Badal Kumar Nayak ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Badal,
+  },
+  {
+    name: "Bineet Kumar",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Bineet,
+  },
+  {
+    name: "Chandrabhanu Nagraj ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo:Chandrabhanu,
+  },
+  {
+    name: "Jagdish Rout",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: jagdish,
+  },
+   {
+    name: "Krushnachandra Sahu ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: krushnachandra,
+  },
+  {
+    name: " Manini Barik",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Manini,
+  },
+   {
+    name: "Mohammad Akdash",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Mohammad,
+  },
+ 
+   {
+    name: "Suchismita Malik ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: suchismita,
+  },
+   
+    {
+    name: " Tushar Giri ",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Tushar,
+  },
+  {
+    name: "Sambit Kumar Giri",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: sambit,
+  },
+
+    {
+    name: " Subhasmita Pati",
+    college: "GIFT Autonomous,Bhubaneswar",
+    photo: Subhasmita,
   },
 ];

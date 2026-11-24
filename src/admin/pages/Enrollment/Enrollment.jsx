@@ -7,13 +7,21 @@ import EnrollmentSearch from "../../components/enrollments/EnrollmentSearch.jsx"
 import EnrollmentCard from "../../components/enrollments/EnrollmentCard.jsx";
 import EnrollmentDetailsModal from "../../modals/WebEnrollViewModal.jsx";
 
-import { deleteWebinarEnrollment, getWebinarEnrollments } from "../../api/webEnrollApi.js";
-import { deleteCourseEnrollment, getCourseEnrollments } from "../../api/courseEnrollApi.js";
+import {
+    deleteWebinarEnrollment,
+    getWebinarEnrollments,
+} from "../../api/webEnrollApi.js";
+
+import {
+    deleteCourseEnrollment,
+    getCourseEnrollments,
+} from "../../api/courseEnrollApi.js";
 
 import EditEnrollmentModal from "../../modals/EditEnrollModal.jsx";
 
 import AddCourseEnrollment from "./AddCourseEnrollment.jsx";
 import AddWebinarEnrollment from "./AddWebinarEnrollment.jsx";
+
 import RefreshButton from "../../../common/components/RefreshButton.jsx";
 import Button from "../../../common/components/Button.jsx";
 
@@ -107,12 +115,12 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
         }
     };
 
-    // Edit enrollment - will connect to PUT API later
+    // Edit enrollment
     const handleEdit = (enrollment) => {
         setEditingEnrollment(enrollment);
     };
 
-    // Delete enrollment - will connect to DELETE API later
+    // Delete enrollment
     const handleDelete = async (enrollment) => {
         const confirmDelete = window.confirm(
             `Are you sure you want to delete the enrollment of ${enrollment.fullName}?`
@@ -141,10 +149,10 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
     };
 
     return (
-        <div className="min-h-screen bg-[#F6F8FC] px-3 md:px-8">
+        <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#F6F8FC] px-3 md:px-8">
 
-            {/* Header */}
-            <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            {/* Fixed Header */}
+            <div className="mb-6 flex shrink-0 flex-col justify-between gap-4 pt-2 md:flex-row md:items-center">
 
                 <div>
                     <h1 className="text-3xl font-bold text-[#111A30]">
@@ -168,10 +176,10 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
             </div>
 
             {/* Main Card */}
-            <div className="overflow-visible rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-                {/* Tabs */}
-                <div className="px-6 pt-5">
+                {/* Fixed Tabs */}
+                <div className="shrink-0 px-6 pt-5">
                     <EnrollmentTabs
                         activeTab={activeTab}
                         setActiveTab={(tab) => {
@@ -182,8 +190,8 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     />
                 </div>
 
-                {/* Search and Refresh */}
-                <div className="flex flex-col justify-between gap-4 border-b border-slate-100 px-6 py-5 lg:flex-row lg:items-center">
+                {/* Fixed Search and Refresh */}
+                <div className="flex shrink-0 flex-col justify-between gap-4 border-b border-slate-100 px-6 py-5 lg:flex-row lg:items-center">
 
                     <EnrollmentSearch
                         search={search}
@@ -192,12 +200,11 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
 
                     <div className="flex items-center justify-between gap-6">
 
-                        {/* Refresh Button */}
                         <RefreshButton
                             onClick={fetchEnrollments}
                             loading={loading}
                         />
-                        {/* Enrollment Count */}
+
                         <span className="whitespace-nowrap text-sm font-semibold text-slate-600">
                             {filteredEnrollments.length} Enrollments
                         </span>
@@ -205,13 +212,13 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     </div>
                 </div>
 
-                {/* Enrollment Cards */}
-                <div className="p-6">
+                {/* Scrollable Enrollment Cards Area */}
+                <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain p-6">
 
                     {/* Loading State */}
                     {loading ? (
 
-                        <div className="py-16 text-center">
+                        <div className="flex min-h-64 flex-col items-center justify-center py-16 text-center">
                             <RefreshCw
                                 size={28}
                                 className="mx-auto animate-spin text-[#4935F5]"
@@ -225,12 +232,13 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     ) : error ? (
 
                         /* Error State */
-                        <div className="py-16 text-center">
+                        <div className="flex min-h-64 flex-col items-center justify-center py-16 text-center">
                             <p className="text-sm font-medium text-red-500">
                                 {error}
                             </p>
 
                             <button
+                                type="button"
                                 onClick={fetchEnrollments}
                                 className="mt-4 rounded-lg bg-[#4935F5] px-5 py-2 text-sm font-semibold text-white hover:bg-[#3826DB]"
                             >
@@ -258,7 +266,7 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     ) : (
 
                         /* Empty State */
-                        <div className="py-16 text-center">
+                        <div className="flex min-h-64 flex-col items-center justify-center py-16 text-center">
 
                             <h3 className="text-lg font-semibold text-slate-700">
                                 No Enrollments Found
@@ -307,6 +315,7 @@ const Enrollment = ({ onAddWebinar, onAddCourse }) => {
                     onCreated={fetchEnrollments}
                 />
             )}
+
         </div>
     );
 };

@@ -329,6 +329,8 @@ export default function ViewCourse() {
               <img
                 src={courseImage}
                 alt={course.title || "Course image"}
+                loading="lazy"
+                decoding="async"
                 className="h-56 w-full object-cover sm:h-80 lg:h-96"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";
@@ -509,7 +511,7 @@ export default function ViewCourse() {
               <button
                 type="button"
                 onClick={editCourse}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
                 <Pencil size={17} />
                 Edit Course

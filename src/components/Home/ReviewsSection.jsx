@@ -4,56 +4,107 @@ import { motion } from 'framer-motion'
 import { Star, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Review data
+
 const reviews = [
   {
-    name: 'Priya Das',
-    role: 'MERN Stack Student',
-    initials: 'PD',
+    name: "Barsha Priyadarshini Sahoo",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "BS",
     rating: 5,
-    text: 'The practical sessions made web development much easier to understand. I loved building projects instead of only learning theory.',
-    course: 'Full Stack Development'
+    text: "The learning experience was very good and informative. The course helped me improve my technical knowledge and practical skills. The concepts were explained clearly, and the practical sessions helped me understand the topics better. Overall, it was a valuable experience that will help me in my future career.",
+    course: "MERN Stack & AI DevOps",
+  },
+   {
+    name: "Mandakini Das",
+    role: "MERN Stack & DevOps Student",
+    initials: "MD",
+    rating: 5,
+    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    course: "MERN Stack & DevOps",
   },
   {
-    name: 'Rahul Mohanty',
-    role: 'Frontend Developer',
-    initials: 'RM',
+    name: "Bibhuti Bhusan Sahoo",
+    role: "MERN Stack Development Student",
+    initials: "BS",
     rating: 5,
-    text: 'The learning path was clear, the mentors were supportive, and the projects helped me become more confident with React.',
-    course: 'Frontend Development'
+    text: "My learning experience has been very good. The concepts are explained clearly with practical examples, which makes learning easier. I have improved my knowledge of HTML, CSS, JavaScript, React.js, and other MERN Stack technologies. The teaching approach is helpful and interactive. Thank you, Sir, for your guidance and support.",
+    course: "MERN Stack Development",
   },
   {
-    name: 'Sneha Patel',
-    role: 'UI/UX Learner',
-    initials: 'SP',
+    name: "Arpeet pattanaik",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "AP",
     rating: 5,
-    text: 'I loved the balance between design concepts and practical work. It helped me think more carefully about user experience.',
-    course: 'UI/UX Design'
+    text: "Teacher is best in teaching better then my collage teachers. He helps all the time and clear doubts and help to improve knowledge. Thank you 🫡",
+    course: "MERN Stack & AI DevOps",
   },
   {
-    name: 'Amit Kumar',
-    role: 'Python Student',
-    initials: 'AK',
+    name: "Sonalita Behera",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "SB",
     rating: 5,
-    text: 'Complex concepts felt manageable because they were explained step by step. The hands-on exercises were my favorite part.',
-    course: 'Python Programming'
+    text: "The best Teacher in every possible way. Thank you 😊",
+    course: "MERN Stack & AI DevOps",
   },
   {
-    name: 'Anjali Sahoo',
-    role: 'Web Development Student',
-    initials: 'AS',
+    name: "SATYAPRIYABRAT PRADHAN",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "SP",
     rating: 5,
-    text: 'I enjoyed the supportive environment and project-based learning. The experience helped me focus on developing real skills.',
-    course: 'Web Development'
+    text: "The teaching experience was excellent! The teacher explains every topic in a clear, simple, and understandable way. The teaching methods are very effective, interactive, and engaging. They are always supportive, patient, and helpful in clearing doubts. I really appreciate their dedication, knowledge, and friendly approach towards students. Overall, it was a wonderful learning experience, and I would highly recommend this teacher. Truly deserving of a 5-star rating!",
+    course: "MERN Stack & AI DevOps",
   },
   {
-    name: 'Karan Singh',
-    role: 'Java Learner',
-    initials: 'KS',
+    name: "Prativa Priyadarshini",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "PP",
     rating: 5,
-    text: 'The structured lessons helped me build a stronger foundation. I now feel more comfortable solving problems on my own.',
-    course: 'Java Programming'
-  }
-]
+    text: "Very good learning experience, concepts were easy to understand and very helpful. Special thanks to Manoj Sir for his guidance and support. Thank you sir 😊",
+    course: "MERN Stack & AI DevOps",
+  },
+  {
+    name: "Kiranjit Mahunta",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "KM",
+    rating: 5,
+    text: "Excellent explanation skills and very professional and conceptual or fundamental clear and easy to understand every concept through the Monaj sir it’s very helpful for me",
+    course: "MERN Stack & AI DevOps",
+  },
+ 
+  {
+    name: "Loni Swain",
+    role: "MERN Stack & DevOps Student",
+    initials: "LS",
+    rating: 5,
+    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    course: "MERN Stack & DevOps",
+  },
+  {
+    name: "Sonali Parida",
+    role: "MERN Stack Student",
+    initials: "SP",
+    rating: 5,
+    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    course: "MERN Stack",
+  },
+  {
+    name: "ROHAN PRADHAN",
+    role: "MERN Stack Student",
+    initials: "RP",
+    rating: 5,
+    text: "The teaching was good and easy to understand. The teachers explained everything clearly and helped us whenever we had doubts. Overall, it was a good learning experience.",
+    course: "MERN Stack",
+  },
+  {
+    name: "Pragyan paramita Rout",
+    role: "MERN Stack & AI DevOps Student",
+    initials: "PR",
+    rating: 5,
+    text: "Special thanks to Manoj sir, his teaching style is very good. He explain everything perfectly and he is very supportive person. Thank you 😊 Thank you sir 🙏🏻",
+    course: "MERN Stack & AI DevOps",
+  },
+];
+
 
 // TODO: replace with your real rating
 const AVERAGE_RATING = '4.9'

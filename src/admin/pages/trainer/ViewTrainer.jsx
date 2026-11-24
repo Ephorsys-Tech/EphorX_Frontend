@@ -96,7 +96,7 @@ const ViewTrainer = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/trainers")}
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white transition hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700"
           >
             <ArrowLeft size={17} />
             Back to Trainers
@@ -135,7 +135,7 @@ const ViewTrainer = () => {
           onClick={() =>
             navigate(`/admin/edit-trainer/${trainer._id}`)
           }
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
         >
           <Edit size={17} />
           Edit Trainer
@@ -153,6 +153,8 @@ const ViewTrainer = () => {
                 <img
                   src={trainer.avatar}
                   alt={trainer.name || "Trainer"}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               ) : (

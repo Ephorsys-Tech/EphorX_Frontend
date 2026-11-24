@@ -111,9 +111,9 @@ const JobApplicationForm = ({ job, onSubmit }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-6 px-6 pb-6 pt-3 sm:px-8'>
+    <form onSubmit={handleSubmit} className='space-y-6 px-6 pb-0 pt-0 sm:px-8'>
       {/* Selected position */}
-      <div className='rounded-xl border border-slate-200 bg-slate-50 p-4'>
+      <div className='rounded-xl border border-slate-200 bg-slate-50 p-3'>
         <p className='text-xs text-slate-500'>Applying for</p>
         <h3 className='mt-0.5 break-words text-base font-semibold text-slate-900'>
           {job.title}
@@ -230,7 +230,7 @@ const JobApplicationForm = ({ job, onSubmit }) => {
         </p>
       )}
 
-      <div className='border-t border-slate-200 pt-6'>
+      <div className='border-t border-slate-200 pt-4'>
         <button
           type='submit'
           disabled={loading}

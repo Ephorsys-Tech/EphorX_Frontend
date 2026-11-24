@@ -11,11 +11,9 @@ import Button from "../../../common/components/Button";
 const initialForm = {
     name: "",
     designation: "",
-    category: "",
     specialization: "",
     description: "",
     experienceYears: "",
-    detailsUrl: "",
 };
 
 const EditTrainer = () => {
@@ -46,11 +44,9 @@ const EditTrainer = () => {
                 setFormData({
                     name: trainer.name || "",
                     designation: trainer.designation || "",
-                    category: trainer.category || "",
                     specialization: trainer.specialization || "",
                     description: trainer.description || "",
                     experienceYears: trainer.experienceYears ?? "",
-                    detailsUrl: trainer.detailsUrl || "",
                 });
 
                 setCurrentAvatar(trainer.avatar || "");
@@ -101,7 +97,6 @@ const EditTrainer = () => {
         if (
             !formData.name.trim() ||
             !formData.designation.trim() ||
-            !formData.category.trim() ||
             !formData.specialization.trim() ||
             !formData.description.trim() ||
             formData.experienceYears === ""
@@ -124,21 +119,18 @@ const EditTrainer = () => {
 
             trainerData.append("name", formData.name.trim());
             trainerData.append("designation", formData.designation.trim());
-            trainerData.append("category", formData.category.trim());
             trainerData.append(
                 "specialization",
                 formData.specialization.trim()
             );
             trainerData.append("description", formData.description.trim());
             trainerData.append("experienceYears", String(experienceYears));
-            trainerData.append("detailsUrl", formData.detailsUrl.trim());
 
             // Only send an avatar when the user selects a replacement.
             if (avatar) {
                 trainerData.append("avatar", avatar);
             }
 
-            console.log("detailsUrl:", formData.detailsUrl);
 
             for (const [key, value] of trainerData.entries()) {
                 console.log(key, value);
@@ -226,12 +218,16 @@ const EditTrainer = () => {
                                     <img
                                         src={URL.createObjectURL(avatar)}
                                         alt="Selected trainer"
+                                        loading="eager"
+                                        decoding="async"
                                         className="h-full w-full object-cover"
                                     />
                                 ) : currentAvatar ? (
                                     <img
                                         src={currentAvatar}
                                         alt="Current trainer"
+                                        loading="lazy"
+                                        decoding="async"
                                         className="h-full w-full object-cover"
                                     />
                                 ) : (
@@ -315,25 +311,6 @@ const EditTrainer = () => {
 
                             <div>
                                 <label
-                                    htmlFor="category"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    Category *
-                                </label>
-                                <input
-                                    id="category"
-                                    name="category"
-                                    type="text"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="e.g. Strength Training"
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-                                />
-                            </div>
-
-                            <div>
-                                <label
                                     htmlFor="specialization"
                                     className="mb-2 block text-sm font-medium text-gray-700"
                                 >
@@ -371,24 +348,6 @@ const EditTrainer = () => {
                                     className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                                 />
                             </div>
-
-                            <div>
-                                <label
-                                    htmlFor="detailsUrl"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
-                                >
-                                    Details URL
-                                </label>
-                                <input
-                                    id="detailsUrl"
-                                    name="detailsUrl"
-                                    type="url"
-                                    value={formData.detailsUrl}
-                                    onChange={handleChange}
-                                    placeholder="https://example.com/trainer"
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-                                />
-                            </div>
                         </div>
 
                         <div className="mt-5">
@@ -423,12 +382,12 @@ const EditTrainer = () => {
                         </button>
 
                         <Button
-                        text={saving ?"Saving Changes...":"Save"}
+                            text={saving ? "Saving Changes..." : "Save"}
                             type="submit"
                             disabled={saving}
                             icon={Save}
                         />
-                             
+
                     </div>
                 </form>
             </div>

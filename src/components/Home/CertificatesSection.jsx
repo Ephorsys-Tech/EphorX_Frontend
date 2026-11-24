@@ -129,6 +129,7 @@ const CertificatesSection = () => {
                       src={certificate.image}
                       alt={`${certificate.title} certificate`}
                       loading='lazy'
+                      decoding="async"
                       className='h-full w-full object-contain transition-transform duration-500 group-hover:scale-105'
                     />
                   </div>

@@ -71,7 +71,7 @@ const ViewSyllabusLead = () => {
                         {lead && (
                             <button
                                 onClick={() => navigate(`/admin/edit-lead/${id}`)}
-                                className="flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700"
+                                className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700"
                             >
                                 <Pencil size={16} />
                                 Edit Lead
@@ -109,7 +109,7 @@ const ViewSyllabusLead = () => {
                                     download
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-indigo-700 transition"
                                 >
                                     <DownloadCloud size={17} />
                                     Download Syllabus PDF

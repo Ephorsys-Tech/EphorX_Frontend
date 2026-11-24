@@ -33,6 +33,7 @@ function CourseImage ({ src, alt }) {
         src={src}
         alt={alt}
         loading='lazy'
+        decoding="async"
         onError={() => setFailed(true)}
         className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
       />
@@ -391,7 +392,7 @@ const Courses = () => {
         isOpen={Boolean(selectedSyllabusCourse)}
         onClose={() => setSelectedSyllabusCourse(null)}
         title='Get Course Syllabus'
-        size='lg'
+        size='md'
         theme='white'
       >
         <SyllabusRequestModal

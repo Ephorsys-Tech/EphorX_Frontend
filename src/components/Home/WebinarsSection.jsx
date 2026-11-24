@@ -15,6 +15,7 @@ function Cover({ src, alt }) {
         src={src}
         alt={alt}
         loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
