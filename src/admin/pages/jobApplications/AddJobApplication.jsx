@@ -1,6 +1,5 @@
-
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   UserRound,
@@ -11,114 +10,119 @@ import {
   Save,
   FileText,
   LoaderCircle,
-  X,
-} from "lucide-react";
+  X
+} from 'lucide-react'
 
-import axios from "axios";
-import { createJobApplication } from "../../api/jobApplicationApi";
-import Button from "../../../common/components/Button";
+import axios from 'axios'
+import { createJobApplication } from '../../api/jobApplicationApi'
+import Button from '../../../common/components/Button'
 
-const JOB_API_URL = "http://localhost:5500/api/auth/job";
+// API URL from environment variable
+const API_URL = import.meta.env.VITE_API_URL
+const JOB_API_URL = `${API_URL}/api/auth/job`
 
-export default function AddJobApplication() {
-  const navigate = useNavigate();
+export default function AddJobApplication () {
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    jobId: "",
-    jobTitle: "",
-  });
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    jobId: '',
+    jobTitle: ''
+  })
 
-  const [jobs, setJobs] = useState([]);
-  const [resume, setResume] = useState(null);
-  const [loadingJobs, setLoadingJobs] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [jobs, setJobs] = useState([])
+  const [resume, setResume] = useState(null)
+  const [loadingJobs, setLoadingJobs] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
+  // Fetch available jobs
   useEffect(() => {
-  const fetchJobs = async () => {
-    try {
-      setError("");
-      setLoadingJobs(true);
+    const fetchJobs = async () => {
+      try {
+        setError('')
+        setLoadingJobs(true)
 
-      const response = await axios.get(
-        `${JOB_API_URL}/get-all-job`
-      );
+        const response = await axios.get(`${JOB_API_URL}/get-all-job`, {
+          withCredentials: true
+        })
 
-      console.log("Jobs API response:", response.data);
+        console.log('Jobs API response:', response.data)
 
-      const jobList =
-        response.data?.jobs ||
-        response.data?.applications ||
-        response.data?.data?.jobs ||
-        response.data?.data ||
-        [];
+        const jobList =
+          response.data?.jobs ||
+          response.data?.applications ||
+          response.data?.data?.jobs ||
+          response.data?.data ||
+          []
 
-      if (!Array.isArray(jobList)) {
-        throw new Error("Jobs API did not return an array.");
+        if (!Array.isArray(jobList)) {
+          throw new Error('Jobs API did not return an array.')
+        }
+
+        setJobs(jobList)
+      } catch (err) {
+        console.error('Fetch jobs error:', err)
+        console.error('Backend error response:', err.response?.data)
+
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            'Unable to load job positions.'
+        )
+      } finally {
+        setLoadingJobs(false)
       }
-
-      setJobs(jobList);
-    } catch (err) {
-      console.error("Fetch jobs error:", err);
-      console.error("Backend error response:", err.response?.data);
-
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Unable to load job positions."
-      );
-    } finally {
-      setLoadingJobs(false);
     }
-  };
 
-  fetchJobs();
-}, []);
+    fetchJobs()
+  }, [])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // Handle input changes
+  const handleChange = e => {
+    const { name, value } = e.target
 
-    setFormData((previous) => ({
+    setFormData(previous => ({
       ...previous,
-      [name]: value,
-    }));
-  };
+      [name]: value
+    }))
+  }
 
-  const handleJobChange = (e) => {
-    const selectedJob = jobs.find(
-      (job) => job._id === e.target.value
-    );
+  // Handle job selection
+  const handleJobChange = e => {
+    const selectedJob = jobs.find(job => job._id === e.target.value)
 
-    setFormData((previous) => ({
+    setFormData(previous => ({
       ...previous,
-      jobId: selectedJob?._id || "",
-      jobTitle: selectedJob?.title || "",
-    }));
-  };
+      jobId: selectedJob?._id || '',
+      jobTitle: selectedJob?.title || ''
+    }))
+  }
 
-  const handleResumeChange = (e) => {
-    const file = e.target.files?.[0];
+  // Handle resume upload
+  const handleResumeChange = e => {
+    const file = e.target.files?.[0]
 
-    if (!file) return;
+    if (!file) return
 
-    const allowedExtensions = /\.(pdf|doc|docx)$/i;
+    const allowedExtensions = /\.(pdf|doc|docx)$/i
 
     if (!allowedExtensions.test(file.name)) {
-      setError("Please upload a PDF, DOC, or DOCX resume.");
-      e.target.value = "";
-      return;
+      setError('Please upload a PDF, DOC, or DOCX resume.')
+      e.target.value = ''
+      return
     }
 
-    setError("");
-    setResume(file);
-  };
+    setError('')
+    setResume(file)
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  // Submit application
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setError('')
 
     if (
       !formData.fullName.trim() ||
@@ -127,184 +131,188 @@ export default function AddJobApplication() {
       !formData.jobId ||
       !formData.jobTitle
     ) {
-      setError("Please complete all required fields.");
-      return;
+      setError('Please complete all required fields.')
+      return
     }
 
     if (!resume) {
-      setError("Please upload the candidate's resume.");
-      return;
+      setError("Please upload the candidate's resume.")
+      return
     }
 
-    const data = new FormData();
+    const data = new FormData()
 
-    data.append("fullName", formData.fullName.trim());
-    data.append("email", formData.email.trim());
-    data.append("phoneNumber", formData.phoneNumber.trim());
-    data.append("jobId", formData.jobId);
-    data.append("jobTitle", formData.jobTitle);
-    data.append("resume", resume);
+    data.append('fullName', formData.fullName.trim())
+    data.append('email', formData.email.trim())
+    data.append('phoneNumber', formData.phoneNumber.trim())
+    data.append('jobId', formData.jobId)
+    data.append('jobTitle', formData.jobTitle)
+    data.append('resume', resume)
 
     try {
-      setSaving(true);
+      setSaving(true)
 
-      await createJobApplication(data);
+      await createJobApplication(data)
 
-      navigate("/admin/apply-jobs");
+      navigate('/admin/apply-jobs')
     } catch (err) {
       const validationErrors = err.response?.data?.errors
-        ?.map((item) => item.msg)
+        ?.map(item => item.msg)
         .filter(Boolean)
-        .join(", ");
+        .join(', ')
 
       setError(
         validationErrors ||
           err.response?.data?.message ||
-          "Unable to create job application."
-      );
+          'Unable to create job application.'
+      )
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
-  };
+  }
 
   return (
-   <div className="min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8">
+    <div className='min-h-screen w-full bg-slate-50 px-4 py-3 sm:px-6 lg:px-8'>
       <button
-        type="button"
-        onClick={() => navigate("/admin/apply-jobs")}
-        className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600"
+        type='button'
+        onClick={() => navigate('/admin/apply-jobs')}
+        className='inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600'
       >
         <ArrowLeft size={18} />
         Back to Applications
       </button>
 
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className='text-2xl font-bold text-gray-900'>
           Add Job Application
         </h1>
-        <p className="py-2 text-sm text-gray-500">
+
+        <p className='py-2 text-sm text-gray-500'>
           Manually add a candidate's job application.
         </p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7"
+        className='space-y-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-7'
       >
+        {/* Error Message */}
         {error && (
-          <div className="flex items-start justify-between gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <div className='flex items-start justify-between gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700'>
             <span>{error}</span>
 
             <button
-              type="button"
-              onClick={() => setError("")}
-              aria-label="Dismiss error"
+              type='button'
+              onClick={() => setError('')}
+              aria-label='Dismiss error'
             >
               <X size={17} />
             </button>
           </div>
         )}
 
-        {/* Candidate information */}
+        {/* Candidate Information */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className='text-lg font-semibold text-gray-900'>
             Candidate Information
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
+
+          <p className='mt-1 text-sm text-gray-500'>
             Enter the candidate's contact details.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+          {/* Full Name */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className='mb-2 block text-sm font-medium text-gray-700'>
               Full Name *
             </label>
 
-            <div className="relative">
+            <div className='relative'>
               <UserRound
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'
               />
 
               <input
-                type="text"
-                name="fullName"
+                type='text'
+                name='fullName'
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                placeholder="Enter candidate name"
-                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                placeholder='Enter candidate name'
+                className='w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
               />
             </div>
           </div>
 
+          {/* Email */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className='mb-2 block text-sm font-medium text-gray-700'>
               Email Address *
             </label>
 
-            <div className="relative">
+            <div className='relative'>
               <Mail
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'
               />
 
               <input
-                type="email"
-                name="email"
+                type='email'
+                name='email'
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="Enter email address"
-                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                placeholder='Enter email address'
+                className='w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
               />
             </div>
           </div>
 
+          {/* Phone */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className='mb-2 block text-sm font-medium text-gray-700'>
               Phone Number *
             </label>
 
-            <div className="relative">
+            <div className='relative'>
               <Phone
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'
               />
 
               <input
-                type="tel"
-                name="phoneNumber"
+                type='tel'
+                name='phoneNumber'
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 required
-                placeholder="Enter phone number"
-                className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                placeholder='Enter phone number'
+                className='w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
               />
             </div>
           </div>
         </div>
 
-        {/* Applied job */}
-        <div className="border-t border-gray-100 pt-6">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Applied Job
-          </h2>
+        {/* Applied Job */}
+        <div className='border-t border-gray-100 pt-6'>
+          <h2 className='text-lg font-semibold text-gray-900'>Applied Job</h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className='mt-1 text-sm text-gray-500'>
             Select the job position for this candidate.
           </p>
 
-          <div className="mt-5">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+          <div className='mt-5'>
+            <label className='mb-2 block text-sm font-medium text-gray-700'>
               Select Job Position *
             </label>
 
-            <div className="relative">
+            <div className='relative'>
               <BriefcaseBusiness
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400'
               />
 
               <select
@@ -312,17 +320,17 @@ export default function AddJobApplication() {
                 onChange={handleJobChange}
                 required
                 disabled={loadingJobs || jobs.length === 0}
-                className="w-full appearance-none rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-50"
+                className='w-full appearance-none rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-50'
               >
-                <option value="">
+                <option value=''>
                   {loadingJobs
-                    ? "Loading job positions..."
+                    ? 'Loading job positions...'
                     : jobs.length === 0
-                    ? "No job positions available"
-                    : "Select a job position"}
+                    ? 'No job positions available'
+                    : 'Select a job position'}
                 </option>
 
-                {jobs.map((job) => (
+                {jobs.map(job => (
                   <option key={job._id} value={job._id}>
                     {job.title}
                   </option>
@@ -331,60 +339,58 @@ export default function AddJobApplication() {
             </div>
 
             {formData.jobTitle && (
-              <p className="mt-2 text-xs text-green-600">
+              <p className='mt-2 text-xs text-green-600'>
                 Selected position: {formData.jobTitle}
               </p>
             )}
           </div>
         </div>
 
-        {/* Resume upload */}
-        <div className="border-t border-gray-100 pt-6">
-          <h2 className="text-lg font-semibold text-gray-900">
+        {/* Resume Upload */}
+        <div className='border-t border-gray-100 pt-6'>
+          <h2 className='text-lg font-semibold text-gray-900'>
             Candidate Resume
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className='mt-1 text-sm text-gray-500'>
             Upload the candidate's resume. PDF, DOC, or DOCX files are accepted.
           </p>
 
-          <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-8 text-center transition hover:border-blue-400 hover:bg-blue-50/50">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-              <Upload size={23} className="text-blue-600" />
+          <label className='mt-5 flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-8 text-center transition hover:border-blue-400 hover:bg-blue-50/50'>
+            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-blue-50'>
+              <Upload size={23} className='text-blue-600' />
             </div>
 
-            <span className="mt-3 text-sm font-semibold text-gray-800">
-              {resume ? resume.name : "Click to upload resume"}
+            <span className='mt-3 text-sm font-semibold text-gray-800'>
+              {resume ? resume.name : 'Click to upload resume'}
             </span>
 
-            <span className="mt-1 text-xs text-gray-500">
+            <span className='mt-1 text-xs text-gray-500'>
               PDF, DOC, or DOCX
             </span>
 
             <input
-              type="file"
-              accept=".pdf,.doc,.docx"
+              type='file'
+              accept='.pdf,.doc,.docx'
               onChange={handleResumeChange}
-              className="hidden"
+              className='hidden'
             />
           </label>
 
           {resume && (
-            <div className="mt-3 flex items-center justify-between rounded-lg border border-gray-200 p-3">
-              <div className="flex min-w-0 items-center gap-2">
-                <FileText
-                  size={20}
-                  className="shrink-0 text-blue-600"
-                />
-                <span className="truncate text-sm text-gray-700">
+            <div className='mt-3 flex items-center justify-between rounded-lg border border-gray-200 p-3'>
+              <div className='flex min-w-0 items-center gap-2'>
+                <FileText size={20} className='shrink-0 text-blue-600' />
+
+                <span className='truncate text-sm text-gray-700'>
                   {resume.name}
                 </span>
               </div>
 
               <button
-                type="button"
+                type='button'
                 onClick={() => setResume(null)}
-                className="ml-3 text-sm font-medium text-red-600 hover:text-red-700"
+                className='ml-3 text-sm font-medium text-red-600 hover:text-red-700'
               >
                 Remove
               </button>
@@ -392,24 +398,24 @@ export default function AddJobApplication() {
           )}
         </div>
 
-        {/* Form actions */}
-        <div className="flex flex-col-reverse justify-end gap-3 border-t border-gray-100 pt-6 sm:flex-row">
+        {/* Form Actions */}
+        <div className='flex flex-col-reverse justify-end gap-3 border-t border-gray-100 pt-6 sm:flex-row'>
           <button
-            type="button"
-            onClick={() => navigate("/admin/job-applications")}
-            className="rounded-lg border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            type='button'
+            onClick={() => navigate('/admin/job-applications')}
+            className='rounded-lg border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50'
           >
             Cancel
           </button>
 
           <Button
-            text={saving?"Saving...":" Add Application"}
-            type="submit"
+            text={saving ? 'Saving...' : ' Add Application'}
+            type='submit'
             disabled={saving || loadingJobs || jobs.length === 0}
             icon={Save}
           />
         </div>
       </form>
     </div>
-  );
+  )
 }
