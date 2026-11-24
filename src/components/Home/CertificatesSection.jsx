@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react'
+
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 import Modal from '../../ui/Modal'
 import CertificateModal from '../modal/CertificateModal'
@@ -34,21 +34,7 @@ const certificates = [
 ]
 
 const CertificatesSection = () => {
-  const scrollRef = useRef(null)
   const [selectedCertificate, setSelectedCertificate] = useState(null)
-
-  const scrollCertificates = direction => {
-    const el = scrollRef.current
-    if (!el) return
-    el.scrollBy({
-      left:
-        direction === 'right' ? el.clientWidth * 0.75 : -el.clientWidth * 0.75,
-      behavior: 'smooth'
-    })
-  }
-
-  const arrowClass =
-    'flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b] cursor-pointer'
 
   return (
     <>
@@ -74,45 +60,20 @@ const CertificatesSection = () => {
 
         <div className='mx-auto max-w-7xl px-5 sm:px-8'>
           {/* Heading */}
-          <div className='mb-10 flex flex-col justify-between gap-6 sm:mb-12 sm:flex-row sm:items-end'>
-            <div className='max-w-2xl'>
-              <h2 className='text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl'>
-                Certificates We <span className='text-sky-300'>Provide</span>
-              </h2>
+          <div className='mx-auto mb-10 max-w-2xl text-center sm:mb-12'>
+            <h2 className='text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl'>
+              Certificates We <span className='text-sky-300'>Provide</span>
+            </h2>
 
-              <p className='mt-4 text-base leading-7 text-blue-100/90'>
-                Every achievement tells a story of learning, dedication, and
-                growth. Explore the certificates our students can earn through
-                their learning journey with EphorX.
-              </p>
-            </div>
-
-            {/* Scroll controls */}
-            <div className='flex shrink-0 items-center gap-3'>
-              <button
-                type='button'
-                onClick={() => scrollCertificates('left')}
-                aria-label='Scroll certificates left'
-                className={arrowClass}
-              >
-                <ArrowLeft size={19} />
-              </button>
-              <button
-                type='button'
-                onClick={() => scrollCertificates('right')}
-                aria-label='Scroll certificates right'
-                className={arrowClass}
-              >
-                <ArrowRight size={19} />
-              </button>
-            </div>
+            <p className='mt-4 text-base leading-7 text-blue-100/90'>
+              Every achievement tells a story of learning, dedication, and
+              growth. Explore the certificates our students can earn through
+              their learning journey with EphorX.
+            </p>
           </div>
 
           {/* Certificate cards */}
-          <div
-            ref={scrollRef}
-            className='-mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain px-5 pb-4 sm:-mx-8 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
-          >
+          <div className='flex flex-col items-center justify-center gap-5 sm:flex-row sm:items-stretch sm:gap-6'>
             {certificates.map((certificate, index) => (
               <motion.article
                 key={certificate.id}
@@ -120,47 +81,40 @@ const CertificatesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
-                className='group flex w-[82vw] min-w-[260px] max-w-[350px] shrink-0 snap-start flex-col overflow-hidden rounded-xl bg-white text-slate-900 shadow-xl shadow-black/10 sm:w-[320px] lg:w-[340px]'
+                className='group flex w-full max-w-[300px] flex-col overflow-hidden rounded-xl bg-white text-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl sm:w-[calc(33.333%-16px)] sm:max-w-[320px]'
               >
-                {/* Certificate preview */}
-                <div className='border-b border-slate-100 bg-slate-50 p-5'>
-                  <div className='aspect-[4/3] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm'>
-                    <img
-                      src={certificate.image}
-                      alt={`${certificate.title} certificate`}
-                      loading='lazy'
-                      decoding="async"
-                      className='h-full w-full object-contain transition-transform duration-500 group-hover:scale-105'
-                    />
-                  </div>
-                </div>
+              {/* Certificate preview */}
+<div className='group aspect-[4/3] w-full overflow-hidden bg-slate-50 p-4'>
+  <img
+    src={certificate.image}
+    alt={`${certificate.title} certificate`}
+    loading='lazy'
+    decoding='async'
+    className='h-full w-full rounded-lg border border-slate-200 bg-white object-contain shadow-sm transition-transform duration-500 group-hover:scale-105'
+  />
+</div>
 
                 {/* Card details */}
-                <div className='flex flex-1 flex-col p-5'>
-                  <h3 className='text-lg font-semibold text-slate-900'>
+                <div className='flex flex-1 flex-col p-4'>
+                  <h3 className='text-base font-semibold text-slate-900'>
                     {certificate.title}
                   </h3>
 
-                  <p className='mt-2 text-sm leading-6 text-slate-600'>
+                  <p className='mt-2 flex-1 text-sm leading-6 text-slate-600'>
                     {certificate.description}
                   </p>
 
                   <button
                     type='button'
                     onClick={() => setSelectedCertificate(certificate)}
-                    className='cursor-pointer mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
+                    className='mt-5 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2'
                   >
                     View certificate
-                    <ArrowRight size={16} />
                   </button>
                 </div>
               </motion.article>
             ))}
           </div>
-
-          <p className='mt-3 text-center text-xs text-blue-200/80 sm:hidden'>
-            Swipe left or right to explore certificates
-          </p>
         </div>
       </section>
 

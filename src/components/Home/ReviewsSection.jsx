@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -11,15 +12,15 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "BS",
     rating: 5,
-    text: "The learning experience was very good and informative. The course helped me improve my technical knowledge and practical skills. The concepts were explained clearly, and the practical sessions helped me understand the topics better. Overall, it was a valuable experience that will help me in my future career.",
+    text: "The course was informative and helped me improve my technical and practical skills.",
     course: "MERN Stack & AI DevOps",
   },
-   {
+  {
     name: "Mandakini Das",
     role: "MERN Stack & DevOps Student",
     initials: "MD",
     rating: 5,
-    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    text: "Concepts are explained simply and clearly. Thank you Sir for your guidance and support. 🙏🏻",
     course: "MERN Stack & DevOps",
   },
   {
@@ -27,7 +28,7 @@ const reviews = [
     role: "MERN Stack Development Student",
     initials: "BS",
     rating: 5,
-    text: "My learning experience has been very good. The concepts are explained clearly with practical examples, which makes learning easier. I have improved my knowledge of HTML, CSS, JavaScript, React.js, and other MERN Stack technologies. The teaching approach is helpful and interactive. Thank you, Sir, for your guidance and support.",
+    text: "Practical examples made learning MERN technologies easier. Thank you for your support.",
     course: "MERN Stack Development",
   },
   {
@@ -35,7 +36,7 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "AP",
     rating: 5,
-    text: "Teacher is best in teaching better then my collage teachers. He helps all the time and clear doubts and help to improve knowledge. Thank you 🫡",
+    text: "The teacher explains well, clears doubts, and always helps improve our knowledge. 🫡",
     course: "MERN Stack & AI DevOps",
   },
   {
@@ -43,7 +44,7 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "SB",
     rating: 5,
-    text: "The best Teacher in every possible way. Thank you 😊",
+    text: "The best teacher in every possible way. Thank you! 😊",
     course: "MERN Stack & AI DevOps",
   },
   {
@@ -51,7 +52,7 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "SP",
     rating: 5,
-    text: "The teaching experience was excellent! The teacher explains every topic in a clear, simple, and understandable way. The teaching methods are very effective, interactive, and engaging. They are always supportive, patient, and helpful in clearing doubts. I really appreciate their dedication, knowledge, and friendly approach towards students. Overall, it was a wonderful learning experience, and I would highly recommend this teacher. Truly deserving of a 5-star rating!",
+    text: "Excellent teaching, clear explanations, and helpful guidance. A wonderful learning experience!",
     course: "MERN Stack & AI DevOps",
   },
   {
@@ -59,7 +60,7 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "PP",
     rating: 5,
-    text: "Very good learning experience, concepts were easy to understand and very helpful. Special thanks to Manoj Sir for his guidance and support. Thank you sir 😊",
+    text: "Very helpful learning experience. Special thanks to Manoj Sir for his guidance. 😊",
     course: "MERN Stack & AI DevOps",
   },
   {
@@ -67,16 +68,15 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "KM",
     rating: 5,
-    text: "Excellent explanation skills and very professional and conceptual or fundamental clear and easy to understand every concept through the Monaj sir it’s very helpful for me",
+    text: "Excellent explanation skills. Fundamentals are clear and easy to understand.",
     course: "MERN Stack & AI DevOps",
   },
- 
   {
     name: "Loni Swain",
     role: "MERN Stack & DevOps Student",
     initials: "LS",
     rating: 5,
-    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    text: "The teaching style is simple and helpful. Thank you Sir for your patience and support. 🙏🏻",
     course: "MERN Stack & DevOps",
   },
   {
@@ -84,7 +84,7 @@ const reviews = [
     role: "MERN Stack Student",
     initials: "SP",
     rating: 5,
-    text: "Your teaching style is really good, and the way you explain every concept makes it easy to understand. You always focus on clearing the basics and explaining topics in a simple and practical way. Your classes are very helpful and make learning more interesting. Thank you so much Sir, for your guidance, patience, and support. I really appreciate your efforts. 🙏🏻",
+    text: "The concepts are explained clearly and make learning interesting. Thank you for your support.",
     course: "MERN Stack",
   },
   {
@@ -92,7 +92,7 @@ const reviews = [
     role: "MERN Stack Student",
     initials: "RP",
     rating: 5,
-    text: "The teaching was good and easy to understand. The teachers explained everything clearly and helped us whenever we had doubts. Overall, it was a good learning experience.",
+    text: "Good learning experience. Teachers explain clearly and help whenever we have doubts.",
     course: "MERN Stack",
   },
   {
@@ -100,16 +100,15 @@ const reviews = [
     role: "MERN Stack & AI DevOps Student",
     initials: "PR",
     rating: 5,
-    text: "Special thanks to Manoj sir, his teaching style is very good. He explain everything perfectly and he is very supportive person. Thank you 😊 Thank you sir 🙏🏻",
+    text: "Manoj Sir explains everything perfectly and is very supportive. Thank you Sir! 😊",
     course: "MERN Stack & AI DevOps",
   },
-];
-
+]
 
 // TODO: replace with your real rating
 const AVERAGE_RATING = '4.9'
 
-function Stars ({ rating = 5, size = 16 }) {
+function Stars({ rating = 5, size = 16 }) {
   return (
     <div
       className='flex gap-0.5'
@@ -131,25 +130,46 @@ function Stars ({ rating = 5, size = 16 }) {
   )
 }
 
-function ReviewCard ({ review, index }) {
+function ReviewCard({ review, index, compact = false }) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.4, delay: Math.min(index, 3) * 0.06 }}
-      className='flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/5'
+      transition={{
+        duration: 0.4,
+        delay: Math.min(index, 3) * 0.06,
+      }}
+      className={`flex h-full flex-col rounded-2xl border border-slate-200 bg-white transition duration-300 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/5 ${
+        compact
+          ? 'min-h-[136px] p-3'
+          : 'p-6'
+      }`}
     >
-      <Stars rating={review.rating} />
+      <Stars rating={review.rating} size={compact ? 14 : 16} />
 
-      <p className='mt-4 flex-1 text-base leading-7 text-slate-700'>
-        &ldquo;{review.text}&rdquo;
+      <p
+        className={`mt-4 flex-1 text-slate-700 ${
+          compact
+            ? 'mt-2 line-clamp-2 text-xs leading-4'
+            : 'text-base leading-7'
+        }`}
+      >
+        {review.text}
       </p>
 
-      <div className='mt-6 flex items-center gap-3 border-t border-slate-100 pt-5'>
+      <div
+        className={`mt-6 flex items-center gap-3 border-t border-slate-100 pt-5 ${
+          compact ? 'mt-3 pt-2' : ''
+        }`}
+      >
         <div
           aria-hidden='true'
-          className='flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-700 text-sm font-bold text-white'
+          className={`flex shrink-0 items-center justify-center rounded-full bg-blue-700 font-bold text-white ${
+            compact
+              ? 'h-8 w-8 text-[10px]'
+              : 'h-11 w-11 text-sm'
+          }`}
         >
           {review.initials}
         </div>
@@ -158,7 +178,10 @@ function ReviewCard ({ review, index }) {
           <h3 className='truncate text-sm font-semibold text-slate-900'>
             {review.name}
           </h3>
-          <p className='truncate text-xs text-slate-500'>{review.role}</p>
+
+          <p className='truncate text-xs text-slate-500'>
+            {review.role}
+          </p>
         </div>
 
         <span className='hidden shrink-0 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 sm:inline'>
@@ -169,28 +192,101 @@ function ReviewCard ({ review, index }) {
   )
 }
 
-export default function ReviewsSection () {
+export default function ReviewsSection() {
   const scrollRef = useRef(null)
+
+  // Desktop carousel arrows
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
 
+  // Mobile manual + automatic scrolling
+  const mobileScrollRef = useRef(null)
+  const mobileGroupRefs = useRef([])
+  const activeGroupRef = useRef(0)
+
+  const mobileGroupCount = Math.ceil(reviews.length / 3)
+
+  // Automatically scroll to the next group every 3 seconds
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      if (!window.matchMedia('(max-width: 639px)').matches) {
+        return
+      }
+
+      const container = mobileScrollRef.current
+      if (!container) return
+
+      const nextGroup =
+        (activeGroupRef.current + 1) % mobileGroupCount
+
+      activeGroupRef.current = nextGroup
+
+      const target = mobileGroupRefs.current[nextGroup]
+      if (!target) return
+
+      container.scrollTo({
+         left: target.offsetLeft,
+        behavior: 'smooth',
+      })
+    }, 3000)
+
+    return () => window.clearInterval(interval)
+  }, [mobileGroupCount])
+
+  // Keep automatic scrolling in sync with manual scrolling
+  const handleMobileScroll = useCallback(() => {
+    const container = mobileScrollRef.current
+    if (!container) return
+
+    let closestGroup = 0
+    let smallestDistance = Infinity
+
+    mobileGroupRefs.current.forEach((group, index) => {
+      if (!group) return
+
+      const distance = Math.abs(
+        group.offsetTop - container.scrollTop
+      )
+
+      if (distance < smallestDistance) {
+        smallestDistance = distance
+        closestGroup = index
+      }
+    })
+
+    activeGroupRef.current = closestGroup
+  }, [])
+
+  // Desktop carousel arrow state
   const updateArrows = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
+
     setCanScrollLeft(el.scrollLeft > 4)
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+
+    setCanScrollRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 4
+    )
   }, [])
 
   useEffect(() => {
     updateArrows()
+
     window.addEventListener('resize', updateArrows)
-    return () => window.removeEventListener('resize', updateArrows)
+
+    return () => {
+      window.removeEventListener('resize', updateArrows)
+    }
   }, [updateArrows])
 
   const scrollByAmount = direction => {
     const el = scrollRef.current
     if (!el) return
-    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: 'smooth' })
+
+    el.scrollBy({
+      left: direction * el.clientWidth * 0.8,
+      behavior: 'smooth',
+    })
   }
 
   const arrowClass =
@@ -204,10 +300,15 @@ export default function ReviewsSection () {
         className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'
       >
         <div className='absolute -top-10 left-[16%] h-[130%] w-24 -skew-x-[28deg] bg-gradient-to-b from-white/70 to-white/0' />
+
         <div className='absolute -top-10 left-[58%] h-[130%] w-28 -skew-x-[28deg] bg-gradient-to-b from-white/60 to-white/0' />
+
         <div className='absolute -left-24 -top-24 h-72 w-72 rounded-full border border-white/70 bg-gradient-to-br from-blue-200/50 to-sky-100/10' />
+
         <div className='absolute -bottom-28 -right-20 h-80 w-80 rounded-full border border-white/70 bg-gradient-to-tl from-blue-200/50 to-sky-100/10' />
+
         <div className='absolute right-[10%] top-14 h-24 w-24 rounded-full border border-white/70 bg-sky-200/40' />
+
         <div className='absolute bottom-24 left-[7%] h-6 w-6 rounded-full bg-blue-300/40' />
       </div>
 
@@ -217,6 +318,7 @@ export default function ReviewsSection () {
           <h2 className='text-3xl font-bold tracking-tight text-[#0b2a5b] sm:text-4xl lg:text-5xl'>
             Real learning. Real growth.
           </h2>
+
           <p className='mt-4 text-base leading-7 text-slate-600'>
             Hear from students who built practical skills and confidence with
             EphorX.
@@ -226,9 +328,13 @@ export default function ReviewsSection () {
         {/* Rating overview */}
         <div className='mx-auto mb-12 grid max-w-4xl divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white sm:grid-cols-3 sm:divide-x sm:divide-y-0'>
           <div className='flex items-center gap-4 p-5'>
-            <p className='text-4xl font-bold text-blue-800'>{AVERAGE_RATING}</p>
+            <p className='text-4xl font-bold text-blue-800'>
+              {AVERAGE_RATING}
+            </p>
+
             <div>
               <Stars />
+
               <p className='mt-1 text-xs text-slate-500'>
                 Average student rating
               </p>
@@ -236,7 +342,10 @@ export default function ReviewsSection () {
           </div>
 
           <div className='p-5'>
-            <p className='font-semibold text-slate-900'>Project-led learning</p>
+            <p className='font-semibold text-slate-900'>
+              Project-led learning
+            </p>
+
             <p className='mt-1 text-sm text-slate-600'>
               Build real projects as you learn.
             </p>
@@ -246,19 +355,20 @@ export default function ReviewsSection () {
             <p className='font-semibold text-slate-900'>
               Student-first support
             </p>
+
             <p className='mt-1 text-sm text-slate-600'>
               Mentors who guide you at every step.
             </p>
           </div>
         </div>
 
-        {/* Reviews heading and arrows */}
+        {/* Reviews heading and desktop arrows */}
         <div className='mb-6 flex items-center justify-between gap-4'>
           <h3 className='text-xl font-semibold text-slate-900 sm:text-2xl'>
             What our students say
           </h3>
 
-          <div className='flex gap-2'>
+          <div className='hidden gap-2 sm:flex'>
             <button
               type='button'
               onClick={() => scrollByAmount(-1)}
@@ -268,6 +378,7 @@ export default function ReviewsSection () {
             >
               <ChevronLeft size={20} />
             </button>
+
             <button
               type='button'
               onClick={() => scrollByAmount(1)}
@@ -280,21 +391,57 @@ export default function ReviewsSection () {
           </div>
         </div>
 
-        {/* Review cards */}
+        {/* Desktop review cards - unchanged horizontal carousel */}
         <div
           ref={scrollRef}
           onScroll={updateArrows}
-          className='-mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+          className='-mx-5 hidden snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:flex sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
         >
           {reviews.map((review, index) => (
             <div
               key={review.name}
               className='w-[85%] shrink-0 snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]'
             >
-              <ReviewCard review={review} index={index} />
+              <ReviewCard
+                review={review}
+                index={index}
+              />
             </div>
           ))}
         </div>
+
+      {/* Mobile reviews - horizontal manual + auto scroll */}
+<div
+  ref={mobileScrollRef}
+  onScroll={handleMobileScroll}
+  className="sm:hidden flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+>
+  {Array.from({ length: mobileGroupCount }).map((_, groupIndex) => {
+    const groupReviews = reviews.slice(
+      groupIndex * 3,
+      groupIndex * 3 + 3
+    );
+
+    return (
+      <div
+        key={groupIndex}
+        ref={(element) => {
+          mobileGroupRefs.current[groupIndex] = element;
+        }}
+        className="w-full shrink-0 snap-start flex flex-col gap-3"
+      >
+        {groupReviews.map((review, index) => (
+          <ReviewCard
+            key={review.name}
+            review={review}
+            index={index}
+            compact
+          />
+        ))}
+      </div>
+    );
+  })}
+</div>
 
         {/* Call to action */}
         <div className='mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl bg-[#0b2a5b] p-6 text-white sm:flex-row sm:items-center sm:px-8'>
@@ -302,6 +449,7 @@ export default function ReviewsSection () {
             <h3 className='text-lg font-semibold'>
               Your journey could be next.
             </h3>
+
             <p className='mt-1 text-sm text-blue-100/90'>
               Find a learning path that matches your goals.
             </p>
@@ -312,6 +460,7 @@ export default function ReviewsSection () {
             className='group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-blue-800 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b2a5b]'
           >
             Explore courses
+
             <ArrowRight
               size={16}
               className='transition-transform duration-300 group-hover:translate-x-1'
