@@ -25,7 +25,7 @@ function ExpertItem ({ expert, index, onViewDetails }) {
         aria-label={`View details of ${expert.name}`}
         className='cursor-pointer group flex w-full flex-col items-center rounded-2xl py-2 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2'
       >
-        <div className='h-32 w-32 overflow-hidden rounded-full bg-sky-200 ring-4 ring-transparent transition duration-300 group-hover:ring-blue-200 sm:h-36 sm:w-36 lg:h-40 lg:w-40'>
+        <div className='h-32 w-32 overflow-hidden rounded-full bg-sky-200 ring-4 ring-transparent transition duration-300 group-hover:ring-blue-200 sm:h-36 sm:w-36 lg:h-48 lg:w-48 border-2 border-blue-700'>
           {expert.image && !failed ? (
             <img
               src={expert.image}
