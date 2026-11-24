@@ -39,13 +39,13 @@ const socialLinks = [
   {
     label: 'Facebook',
     icon: FaFacebookF,
-    url: 'https://www.facebook.com/profile.php?id=61596955490461',
+    url: 'https://www.facebook.com/ephorx',
     hover: 'bg-[#1877F2] hover:border-[#1877F2]',
   },
   {
     label: 'Instagram',
     icon: FaInstagram,
-    url: 'https://www.instagram.com/ephorxlimited/?hl=en',
+    url: 'https://www.instagram.com/ephorxofficial?utm_source=qr&gwpx=eWRuY2N6MDRheDZ5',
     hover: 'bg-gradient-to-tr hover:from-[#FEDA75] via-[#FA7E1E] via-[#D62976] to-[#962FBF] ',
   },
   {
