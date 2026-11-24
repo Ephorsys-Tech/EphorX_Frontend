@@ -5,32 +5,32 @@ import { motion } from 'framer-motion'
 import Modal from '../../ui/Modal'
 import CertificateModal from '../modal/CertificateModal'
 
-import certificate1 from '../../assets/faqImage.png'
-import certificate2 from '../../assets/faqImage.png'
-import certificate3 from '../../assets/faqImage.png'
+import certificate1 from '../../assets/certificate1.png'
+import certificate2 from '../../assets/certificate2.png'
+// import certificate3 from '../../assets/faqImage.png'
 
 const certificates = [
   {
     id: 1,
-    title: 'Web Development',
+    title: 'Certificate of Experience',
     description:
-      'Recognizing practical skills in building modern, responsive web applications.',
+      'Recognizing successful internship completion, practical exposure, and hands-on experience with industry-relevant technologies and projects.',
     image: certificate1
   },
   {
     id: 2,
-    title: 'MERN Stack Development',
+    title: 'Letter of Recommendation',
     description:
-      'Celebrating expertise in developing full-stack applications using the MERN stack.',
+      'Appreciating a student’s dedication, professionalism, problem-solving abilities, teamwork, and contributions throughout the internship.',
     image: certificate2
   },
-  {
-    id: 3,
-    title: 'Programming Excellence',
-    description:
-      'Recognizing technical knowledge, problem-solving, and programming skills.',
-    image: certificate3
-  }
+  // {
+  //   id: 3,
+  //   title: 'Course Completion Certificate',
+  //   description:
+  //     'Acknowledging the successful completion of an internship, practical learning, and the technical skills gained during the training journey at EphorX.',
+  //   image: "",
+  // }
 ]
 
 const CertificatesSection = () => {
